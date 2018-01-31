@@ -2,17 +2,26 @@ package de.ws1718.ismla.gloss.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dev.protobuf.DescriptorProtos.FieldDescriptorProto.Label;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+import org.apache.commons.collections.functors.ForClosure;
+import org.apache.commons.lang3.text.StrBuilder;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.FieldSet;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.RadioButton;
+import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
+import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 import org.gwtbootstrap3.client.ui.html.Text;
 
 /**
@@ -34,25 +43,50 @@ public class ISMLAGlosser implements EntryPoint {
 	private void goToMainPage() {
 		Form form = new Form();
 		FieldSet fset = new FieldSet();
-		Legend inputHeader = new Legend("Your input");
 		FormGroup textGroup = new FormGroup();
 		FormGroup buttonGroup = new FormGroup();
-		Column mainCol = new Column("lg_12");
-		VerticalPanel mainPanel = new VerticalPanel();
-		mainPanel.getElement().setAttribute("cellpadding", "5");
+		
+		Legend inputHeader = new Legend("Your input");
+		inputHeader.addStyleName("col-lg-8");
+		inputHeader.addStyleName("col-sm-12");
+		
 		final TextArea inputText = new TextArea();
-		//inputText.setCharacterWidth(60);
 		inputText.setVisibleLines(12);
 		inputText.setPlaceholder("Enter your Malayalam text here");
-		Button submit = new Button("Gloss!");
-
-		form.addStyleName("col-lg-6");
-		form.addStyleName("col-lg-offset-3");
-		form.addStyleName("col-sm-12");
-		submit.setType(ButtonType.PRIMARY);
+		FlowPanel textPanel = new FlowPanel();
+		textPanel.addStyleName("col-lg-6");
+		textPanel.addStyleName("col-sm-12");
+		textPanel.add(inputText);
 		
-		textGroup.add(inputText);
+		RadioButton b1 = new RadioButton("Malayalam script");
+		b1.setText("Malayalam script");
+		RadioButton b2 = new RadioButton("Mozhi romanization");
+		b2.setText("Mozhi romanization");
+		RadioButton b3 = new RadioButton("ISO-15919 romanization");
+		b3.setText("ISO-15919 romanization");
+		StringRadioGroup inFormat = new StringRadioGroup("Input format");
+		inFormat.add(b1);
+		inFormat.add(b2);
+		inFormat.add(b3);
+		FormLabel label = new FormLabel();
+		label.setFor("inFormat");
+		label.setText("Input script:");
+		FlowPanel inFormatPanel = new FlowPanel();
+		inFormatPanel.addStyleName("col-lg-2");
+		inFormatPanel.add(label);
+		inFormatPanel.add(inFormat);
+		
+		textGroup.add(textPanel);
+		textGroup.add(inFormatPanel);
+		
+		Button submit = new Button("Gloss!");
+		submit.setType(ButtonType.PRIMARY);
 		buttonGroup.add(submit);
+		buttonGroup.addStyleName("col-lg-8");
+		buttonGroup.addStyleName("col-sm-12");
+
+		form.addStyleName("col-lg-offset-2");
+		
 		fset.add(inputHeader);
 		fset.add(textGroup);
 		fset.add(buttonGroup);
@@ -60,6 +94,75 @@ public class ISMLAGlosser implements EntryPoint {
 		form.add(fset);
 		
 		RootPanel.get().add(form);
+		
+		addGloss();
+	}
+	
+	private void addGloss() {
+		Legend glossHeader = new Legend("Gloss");
+		glossHeader.addStyleName("col-lg-8");
+		glossHeader.addStyleName("col-sm-12");
+		
+		FieldSet fset = new FieldSet();
+		
+		VerticalPanel maanga = new VerticalPanel();
+		maanga.add(new Text("മാങ്ങ"));
+		maanga.add(new Text("māṅṅa"));
+		maanga.add(new Text("maːŋːa"));
+		maanga.add(new Text("mango"));
+		maanga.setStyleName("glossPanel");
+		
+		VerticalPanel vaangikkunna = new VerticalPanel();
+		vaangikkunna.add(new Text("വാങ്ങിക്കുന്ന"));
+		vaangikkunna.add(new Text("vāṅṅikk-unn-a"));
+		vaangikkunna.add(new Text("vaːŋːikʲːun̪ːa"));
+		vaangikkunna.add(new Text("buy-PRES-A"));
+		vaangikkunna.setStyleName("glossPanel");
+		
+		VerticalPanel payyan = new VerticalPanel();
+		payyan.add(new Text("പയ്യൻ"));
+		payyan.add(new Text("payyan"));
+		payyan.add(new Text("pajːan"));
+		payyan.add(new Text("boy"));
+		payyan.setStyleName("glossPanel");
+		
+		VerticalPanel cantiyil = new VerticalPanel();
+		cantiyil.add(new Text("ചന്തിയിൽ"));
+		cantiyil.add(new Text("canti-y-il"));
+		cantiyil.add(new Text("t͡ɕan̪d̪ijil"));
+		cantiyil.add(new Text("market-0-LOC"));
+		cantiyil.setStyleName("glossPanel");
+		
+		VerticalPanel aaNu = new VerticalPanel();
+		aaNu.add(new Text("ആണ്"));
+		aaNu.add(new Text("āṇ˘"));
+		aaNu.add(new Text("aːɳɨ"));
+		aaNu.add(new Text("be"));
+		aaNu.setStyleName("glossPanel");
+		
+		VerticalPanel dot = new VerticalPanel();
+		dot.add(new Text("."));
+		dot.add(new Text("."));
+		dot.add(new Text("ǀ"));
+		dot.add(new Text("."));
+		dot.setStyleName("glossPanel");
+		
+		FlowPanel glossPanel = new FlowPanel();
+		glossPanel.add(maanga);
+		glossPanel.add(vaangikkunna);
+		glossPanel.add(payyan);
+		glossPanel.add(cantiyil);
+		glossPanel.add(aaNu);
+		glossPanel.add(dot);
+		glossPanel.addStyleName("col-lg-8");
+		glossPanel.addStyleName("col-sm-12");
+		
+		fset.add(glossHeader);
+		fset.add(glossPanel);
+		fset.addStyleName("col-lg-offset-2");
+		
+		RootPanel.get().add(fset);
+		
 	}
 
 	/**
