@@ -17,11 +17,16 @@ import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Legend;
+import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.PanelHeader;
 import org.gwtbootstrap3.client.ui.RadioButton;
 import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
+import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.client.ui.html.Text;
 
 /**
@@ -58,26 +63,40 @@ public class ISMLAGlosser implements EntryPoint {
 		textPanel.addStyleName("col-sm-12");
 		textPanel.add(inputText);
 		
-		RadioButton b1 = new RadioButton("Malayalam script");
-		b1.setText("Malayalam script");
-		RadioButton b2 = new RadioButton("Mozhi romanization");
-		b2.setText("Mozhi romanization");
-		RadioButton b3 = new RadioButton("ISO-15919 romanization");
-		b3.setText("ISO-15919 romanization");
+		RadioButton bi1 = new RadioButton("Malayalam script");
+		bi1.setText("Malayalam script");
+		RadioButton bi2 = new RadioButton("Mozhi romanization");
+		bi2.setText("Mozhi romanization");
+		RadioButton bi3 = new RadioButton("ISO-15919 romanization");
+		bi3.setText("ISO-15919 romanization");
 		StringRadioGroup inFormat = new StringRadioGroup("Input format");
-		inFormat.add(b1);
-		inFormat.add(b2);
-		inFormat.add(b3);
-		FormLabel label = new FormLabel();
-		label.setFor("inFormat");
-		label.setText("Input script:");
-		FlowPanel inFormatPanel = new FlowPanel();
-		inFormatPanel.addStyleName("col-lg-2");
-		inFormatPanel.add(label);
-		inFormatPanel.add(inFormat);
+		inFormat.add(bi1);
+		inFormat.add(bi2);
+		inFormat.add(bi3);
+		FormLabel labelIn = new FormLabel();
+		labelIn.setFor("inFormat");
+		labelIn.setText("Input script:");
+		
+		RadioButton bo1 = new RadioButton("Mozhi romanization");
+		bo1.setText("Mozhi romanization");
+		RadioButton bo2 = new RadioButton("ISO-15919 romanization");
+		bo2.setText("ISO-15919 romanization");
+		StringRadioGroup outFormat = new StringRadioGroup("Output format");
+		outFormat.add(bo1);
+		outFormat.add(bo2);
+		FormLabel labelOut = new FormLabel();
+		labelOut.setFor("outFormat");
+		labelOut.setText("Gloss script:");
+		
+		FlowPanel inOutFormatPanel = new FlowPanel();
+		inOutFormatPanel.addStyleName("col-lg-2");
+		inOutFormatPanel.add(labelIn);
+		inOutFormatPanel.add(inFormat);
+		inOutFormatPanel.add(labelOut);
+		inOutFormatPanel.add(outFormat);
 		
 		textGroup.add(textPanel);
-		textGroup.add(inFormatPanel);
+		textGroup.add(inOutFormatPanel);
 		
 		Button submit = new Button("Gloss!");
 		submit.setType(ButtonType.PRIMARY);
@@ -96,6 +115,7 @@ public class ISMLAGlosser implements EntryPoint {
 		RootPanel.get().add(form);
 		
 		addGloss();
+		finishGloss();
 	}
 	
 	private void addGloss() {
@@ -105,47 +125,36 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		FieldSet fset = new FieldSet();
 		
-		VerticalPanel maanga = new VerticalPanel();
-		maanga.add(new Text("മാങ്ങ"));
-		maanga.add(new Text("māṅṅa"));
-		maanga.add(new Text("maːŋːa"));
-		maanga.add(new Text("mango"));
-		maanga.setStyleName("glossPanel");
-		
-		VerticalPanel vaangikkunna = new VerticalPanel();
-		vaangikkunna.add(new Text("വാങ്ങിക്കുന്ന"));
-		vaangikkunna.add(new Text("vāṅṅikk-unn-a"));
-		vaangikkunna.add(new Text("vaːŋːikʲːun̪ːa"));
-		vaangikkunna.add(new Text("buy-PRES-A"));
-		vaangikkunna.setStyleName("glossPanel");
-		
-		VerticalPanel payyan = new VerticalPanel();
-		payyan.add(new Text("പയ്യൻ"));
-		payyan.add(new Text("payyan"));
-		payyan.add(new Text("pajːan"));
-		payyan.add(new Text("boy"));
-		payyan.setStyleName("glossPanel");
-		
-		VerticalPanel cantiyil = new VerticalPanel();
-		cantiyil.add(new Text("ചന്തിയിൽ"));
-		cantiyil.add(new Text("canti-y-il"));
-		cantiyil.add(new Text("t͡ɕan̪d̪ijil"));
-		cantiyil.add(new Text("market-0-LOC"));
-		cantiyil.setStyleName("glossPanel");
-		
-		VerticalPanel aaNu = new VerticalPanel();
-		aaNu.add(new Text("ആണ്"));
-		aaNu.add(new Text("āṇ˘"));
-		aaNu.add(new Text("aːɳɨ"));
-		aaNu.add(new Text("be"));
-		aaNu.setStyleName("glossPanel");
-		
-		VerticalPanel dot = new VerticalPanel();
-		dot.add(new Text("."));
-		dot.add(new Text("."));
-		dot.add(new Text("ǀ"));
-		dot.add(new Text("."));
-		dot.setStyleName("glossPanel");
+		VerticalPanel maanga = getEditableGloss(
+				"മാങ്ങ",
+				"maːŋːa",
+				new String[]{"māṅṅa"},
+				new String[]{"mango","mango.ACC","mango.NOM"});
+		VerticalPanel vaangikkunna = getEditableGloss(
+				"വാങ്ങിക്കുന്ന",
+				"vaːŋːikʲːun̪ːa",
+				new String[]{"vāṅṅikk-unn-a"},
+				new String[]{"buy-PRS-A"});
+		VerticalPanel payyan = getEditableGloss(
+				"പയ്യൻ",
+				"pajːan",
+				new String[]{"payyan"},
+				new String[]{"boy","boy.ACC","boy.NOM"});
+		VerticalPanel cantiyil = getEditableGloss(
+				"ചന്തിയിൽ",
+				"t͡ɕan̪d̪ijil",
+				new String[]{"canti-y-il"},
+				new String[]{"market-0-LOC"});
+		VerticalPanel aaNu = getEditableGloss(
+				"ആണ്",
+				"aːɳɨ̆",
+				new String[]{"āṇ"},
+				new String[]{"be"});
+		VerticalPanel dot = getEditableGloss(
+				".",
+				"ǀ",
+				new String[]{"."},
+				new String[]{"."});
 		
 		FlowPanel glossPanel = new FlowPanel();
 		glossPanel.add(maanga);
@@ -163,6 +172,67 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		RootPanel.get().add(fset);
 		
+	}
+	
+	private void finishGloss() {
+		Legend glossHeader = new Legend("Finished Gloss");
+		glossHeader.addStyleName("col-lg-8");
+		glossHeader.addStyleName("col-sm-12");
+		
+		FieldSet fset = new FieldSet();
+		
+		VerticalPanel maanga = getFinishedGloss("മാങ്ങ", "maːŋːa", "māṅṅa", "mango.ACC");
+		VerticalPanel vaangikkunna = getFinishedGloss("വാങ്ങിക്കുന്ന", "vaːŋːikʲːun̪ːa", "vāṅṅikk-unn-a", "buy-PRS-A");
+		VerticalPanel payyan = getFinishedGloss("പയ്യൻ", "pajːan", "payyan", "boy.NOM");
+		VerticalPanel cantiyil = getFinishedGloss("ചന്തിയിൽ", "t͡ɕan̪d̪ijil", "canti-y-il", "market-0-LOC");
+		VerticalPanel aaNu = getFinishedGloss("ആണ്", "aːɳɨ̆", "āṇ", "be");
+		VerticalPanel dot = getFinishedGloss(".", "ǀ", ".", ".");
+		
+		FlowPanel glossPanel = new FlowPanel();
+		glossPanel.add(maanga);
+		glossPanel.add(vaangikkunna);
+		glossPanel.add(payyan);
+		glossPanel.add(cantiyil);
+		glossPanel.add(aaNu);
+		glossPanel.add(dot);
+		glossPanel.addStyleName("col-lg-8");
+		glossPanel.addStyleName("col-sm-12");
+		
+		fset.add(glossHeader);
+		fset.add(glossPanel);
+		fset.addStyleName("col-lg-offset-2");
+		
+		RootPanel.get().add(fset);
+		
+	}
+	
+	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses) {
+		VerticalPanel g = new VerticalPanel();
+		g.add(new Text(orig));
+		g.add(new Text(ipa));
+		g.add(getListBox(splits));
+		g.add(getListBox(glosses));
+		g.setStyleName("glossPanel");
+		return g;
+	}
+	
+	private ListBox getListBox(String[] items) {
+		ListBox box = new ListBox();
+		for (String item : items)
+			box.addItem(item);
+		if (items.length == 1)
+			box.setEnabled(false);
+		return box;
+	}
+	
+	private VerticalPanel getFinishedGloss(String orig, String ipa, String split, String gloss) {
+		VerticalPanel g = new VerticalPanel();
+		g.add(new Text(orig));
+		g.add(new Text(ipa));
+		g.add(new Text(split));
+		g.add(new Text(gloss));
+		g.setStyleName("glossPanel");
+		return g;
 	}
 
 	/**
