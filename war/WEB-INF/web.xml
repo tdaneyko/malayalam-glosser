@@ -7,13 +7,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>de.ws1718.ismla.gloss.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>glossServlet</servlet-name>
+    <servlet-class>de.ws1718.ismla.gloss.server.GlossServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/ismlaglosser/greet</url-pattern>
+    <servlet-name>glossServlet</servlet-name>
+    <url-pattern>/ismlaglosser/gloss</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

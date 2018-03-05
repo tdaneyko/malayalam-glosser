@@ -1,2 +1,0 @@
-serviceClass: de.ws1718.ismla.gloss.client.GreetingService
-path: 8D8DD502555187BC9F7C22850FFFC662.gwt.rpc

@@ -2,31 +2,29 @@ package de.ws1718.ismla.gloss.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dev.protobuf.DescriptorProtos.FieldDescriptorProto.Label;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import org.apache.commons.collections.functors.ForClosure;
-import org.apache.commons.lang3.text.StrBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.FieldSet;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Legend;
 import org.gwtbootstrap3.client.ui.ListBox;
-import org.gwtbootstrap3.client.ui.Panel;
-import org.gwtbootstrap3.client.ui.PanelBody;
-import org.gwtbootstrap3.client.ui.PanelHeader;
 import org.gwtbootstrap3.client.ui.RadioButton;
 import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
-import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.client.ui.html.Text;
 
 /**
@@ -41,11 +39,40 @@ public class ISMLAGlosser implements EntryPoint {
 			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
 	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 * Create a remote service proxy to talk to the server-side Gloss service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	private GlossServiceAsync glossService = GWT.create(GlossService.class);
 	
-	private void goToMainPage() {
+	private List<GlossedWord> gloss = new ArrayList<>();
+	private ListBox[] splits = new ListBox[0];
+	private ListBox[] transl = new ListBox[0];
+	
+	private FieldSet glossPage = null;
+	private FieldSet finGlossPage = null;
+	
+	private class GlossCallBack implements AsyncCallback<List<GlossedWord>> {
+
+		@Override
+		public void onFailure(Throwable caught) {
+			Window.alert("Unable to obtain server response: " + caught.getMessage());
+		}
+
+		@Override
+		public void onSuccess(List<GlossedWord> result) {
+			gloss = result;
+			reloadGloss();
+		}
+		
+	}
+
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		loadMainPage();
+	}
+	
+	private void loadMainPage() {
 		Form form = new Form();
 		FieldSet fset = new FieldSet();
 		FormGroup textGroup = new FormGroup();
@@ -98,8 +125,16 @@ public class ISMLAGlosser implements EntryPoint {
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
 		
+		class GlossSubmissionHandler implements ClickHandler {
+			@Override
+			public void onClick(ClickEvent event) {
+				glossService.getGloss(inputText.getText(), new GlossCallBack());
+			}
+		}
+		
 		Button submit = new Button("Gloss!");
 		submit.setType(ButtonType.PRIMARY);
+		submit.addClickHandler(new GlossSubmissionHandler());
 		buttonGroup.add(submit);
 		buttonGroup.addStyleName("col-lg-8");
 		buttonGroup.addStyleName("col-sm-12");
@@ -114,104 +149,128 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		RootPanel.get().add(form);
 		
-		addGloss();
-		finishGloss();
-	}
-	
-	private void addGloss() {
-		Legend glossHeader = new Legend("Gloss");
-		glossHeader.addStyleName("col-lg-8");
-		glossHeader.addStyleName("col-sm-12");
-		
-		FieldSet fset = new FieldSet();
-		
-		VerticalPanel maanga = getEditableGloss(
+		GlossedWord maanga = new GlossedWord(
 				"മാങ്ങ",
 				"maːŋːa",
 				new String[]{"māṅṅa"},
-				new String[]{"mango","mango.ACC","mango.NOM"});
-		VerticalPanel vaangikkunna = getEditableGloss(
+				new String[][]{new String[]{"mango","mango.ACC","mango.NOM"}});
+		GlossedWord vaangikkunna = new GlossedWord(
 				"വാങ്ങിക്കുന്ന",
 				"vaːŋːikʲːun̪ːa",
 				new String[]{"vāṅṅikk-unn-a"},
-				new String[]{"buy-PRS-A"});
-		VerticalPanel payyan = getEditableGloss(
+				new String[][]{new String[]{"buy-PRS-A"}});
+		GlossedWord payyan = new GlossedWord(
 				"പയ്യൻ",
 				"pajːan",
 				new String[]{"payyan"},
-				new String[]{"boy","boy.ACC","boy.NOM"});
-		VerticalPanel cantiyil = getEditableGloss(
-				"ചന്തിയിൽ",
-				"t͡ɕan̪d̪ijil",
-				new String[]{"canti-y-il"},
-				new String[]{"market-0-LOC"});
-		VerticalPanel aaNu = getEditableGloss(
+				new String[][]{new String[]{"boy","boy.ACC","boy.NOM"}});
+		GlossedWord cantayil = new GlossedWord(
+				"ചന്തയിൽ",
+				"t͡ɕan̪d̪ajil",
+				new String[]{"canta-y-il"},
+				new String[][]{new String[]{"market-0-LOC"}});
+		GlossedWord aaNu = new GlossedWord(
 				"ആണ്",
 				"aːɳɨ̆",
-				new String[]{"āṇ"},
-				new String[]{"be"});
-		VerticalPanel dot = getEditableGloss(
+				new String[]{"āṇ˘"},
+				new String[][]{new String[]{"be"}});
+		GlossedWord dot = new GlossedWord(
 				".",
 				"ǀ",
 				new String[]{"."},
-				new String[]{"."});
+				new String[][]{new String[]{"."}});
 		
-		FlowPanel glossPanel = new FlowPanel();
-		glossPanel.add(maanga);
-		glossPanel.add(vaangikkunna);
-		glossPanel.add(payyan);
-		glossPanel.add(cantiyil);
-		glossPanel.add(aaNu);
-		glossPanel.add(dot);
-		glossPanel.addStyleName("col-lg-8");
-		glossPanel.addStyleName("col-sm-12");
-		
-		fset.add(glossHeader);
-		fset.add(glossPanel);
+		gloss = Arrays.asList(new GlossedWord[]{maanga, vaangikkunna, payyan, cantayil, aaNu, dot});
+		reloadGloss();
+	}
+	
+	private FlowPanel createGlossPanel(boolean finished) {
+		FieldSet fset = new FieldSet();
 		fset.addStyleName("col-lg-offset-2");
 		
-		RootPanel.get().add(fset);
+		Legend glossHeader = new Legend((finished) ? "Finished Gloss" : "Gloss");
+		glossHeader.addStyleName("col-lg-8");
+		glossHeader.addStyleName("col-sm-12");
+		fset.add(glossHeader);
 		
+		FlowPanel glossPanel = new FlowPanel();
+		glossPanel.addStyleName("col-lg-8");
+		glossPanel.addStyleName("col-sm-12");
+		fset.add(glossPanel);
+
+		if (!finished) {
+			class GlossFinishingHandler implements ClickHandler {
+				@Override
+				public void onClick(ClickEvent event) {
+					finishGloss();
+				}
+			}
+			
+			FlowPanel buttonPanel = new FlowPanel();
+			Button submit = new Button("Finish!");
+			submit.setType(ButtonType.PRIMARY);
+			submit.addClickHandler(new GlossFinishingHandler());
+			buttonPanel.add(submit);
+			buttonPanel.addStyleName("col-lg-8");
+			buttonPanel.addStyleName("col-sm-12");
+			fset.add(buttonPanel);
+		}
+
+		resetGloss(fset, finished);
+		
+		return glossPanel;
+	}
+	
+	private void resetGloss(FieldSet newGloss, boolean finished) {
+		RootPanel root = RootPanel.get();
+		if (!finished) {
+			if (glossPage != null)
+				root.remove(glossPage);
+			glossPage = newGloss;
+			if (glossPage != null)
+				root.add(glossPage);
+		}
+		if (finished) {
+			if (finGlossPage != null)
+				root.remove(finGlossPage);
+			finGlossPage = newGloss;
+			if (finGlossPage != null)
+				root.add(finGlossPage);
+		}
+	}
+	
+	private void reloadGloss() {
+		resetGloss(null, true);
+		FlowPanel glossPanel = createGlossPanel(false);
+		this.splits = new ListBox[gloss.size()];
+		this.transl = new ListBox[gloss.size()];
+		for (int i = 0; i < gloss.size(); i++) {
+			GlossedWord word = gloss.get(i);
+			String[] splits = word.getSplits();
+			glossPanel.add(getEditableGloss(word.getOrig(), word.getIpa(), splits, word.getGlosses(splits[0]), i));
+		}
 	}
 	
 	private void finishGloss() {
-		Legend glossHeader = new Legend("Finished Gloss");
-		glossHeader.addStyleName("col-lg-8");
-		glossHeader.addStyleName("col-sm-12");
+		FlowPanel glossPanel = createGlossPanel(true);
 		
-		FieldSet fset = new FieldSet();
-		
-		VerticalPanel maanga = getFinishedGloss("മാങ്ങ", "maːŋːa", "māṅṅa", "mango.ACC");
-		VerticalPanel vaangikkunna = getFinishedGloss("വാങ്ങിക്കുന്ന", "vaːŋːikʲːun̪ːa", "vāṅṅikk-unn-a", "buy-PRS-A");
-		VerticalPanel payyan = getFinishedGloss("പയ്യൻ", "pajːan", "payyan", "boy.NOM");
-		VerticalPanel cantiyil = getFinishedGloss("ചന്തിയിൽ", "t͡ɕan̪d̪ijil", "canti-y-il", "market-0-LOC");
-		VerticalPanel aaNu = getFinishedGloss("ആണ്", "aːɳɨ̆", "āṇ", "be");
-		VerticalPanel dot = getFinishedGloss(".", "ǀ", ".", ".");
-		
-		FlowPanel glossPanel = new FlowPanel();
-		glossPanel.add(maanga);
-		glossPanel.add(vaangikkunna);
-		glossPanel.add(payyan);
-		glossPanel.add(cantiyil);
-		glossPanel.add(aaNu);
-		glossPanel.add(dot);
-		glossPanel.addStyleName("col-lg-8");
-		glossPanel.addStyleName("col-sm-12");
-		
-		fset.add(glossHeader);
-		fset.add(glossPanel);
-		fset.addStyleName("col-lg-offset-2");
-		
-		RootPanel.get().add(fset);
-		
+		for (int i = 0; i < gloss.size(); i++) {
+			glossPanel.add(getFinishedGloss(gloss.get(i).getOrig(), gloss.get(i).getIpa(),
+					splits[i].getSelectedValue(), transl[i].getSelectedValue()));
+		}
 	}
 	
-	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses) {
+	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses, int i) {
+		ListBox splitBox = getListBox(splits);
+		ListBox glossBox = getListBox(glosses);
+		this.splits[i] = splitBox;
+		this.transl[i] = glossBox;
+		
 		VerticalPanel g = new VerticalPanel();
 		g.add(new Text(orig));
 		g.add(new Text(ipa));
-		g.add(getListBox(splits));
-		g.add(getListBox(glosses));
+		g.add(splitBox);
+		g.add(glossBox);
 		g.setStyleName("glossPanel");
 		return g;
 	}
@@ -233,117 +292,5 @@ public class ISMLAGlosser implements EntryPoint {
 		g.add(new Text(gloss));
 		g.setStyleName("glossPanel");
 		return g;
-	}
-
-	/**
-	 * This is the entry point method.
-	 */
-	public void onModuleLoad() {
-		goToMainPage();
-//		final Button sendButton = new Button("Send");
-//		final TextBox nameField = new TextBox();
-//		nameField.setText("GWT User");
-//		final Label errorLabel = new Label();
-//
-//		// We can add style names to widgets
-//		sendButton.addStyleName("sendButton");
-//
-//		// Add the nameField and sendButton to the RootPanel
-//		// Use RootPanel.get() to get the entire body element
-//		RootPanel.get("nameFieldContainer").add(nameField);
-//		RootPanel.get("sendButtonContainer").add(sendButton);
-//		RootPanel.get("errorLabelContainer").add(errorLabel);
-//
-//		// Focus the cursor on the name field when the app loads
-//		nameField.setFocus(true);
-//		nameField.selectAll();
-//
-//		// Create the popup dialog box
-//		final DialogBox dialogBox = new DialogBox();
-//		dialogBox.setText("Remote Procedure Call");
-//		dialogBox.setAnimationEnabled(true);
-//		final Button closeButton = new Button("Close");
-//		// We can set the id of a widget by accessing its Element
-//		closeButton.getElement().setId("closeButton");
-//		final Label textToServerLabel = new Label();
-//		final HTML serverResponseLabel = new HTML();
-//		VerticalPanel dialogVPanel = new VerticalPanel();
-//		dialogVPanel.addStyleName("dialogVPanel");
-//		dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
-//		dialogVPanel.add(textToServerLabel);
-//		dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
-//		dialogVPanel.add(serverResponseLabel);
-//		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-//		dialogVPanel.add(closeButton);
-//		dialogBox.setWidget(dialogVPanel);
-//
-//		// Add a handler to close the DialogBox
-//		closeButton.addClickHandler(new ClickHandler() {
-//			public void onClick(ClickEvent event) {
-//				dialogBox.hide();
-//				sendButton.setEnabled(true);
-//				sendButton.setFocus(true);
-//			}
-//		});
-//
-//		// Create a handler for the sendButton and nameField
-//		class MyHandler implements ClickHandler, KeyUpHandler {
-//			/**
-//			 * Fired when the user clicks on the sendButton.
-//			 */
-//			public void onClick(ClickEvent event) {
-//				sendNameToServer();
-//			}
-//
-//			/**
-//			 * Fired when the user types in the nameField.
-//			 */
-//			public void onKeyUp(KeyUpEvent event) {
-//				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-//					sendNameToServer();
-//				}
-//			}
-//
-//			/**
-//			 * Send the name from the nameField to the server and wait for a response.
-//			 */
-//			private void sendNameToServer() {
-//				// First, we validate the input.
-//				errorLabel.setText("");
-//				String textToServer = nameField.getText();
-//				if (!FieldVerifier.isValidName(textToServer)) {
-//					errorLabel.setText("Please enter at least four characters");
-//					return;
-//				}
-//
-//				// Then, we send the input to the server.
-//				sendButton.setEnabled(false);
-//				textToServerLabel.setText(textToServer);
-//				serverResponseLabel.setText("");
-//				greetingService.greetServer(textToServer, new AsyncCallback<String>() {
-//					public void onFailure(Throwable caught) {
-//						// Show the RPC error message to the user
-//						dialogBox.setText("Remote Procedure Call - Failure");
-//						serverResponseLabel.addStyleName("serverResponseLabelError");
-//						serverResponseLabel.setHTML(SERVER_ERROR);
-//						dialogBox.center();
-//						closeButton.setFocus(true);
-//					}
-//
-//					public void onSuccess(String result) {
-//						dialogBox.setText("Remote Procedure Call");
-//						serverResponseLabel.removeStyleName("serverResponseLabelError");
-//						serverResponseLabel.setHTML(result);
-//						dialogBox.center();
-//						closeButton.setFocus(true);
-//					}
-//				});
-//			}
-//		}
-//
-//		// Add a handler to send the name to the server
-//		MyHandler handler = new MyHandler();
-//		sendButton.addClickHandler(handler);
-//		nameField.addKeyUpHandler(handler);
 	}
 }
