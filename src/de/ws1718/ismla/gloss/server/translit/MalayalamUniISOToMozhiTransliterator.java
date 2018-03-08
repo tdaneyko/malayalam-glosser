@@ -5,31 +5,28 @@ import java.util.Scanner;
 
 import javax.servlet.ServletContext;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class MalayalamScriptToAsciiISOTransliterator implements Transliterator
+public class MalayalamUniISOToMozhiTransliterator implements Transliterator
 {
 	
  ArrayList<Transliterator> translits;
  
  boolean verbose = false;
  
- public MalayalamScriptToAsciiISOTransliterator(boolean verbose, ServletContext servletContext)
+ public MalayalamUniISOToMozhiTransliterator(boolean verbose, ServletContext servletContext)
  {
 	 this.verbose = verbose;
   	translits = new ArrayList<Transliterator>();
 
+  	translits.add(new TerminalSymbolsAdder());
 	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/lowercase"), false));
-	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-preprocessing"), false));
-	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-orth2prnc-cons"), false));
-	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-orth2prnc-vow"), false));
-	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-unicodeISO2asciiISO"), false));
+	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-unicodeISO2mozhi"), false));
+  	translits.add(new TerminalSymbolsRemover());
  }
  
 	@Override
@@ -52,5 +49,5 @@ public class MalayalamScriptToAsciiISOTransliterator implements Transliterator
 		}
 		return output;
 	}
- 
+
 }

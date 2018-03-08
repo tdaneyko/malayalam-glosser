@@ -12,7 +12,10 @@ import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
 public class MalayalamDictionary {
 	
-	private static final MalayalamFormat DICT_FORMAT = MalayalamFormat.ISO15919_ASCII;
+	public static final MalayalamFormat DICT_FORMAT = MalayalamFormat.ISO15919_ASCII;
+	
+	private MalayalamFormat origFormat;
+	private MalayalamFormat glossFormat;
 	
 	private Map<String, Set<String>> splits;
 	private Map<String, Set<String>> glosses;
@@ -23,6 +26,8 @@ public class MalayalamDictionary {
 	// ea vs. o normalisieren!!!
 	
 	public MalayalamDictionary(BufferedReader read) {
+		this.origFormat = DICT_FORMAT;
+		this.glossFormat = DICT_FORMAT;
 		this.splits = new HashMap<>();
 		this.glosses = new HashMap<>();
 		try {
@@ -46,21 +51,32 @@ public class MalayalamDictionary {
 		}
 	}
 	
+	public void setFormats(MalayalamFormat origFormat, MalayalamFormat glossFormat) {
+		this.origFormat = origFormat;
+		this.glossFormat = glossFormat;
+	}
+	
+	public boolean contains(String word) {
+		return splits.containsKey(word);
+	}
+	
+	public boolean contains(String word, MalayalamTranscriptor transcr) {
+		return splits.containsKey(transcr.convertTo(word, DICT_FORMAT));
+	}
+	
 	public GlossedWord lookup(String word) {
 		return lookup(word, null);
 	}
 	
 	public GlossedWord lookup(String word, MalayalamTranscriptor transcr) {
-		String orig = word;
-		String ipa = (transcr == null) ? word : transcr.transcribe(word);
-		String lookupWord = (transcr == null) ? word : transcr.convertTo(word, DICT_FORMAT);
-		System.err.println(orig + " - " + lookupWord + " - " + ipa);
-		if (!splits.containsKey(lookupWord)) {
+		String orig = (transcr == null) ? word : transcr.convertBetween(word, DICT_FORMAT, origFormat);
+		String ipa = (transcr == null) ? word : transcr.transcribe(word, DICT_FORMAT);
+		if (!splits.containsKey(word)) {
 			if (transcr != null)
-				lookupWord = transcr.convertFrom(lookupWord, DICT_FORMAT);
-			return new GlossedWord(orig, ipa, new String[]{lookupWord}, new String[][]{new String[]{"<unknown>"}});
+				word = transcr.convertFrom(word, DICT_FORMAT);
+			return new GlossedWord(orig, ipa, new String[]{word}, new String[][]{new String[]{"<unknown>"}});
 		}
-		String[] spl = splits.get(lookupWord).stream().toArray(String[]::new);
+		String[] spl = splits.get(word).stream().toArray(String[]::new);
 		String[][] gl = new String[spl.length][];
 		for (int i = 0; i < spl.length; i++) {
 			gl[i] = glosses.get(spl[i]).stream().toArray(String[]::new);

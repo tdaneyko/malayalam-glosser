@@ -24,8 +24,8 @@ public class MalayalamUniISOToIPATransliterator extends RemoteServiceServlet imp
  {
 	 this.verbose = verbose;
   	translits = new ArrayList<Transliterator>();
+  	
   	translits.add(new TerminalSymbolsAdder());
-
 	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-prnc2xsampa"), false));
 	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-assimilation-gemination"), false));
 	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-assimilation2"), false));

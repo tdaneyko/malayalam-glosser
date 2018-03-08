@@ -5,29 +5,29 @@ import java.util.Scanner;
 
 import javax.servlet.ServletContext;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class MalayalamUniISOToAsciiISOTransliterator extends RemoteServiceServlet implements Transliterator
+public class MalayalamUniISOToScriptTransliterator implements Transliterator
 {
 	
  ArrayList<Transliterator> translits;
  
  boolean verbose = false;
  
- public MalayalamUniISOToAsciiISOTransliterator(boolean verbose, ServletContext servletContext)
+ public MalayalamUniISOToScriptTransliterator(boolean verbose, ServletContext servletContext)
  {
 	 this.verbose = verbose;
   	translits = new ArrayList<Transliterator>();
 
   	translits.add(new TerminalSymbolsAdder());
 	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/lowercase"), false));
-	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-unicodeISO2asciiISO"), false));
+	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-unicodeISO2script-cons"), false));
+	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-unicodeISO2script-candrakkala"), false));
+	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-unicodeISO2script-vowels"), false));
   	translits.add(new TerminalSymbolsRemover());
  }
  

@@ -127,6 +127,7 @@ public class ISMLAGlosser implements EntryPoint {
 		inFormat.add(biUni);
 		inFormat.add(biAscii);
 		inFormat.add(biMozhi);
+		inFormat.addStyleName("space-below");
 		FormLabel labelIn = new FormLabel();
 		labelIn.setFor("inFormat");
 		labelIn.setText("Input script:");
@@ -150,7 +151,7 @@ public class ISMLAGlosser implements EntryPoint {
 		outFormat.add(boMozhi);
 		FormLabel labelOut = new FormLabel();
 		labelOut.setFor("outFormat");
-		labelOut.setText("Gloss scriptx:");
+		labelOut.setText("Gloss script:");
 		
 		FlowPanel inOutFormatPanel = new FlowPanel();
 		inOutFormatPanel.addStyleName("col-lg-2");
@@ -187,9 +188,12 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		RootPanel.get().add(form);
 		
-		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിൽ ആണ് .
+		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിൽ ആണ്.
+		// māṅṅa vāṅṅikkunna payyan cantayil āṇ˘.
 		// maa;n;na vaa;n;nikkunna payyan cantayil aa.n' .
-		// māṅṅa vāṅṅikkunna payyan cantayil āṇ˘ .
+		// maangnga vaangngikkunna payyan canthayil aaN~.
+		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിലാണ് #.
+		// പൂച്ച നല്ലയാണ്.
 		GlossedWord maanga = new GlossedWord(
 				"മാങ്ങ",
 				"maːŋːa",

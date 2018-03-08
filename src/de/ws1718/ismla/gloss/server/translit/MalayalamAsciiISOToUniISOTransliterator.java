@@ -25,8 +25,10 @@ public class MalayalamAsciiISOToUniISOTransliterator implements Transliterator
 	 this.verbose = verbose;
   	translits = new ArrayList<Transliterator>();
 
+  	translits.add(new TerminalSymbolsAdder());
 	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/lowercase"), false));
 	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-asciiISO2unicodeISO"), false));
+  	translits.add(new TerminalSymbolsRemover());
  }
  
 	@Override

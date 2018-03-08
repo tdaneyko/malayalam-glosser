@@ -25,10 +25,12 @@ public class MalayalamScriptToUniISOTransliterator implements Transliterator
 	 this.verbose = verbose;
   	translits = new ArrayList<Transliterator>();
 
+  	translits.add(new TerminalSymbolsAdder());
 	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/lowercase"), false));
 	translits.add(new SimpleTransliterator(servletContext.getResourceAsStream("/mal-preprocessing"), false));
 	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-orth2prnc-cons"), false));
 	translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream("/mal-orth2prnc-vow"), false));
+  	translits.add(new TerminalSymbolsRemover());
  }
  
 	@Override
