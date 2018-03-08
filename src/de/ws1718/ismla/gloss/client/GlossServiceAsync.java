@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.ws1718.ismla.gloss.shared.MalayalamFormat;
+
 public interface GlossServiceAsync {
 	
-	void getGloss(String input, AsyncCallback<List<GlossedWord>> callback);
+	void getGloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat, AsyncCallback<List<GlossedWord>> callback);
 
 }

@@ -1,0 +1,9 @@
+#def	vowel	[a a: i i: u u: r1 e e: ai_^ o o: au_^ 1_X N J n_d n` m j]
+#def	front	[i i: ai_^]
+
+[vowel]k[vowel]	[.]g[.]
+[vowel]t`[vowel]	[.]d`[.]
+[vowel]t_d[vowel]	[.]d_d[.]
+[vowel]p[vowel]	[.]b[.]
+
+[front]k:	[.]k:_j

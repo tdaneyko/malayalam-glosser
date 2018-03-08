@@ -1,0 +1,23 @@
+#def	vowel	[a a: i i: u u: r1 e e: ai_^ o o: au_^ 1_X N J n_d n` m j]
+
+[vowel]k[vowel]	[.]g[.]
+[vowel]t`[vowel]	[.]d`[.]
+[vowel]t_d[vowel]	[.]d_d[.]
+[vowel]p[vowel]	[.]b[.]
+
+kk	k:
+NN	N:
+t)St)S	t)S:
+JJ	J:
+t`t`	t`:
+n`n`	n`:
+t_dt_d	t_d:
+n_dn_d	n_d:
+pp	p:
+mm	m:
+jj	j:
+ll	l:
+v\v\	v\:
+ss	s:
+l`l`	l`:
+tt	t:

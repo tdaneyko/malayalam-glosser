@@ -4,10 +4,14 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
+import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +41,19 @@ public class ISMLAGlosser implements EntryPoint {
 	 */
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network " + "connection and try again.";
+	
+	private static final String MALAYALAM_SCRIPT = "Malayalam script";
+	private static final String ISO15919_UNICODE = "ISO-15919 (Unicode)";
+	private static final String ISO15919_ASCII = "ISO-15919 (ASCII)";
+	private static final String MOZHI = "Mozhi romanization";
 
 	/**
 	 * Create a remote service proxy to talk to the server-side Gloss service.
 	 */
 	private GlossServiceAsync glossService = GWT.create(GlossService.class);
+	
+	private MalayalamFormat currentInFormat = MalayalamFormat.MALAYALAM_SCRIPT;
+	private MalayalamFormat currentOutFormat = MalayalamFormat.ISO15919_UNICODE;
 	
 	private List<GlossedWord> gloss = new ArrayList<>();
 	private ListBox[] splits = new ListBox[0];
@@ -90,30 +102,55 @@ public class ISMLAGlosser implements EntryPoint {
 		textPanel.addStyleName("col-sm-12");
 		textPanel.add(inputText);
 		
-		RadioButton bi1 = new RadioButton("Malayalam script");
-		bi1.setText("Malayalam script");
-		RadioButton bi2 = new RadioButton("Mozhi romanization");
-		bi2.setText("Mozhi romanization");
-		RadioButton bi3 = new RadioButton("ISO-15919 romanization");
-		bi3.setText("ISO-15919 romanization");
+		ClickHandler inFormatHandler = new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				RadioButton button = (RadioButton) event.getSource();
+				currentInFormat = getFormat(button.getText());
+			}
+		};
+		RadioButton biScript = new RadioButton(MALAYALAM_SCRIPT);
+		biScript.setText(MALAYALAM_SCRIPT);
+		biScript.setValue(true);
+		biScript.addClickHandler(inFormatHandler);
+		RadioButton biMozhi = new RadioButton(MOZHI);
+		biMozhi.setText(MOZHI);
+		biMozhi.addClickHandler(inFormatHandler);
+		RadioButton biUni = new RadioButton(ISO15919_UNICODE);
+		biUni.setText(ISO15919_UNICODE);
+		biUni.addClickHandler(inFormatHandler);
+		RadioButton biAscii = new RadioButton(ISO15919_ASCII);
+		biAscii.setText(ISO15919_ASCII);
+		biAscii.addClickHandler(inFormatHandler);
 		StringRadioGroup inFormat = new StringRadioGroup("Input format");
-		inFormat.add(bi1);
-		inFormat.add(bi2);
-		inFormat.add(bi3);
+		inFormat.add(biScript);
+		inFormat.add(biUni);
+		inFormat.add(biAscii);
+		inFormat.add(biMozhi);
 		FormLabel labelIn = new FormLabel();
 		labelIn.setFor("inFormat");
 		labelIn.setText("Input script:");
 		
-		RadioButton bo1 = new RadioButton("Mozhi romanization");
-		bo1.setText("Mozhi romanization");
-		RadioButton bo2 = new RadioButton("ISO-15919 romanization");
-		bo2.setText("ISO-15919 romanization");
+		ClickHandler outFormatHandler = new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				RadioButton button = (RadioButton) event.getSource();
+				currentOutFormat = getFormat(button.getText());
+			}
+		};
+		RadioButton boUni = new RadioButton(ISO15919_UNICODE);
+		boUni.setText(ISO15919_UNICODE);
+		boUni.setValue(true);
+		boUni.addClickHandler(outFormatHandler);
+		RadioButton boMozhi = new RadioButton(MOZHI);
+		boMozhi.setText(MOZHI);
+		boMozhi.addClickHandler(outFormatHandler);
 		StringRadioGroup outFormat = new StringRadioGroup("Output format");
-		outFormat.add(bo1);
-		outFormat.add(bo2);
+		outFormat.add(boUni);
+		outFormat.add(boMozhi);
 		FormLabel labelOut = new FormLabel();
 		labelOut.setFor("outFormat");
-		labelOut.setText("Gloss script:");
+		labelOut.setText("Gloss scriptx:");
 		
 		FlowPanel inOutFormatPanel = new FlowPanel();
 		inOutFormatPanel.addStyleName("col-lg-2");
@@ -124,11 +161,12 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
+		textPanel.addStyleName("space-below");
 		
 		class GlossSubmissionHandler implements ClickHandler {
 			@Override
 			public void onClick(ClickEvent event) {
-				glossService.getGloss(inputText.getText(), new GlossCallBack());
+				glossService.getGloss(inputText.getText(), currentInFormat, currentOutFormat, new GlossCallBack());
 			}
 		}
 		
@@ -149,6 +187,9 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		RootPanel.get().add(form);
 		
+		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിൽ ആണ് .
+		// maa;n;na vaa;n;nikkunna payyan cantayil aa.n' .
+		// māṅṅa vāṅṅikkunna payyan cantayil āṇ˘ .
 		GlossedWord maanga = new GlossedWord(
 				"മാങ്ങ",
 				"maːŋːa",
@@ -184,6 +225,18 @@ public class ISMLAGlosser implements EntryPoint {
 		reloadGloss();
 	}
 	
+	private MalayalamFormat getFormat(String text) {
+		if (text.equals(MALAYALAM_SCRIPT))
+			return MalayalamFormat.MALAYALAM_SCRIPT;
+		else if (text.equals(ISO15919_UNICODE))
+			return MalayalamFormat.ISO15919_UNICODE;
+		else if (text.equals(ISO15919_ASCII))
+			return MalayalamFormat.ISO15919_ASCII;
+		else if (text.equals(MOZHI))
+			return MalayalamFormat.MOZHI;
+		return MalayalamFormat.UNKNOWN;
+	}
+	
 	private FlowPanel createGlossPanel(boolean finished) {
 		FieldSet fset = new FieldSet();
 		fset.addStyleName("col-lg-offset-2");
@@ -196,6 +249,7 @@ public class ISMLAGlosser implements EntryPoint {
 		FlowPanel glossPanel = new FlowPanel();
 		glossPanel.addStyleName("col-lg-8");
 		glossPanel.addStyleName("col-sm-12");
+		glossPanel.addStyleName("space-below");
 		fset.add(glossPanel);
 
 		if (!finished) {

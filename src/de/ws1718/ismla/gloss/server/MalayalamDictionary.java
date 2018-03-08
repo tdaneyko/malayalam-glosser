@@ -8,8 +8,11 @@ import java.util.Map;
 import java.util.Set;
 
 import de.ws1718.ismla.gloss.client.GlossedWord;
+import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
 public class MalayalamDictionary {
+	
+	private static final MalayalamFormat DICT_FORMAT = MalayalamFormat.ISO15919_ASCII;
 	
 	private Map<String, Set<String>> splits;
 	private Map<String, Set<String>> glosses;
@@ -44,13 +47,27 @@ public class MalayalamDictionary {
 	}
 	
 	public GlossedWord lookup(String word) {
-		if (!splits.containsKey(word))
-			return new GlossedWord(word, word, new String[]{word}, new String[][]{new String[]{"<unknown>"}});
-		String[] spl = splits.get(word).stream().toArray(String[]::new);
+		return lookup(word, null);
+	}
+	
+	public GlossedWord lookup(String word, MalayalamTranscriptor transcr) {
+		String orig = word;
+		String ipa = (transcr == null) ? word : transcr.transcribe(word);
+		String lookupWord = (transcr == null) ? word : transcr.convertTo(word, DICT_FORMAT);
+		System.err.println(orig + " - " + lookupWord + " - " + ipa);
+		if (!splits.containsKey(lookupWord)) {
+			if (transcr != null)
+				lookupWord = transcr.convertFrom(lookupWord, DICT_FORMAT);
+			return new GlossedWord(orig, ipa, new String[]{lookupWord}, new String[][]{new String[]{"<unknown>"}});
+		}
+		String[] spl = splits.get(lookupWord).stream().toArray(String[]::new);
 		String[][] gl = new String[spl.length][];
-		for (int i = 0; i < spl.length; i++)
+		for (int i = 0; i < spl.length; i++) {
 			gl[i] = glosses.get(spl[i]).stream().toArray(String[]::new);
-		return new GlossedWord(word, word, spl, gl);
+			if (transcr != null)
+				spl[i] = transcr.convertFrom(spl[i], DICT_FORMAT);
+		}
+		return new GlossedWord(orig, ipa, spl, gl);
 	}
 	
 }

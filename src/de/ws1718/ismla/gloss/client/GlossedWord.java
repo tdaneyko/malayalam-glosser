@@ -32,6 +32,10 @@ public class GlossedWord implements Serializable {
 		return this.ipa;
 	}
 	
+	public void setIpa(String ipa) {
+		this.ipa = ipa;
+	}
+	
 	public String[] getSplits() {
 		return this.splits;
 	}
