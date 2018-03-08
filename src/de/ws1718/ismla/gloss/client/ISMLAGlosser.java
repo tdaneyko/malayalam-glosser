@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
+import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,9 @@ import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Legend;
 import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.client.ui.Panel;
+import org.gwtbootstrap3.client.ui.PanelBody;
+import org.gwtbootstrap3.client.ui.PanelHeader;
 import org.gwtbootstrap3.client.ui.RadioButton;
 import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
@@ -55,14 +59,14 @@ public class ISMLAGlosser implements EntryPoint {
 	private MalayalamFormat currentInFormat = MalayalamFormat.MALAYALAM_SCRIPT;
 	private MalayalamFormat currentOutFormat = MalayalamFormat.ISO15919_UNICODE;
 	
-	private List<GlossedWord> gloss = new ArrayList<>();
-	private ListBox[] splits = new ListBox[0];
-	private ListBox[] transl = new ListBox[0];
+	private List<GlossedSentence> gloss = new ArrayList<>();
+	private ListBox[][] splits = new ListBox[0][];
+	private ListBox[][] transl = new ListBox[0][];
 	
 	private FieldSet glossPage = null;
 	private FieldSet finGlossPage = null;
 	
-	private class GlossCallBack implements AsyncCallback<List<GlossedWord>> {
+	private class GlossCallBack implements AsyncCallback<List<GlossedSentence>> {
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -70,7 +74,7 @@ public class ISMLAGlosser implements EntryPoint {
 		}
 
 		@Override
-		public void onSuccess(List<GlossedWord> result) {
+		public void onSuccess(List<GlossedSentence> result) {
 			gloss = result;
 			reloadGloss();
 		}
@@ -127,7 +131,7 @@ public class ISMLAGlosser implements EntryPoint {
 		inFormat.add(biUni);
 		inFormat.add(biAscii);
 		inFormat.add(biMozhi);
-		inFormat.addStyleName("space-below");
+		inFormat.addStyleName("space-below-sm");
 		FormLabel labelIn = new FormLabel();
 		labelIn.setFor("inFormat");
 		labelIn.setText("Input script:");
@@ -162,7 +166,7 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
-		textPanel.addStyleName("space-below");
+		textPanel.addStyleName("space-below-sm");
 		
 		class GlossSubmissionHandler implements ClickHandler {
 			@Override
@@ -192,7 +196,7 @@ public class ISMLAGlosser implements EntryPoint {
 		// māṅṅa vāṅṅikkunna payyan cantayil āṇ˘.
 		// maa;n;na vaa;n;nikkunna payyan cantayil aa.n' .
 		// maangnga vaangngikkunna payyan canthayil aaN~.
-		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിലാണ് #.
+		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിലാണ്.
 		// പൂച്ച നല്ലയാണ്.
 		GlossedWord maanga = new GlossedWord(
 				"മാങ്ങ",
@@ -225,7 +229,9 @@ public class ISMLAGlosser implements EntryPoint {
 				new String[]{"."},
 				new String[][]{new String[]{"."}});
 		
-		gloss = Arrays.asList(new GlossedWord[]{maanga, vaangikkunna, payyan, cantayil, aaNu, dot});
+		gloss = Arrays.asList(
+				new GlossedSentence[]{new GlossedSentence("മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിലാണ്.",
+						Arrays.asList(new GlossedWord[]{maanga, vaangikkunna, payyan, cantayil, aaNu, dot}))});
 		reloadGloss();
 	}
 	
@@ -241,7 +247,7 @@ public class ISMLAGlosser implements EntryPoint {
 		return MalayalamFormat.UNKNOWN;
 	}
 	
-	private FlowPanel createGlossPanel(boolean finished) {
+	private List<FlowPanel> createGlossPanel(boolean finished) {
 		FieldSet fset = new FieldSet();
 		fset.addStyleName("col-lg-offset-2");
 		
@@ -250,11 +256,27 @@ public class ISMLAGlosser implements EntryPoint {
 		glossHeader.addStyleName("col-sm-12");
 		fset.add(glossHeader);
 		
-		FlowPanel glossPanel = new FlowPanel();
-		glossPanel.addStyleName("col-lg-8");
-		glossPanel.addStyleName("col-sm-12");
-		glossPanel.addStyleName("space-below");
-		fset.add(glossPanel);
+		List<FlowPanel> glossPanels = new ArrayList<>();
+		for (GlossedSentence s : gloss) {
+			FlowPanel panelPanel = new FlowPanel();
+			panelPanel.addStyleName("col-lg-8");
+			panelPanel.addStyleName("col-sm-12");
+			
+			Panel sentPanel = new Panel();
+			PanelHeader origSent = new PanelHeader();
+			PanelBody glossedSent = new PanelBody();
+			
+			origSent.setText("Original sentence: " + s.getSentence());
+			
+			FlowPanel glossPanel = new FlowPanel();
+			glossPanels.add(glossPanel);
+			glossedSent.add(glossPanel);
+			
+			sentPanel.add(origSent);
+			sentPanel.add(glossedSent);
+			panelPanel.add(sentPanel);
+			fset.add(panelPanel);
+		}
 
 		if (!finished) {
 			class GlossFinishingHandler implements ClickHandler {
@@ -271,12 +293,13 @@ public class ISMLAGlosser implements EntryPoint {
 			buttonPanel.add(submit);
 			buttonPanel.addStyleName("col-lg-8");
 			buttonPanel.addStyleName("col-sm-12");
+			buttonPanel.addStyleName("space-below-l");
 			fset.add(buttonPanel);
 		}
 
 		resetGloss(fset, finished);
 		
-		return glossPanel;
+		return glossPanels;
 	}
 	
 	private void resetGloss(FieldSet newGloss, boolean finished) {
@@ -299,30 +322,40 @@ public class ISMLAGlosser implements EntryPoint {
 	
 	private void reloadGloss() {
 		resetGloss(null, true);
-		FlowPanel glossPanel = createGlossPanel(false);
-		this.splits = new ListBox[gloss.size()];
-		this.transl = new ListBox[gloss.size()];
-		for (int i = 0; i < gloss.size(); i++) {
-			GlossedWord word = gloss.get(i);
-			String[] splits = word.getSplits();
-			glossPanel.add(getEditableGloss(word.getOrig(), word.getIpa(), splits, word.getGlosses(splits[0]), i));
+		List<FlowPanel> glossPanels = createGlossPanel(false);
+		this.splits = new ListBox[gloss.size()][];
+		this.transl = new ListBox[gloss.size()][];
+		for (int g = 0; g < gloss.size(); g++) {
+			List<GlossedWord> glosses = gloss.get(g).getGlosses();
+			FlowPanel glossPanel = glossPanels.get(g);
+			this.splits[g] = new ListBox[glosses.size()];
+			this.transl[g] = new ListBox[glosses.size()];
+			for (int i = 0; i < glosses.size(); i++) {
+				GlossedWord word = glosses.get(i);
+				String[] splits = word.getSplits();
+				glossPanel.add(getEditableGloss(word.getOrig(), word.getIpa(), splits, word.getGlosses(splits[0]), g, i));
+			}
 		}
 	}
 	
 	private void finishGloss() {
-		FlowPanel glossPanel = createGlossPanel(true);
-		
-		for (int i = 0; i < gloss.size(); i++) {
-			glossPanel.add(getFinishedGloss(gloss.get(i).getOrig(), gloss.get(i).getIpa(),
-					splits[i].getSelectedValue(), transl[i].getSelectedValue()));
+		List<FlowPanel> glossPanels = createGlossPanel(true);
+
+		for (int g = 0; g < gloss.size(); g++) {
+			List<GlossedWord> glosses = gloss.get(g).getGlosses();
+			FlowPanel glossPanel = glossPanels.get(g);
+			for (int i = 0; i < glosses.size(); i++) {
+				glossPanel.add(getFinishedGloss(glosses.get(i).getOrig(), glosses.get(i).getIpa(),
+						splits[g][i].getSelectedValue(), transl[g][i].getSelectedValue()));
+			}
 		}
 	}
 	
-	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses, int i) {
+	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses, int i, int j) {
 		ListBox splitBox = getListBox(splits);
 		ListBox glossBox = getListBox(glosses);
-		this.splits[i] = splitBox;
-		this.transl[i] = glossBox;
+		this.splits[i][j] = splitBox;
+		this.transl[i][j] = glossBox;
 		
 		VerticalPanel g = new VerticalPanel();
 		g.add(new Text(orig));

@@ -10,6 +10,6 @@ import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 @RemoteServiceRelativePath("gloss")
 public interface GlossService extends RemoteService {
 
-	List<GlossedWord> getGloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat);
+	List<GlossedSentence> getGloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat);
 
 }
