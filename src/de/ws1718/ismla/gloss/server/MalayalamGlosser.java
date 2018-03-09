@@ -14,7 +14,7 @@ public class MalayalamGlosser {
 	private MalayalamTranscriptor transcr;
 
 	private static final Pattern SENT_SPLITTER = Pattern.compile("(?<=[\\.:;!?]) ");
-	private static final Pattern TOKENIZER = Pattern.compile(" |(?=[,:;!?])|(?=\\.\\z|\\. )");
+	private static final Pattern TOKENIZER = Pattern.compile(" |(?=[\\.,:;!?](\\z| ))");
 
 	public MalayalamGlosser(MalayalamDictionary dict, MalayalamTranscriptor transcr) {
 		this.dict = dict;
@@ -45,8 +45,10 @@ public class MalayalamGlosser {
 			}
 
 			// Get glosses from the dictionary
-			for (String token : tok)
+			for (String token : tok) {
+				//System.err.println(token);
 				gl.add(dict.lookup(token, transcr));
+			}
 
 			glS.add(new GlossedSentence(sentence, gl));
 		}
@@ -57,14 +59,14 @@ public class MalayalamGlosser {
 		List<String> tokens = new ArrayList<>();
 		if (!word.isEmpty()) {
 			// Word already constitutes a token
-			if (dict.contains(word, transcr))
+			if (dict.contains(word))
 				tokens.add(word);
 			// Word consists of multiple tokens or is unknown -> split
 			else {
 				// Recursively check suffix of string
 				for (int i = word.length()-1; i >= 0; i--) {
 					String tail = word.substring(i);
-					if (dict.contains(tail, transcr)) {
+					if (dict.contains(tail)) {
 						// Collect candidates for remaining string
 						String head = word.substring(0, i);
 						List<String> candidates = new ArrayList<>();
@@ -75,6 +77,9 @@ public class MalayalamGlosser {
 						// Glide insertion
 						if ((head.charAt(z) == 'y' || head.charAt(z) == 'v') && isVowel(tail.charAt(0)))
 							candidates.add(head.substring(0, z));
+						// Anusvaaram -> m
+						if (head.charAt(z) == 'm')
+							candidates.add(head.substring(0, z) + ";m");
 						// Candrakkala deletion
 						if (isVowel(tail.charAt(0)) && !isVowel(head.charAt(z)))
 							candidates.add(head + '\'');
@@ -96,7 +101,7 @@ public class MalayalamGlosser {
 					}
 				}
 				// No recognizable split found -> return whole word, will be unknown by dictionary
-				if (tokens.isEmpty())
+				if (tokens == null || tokens.isEmpty())
 					return null;
 			}
 		}

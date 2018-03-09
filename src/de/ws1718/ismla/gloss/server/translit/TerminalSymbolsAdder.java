@@ -5,6 +5,6 @@ public class TerminalSymbolsAdder implements Transliterator
 	@Override
 	public String convert(String str) 
 	{
-		return "#" + str.replace("_", "# #").replace(" ", "# #") + "#";
+		return "#" + str.replace(" ", "# #") + "#";
 	}
 }

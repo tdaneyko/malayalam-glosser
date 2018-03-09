@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Code;
 import org.gwtbootstrap3.client.ui.FieldSet;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
@@ -28,6 +29,7 @@ import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.Panel;
 import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.PanelHeader;
+import org.gwtbootstrap3.client.ui.Pre;
 import org.gwtbootstrap3.client.ui.RadioButton;
 import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
@@ -344,11 +346,53 @@ public class ISMLAGlosser implements EntryPoint {
 		for (int g = 0; g < gloss.size(); g++) {
 			List<GlossedWord> glosses = gloss.get(g).getGlosses();
 			FlowPanel glossPanel = glossPanels.get(g);
+			String line1 = "";
+			String line2 = "";
+			String line3 = "";
 			for (int i = 0; i < glosses.size(); i++) {
-				glossPanel.add(getFinishedGloss(glosses.get(i).getOrig(), glosses.get(i).getIpa(),
-						splits[g][i].getSelectedValue(), transl[g][i].getSelectedValue()));
+				String orig = glosses.get(i).getOrig();
+				String ipa = glosses.get(i).getIpa();
+				String split = splits[g][i].getSelectedValue();
+				String trans = transl[g][i].getSelectedValue();
+				line1 += orig + " ";
+				line2 += split + " ";
+				line3 += trans + " ";
+				glossPanel.add(getFinishedGloss(orig, ipa, split, trans));
+			}
+			String glossCode = "\\begin{exe}\n" + "\\ex\n" + "\\glll\n"
+					+ escapeLaTeXChars(line1) + "\\\\\n"
+					+ escapeLaTeXChars(line2) + "\\\\\n"
+					+ escapeLaTeXChars(line3) + "\\\\\n"
+					+ "\\trans `Insert your translation here...'\n" + "\\end{exe}\n";
+			Pre codePanel = new Pre();
+			codePanel.setText(glossCode);
+			codePanel.addStyleName("space-above-sm");
+			glossPanel.add(codePanel);
+		}
+	}
+	
+	private String escapeLaTeXChars(String code) {
+		StringBuilder esc = new StringBuilder();
+		for (int i = 0; i < code.length(); i++) {
+			char c = code.charAt(i);
+			switch (c) {
+				case '~': esc.append("\\textasciitilde{}"); break;
+				case '^': esc.append("\\textasciicircum{}"); break;
+				case '\\': esc.append("\\textbackslash{}"); break;
+				case '<': esc.append("\\textless{}"); break;
+				case '>': esc.append("\\textgreater{}"); break;
+				case '|': esc.append("\\textbar{}"); break;
+				case '&':
+				case '%':
+				case '$':
+				case '#':
+				case '_':
+				case '{':
+				case '}': esc.append('\\');
+				default: esc.append(c);
 			}
 		}
+		return esc.toString();
 	}
 	
 	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses, int i, int j) {

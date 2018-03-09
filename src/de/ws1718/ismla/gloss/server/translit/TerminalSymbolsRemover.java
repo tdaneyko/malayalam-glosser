@@ -5,6 +5,6 @@ public class TerminalSymbolsRemover implements Transliterator
 	@Override
 	public String convert(String str) 
 	{
-		return str.replace("__", "_").replace("#","");
+		return str.replace("#","");
 	}
 }
