@@ -1,31 +1,22 @@
 package de.ws1718.ismla.gloss.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-
-import de.ws1718.ismla.gloss.shared.MalayalamFormat;
-import javafx.scene.layout.FlowPane;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
-import org.gwtbootstrap3.client.ui.Code;
 import org.gwtbootstrap3.client.ui.FieldSet;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Legend;
 import org.gwtbootstrap3.client.ui.ListBox;
+import org.gwtbootstrap3.client.ui.Navbar;
+import org.gwtbootstrap3.client.ui.NavbarBrand;
+import org.gwtbootstrap3.client.ui.NavbarCollapse;
+import org.gwtbootstrap3.client.ui.NavbarCollapseButton;
+import org.gwtbootstrap3.client.ui.NavbarHeader;
+import org.gwtbootstrap3.client.ui.NavbarNav;
 import org.gwtbootstrap3.client.ui.Panel;
 import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.PanelHeader;
@@ -34,29 +25,41 @@ import org.gwtbootstrap3.client.ui.RadioButton;
 import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
+import org.gwtbootstrap3.client.ui.gwt.CellTable;
 import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 import org.gwtbootstrap3.client.ui.html.Text;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+
+import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class ISMLAGlosser implements EntryPoint {
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network " + "connection and try again.";
 	
 	private static final String MALAYALAM_SCRIPT = "Malayalam script";
 	private static final String ISO15919_UNICODE = "ISO-15919 (Unicode)";
 	private static final String ISO15919_ASCII = "ISO-15919 (ASCII)";
 	private static final String MOZHI = "Mozhi romanization";
+	
+	private static final String LG_OFFSET = "col-lg-offset-2";
+	private static final String LG_WIDTH = "col-lg-8";
+	private static final String SM_WIDTH = "col-sm-12";
+	private static final String[] PAGE_STYLES = new String[]{LG_OFFSET,LG_WIDTH,SM_WIDTH};
 
-	/**
-	 * Create a remote service proxy to talk to the server-side Gloss service.
-	 */
 	private GlossServiceAsync glossService = GWT.create(GlossService.class);
+	
+	private FlowPanel currentPage;
 	
 	private MalayalamFormat currentInFormat = MalayalamFormat.MALAYALAM_SCRIPT;
 	private MalayalamFormat currentOutFormat = MalayalamFormat.ISO15919_UNICODE;
@@ -87,25 +90,84 @@ public class ISMLAGlosser implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		Navbar navbar = new Navbar();
+		
+		NavbarHeader navHeader = new NavbarHeader();
+		NavbarBrand navTitle = new NavbarBrand();
+		navTitle.setText("Malayalam Glosser");
+		NavbarCollapseButton collapseButton = new NavbarCollapseButton();
+		navHeader.add(navTitle);
+		navHeader.add(collapseButton);
+		navHeader.addStyleName(LG_OFFSET);
+		navbar.add(navHeader);
+		
+		NavbarCollapse navCollapse = new NavbarCollapse();
+		collapseButton.setDataTargetWidget(navCollapse);
+		NavbarNav navEntries = new NavbarNav();
+		final AnchorListItem mainPage = new AnchorListItem("Glosser");
+		final AnchorListItem infoPage = new AnchorListItem("Info");
+		final AnchorListItem sourcesPage = new AnchorListItem("Sources");
+		navEntries.add(mainPage);
+		navEntries.add(infoPage);
+		navEntries.add(sourcesPage);
+		navCollapse.add(navEntries);
+		navbar.add(navCollapse);
+		
+		mainPage.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				mainPage.setActive(true);
+				infoPage.setActive(false);
+				sourcesPage.setActive(false);
+				RootPanel.get().remove(currentPage);
+				loadMainPage();
+			}
+		});
+		infoPage.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				mainPage.setActive(false);
+				infoPage.setActive(true);
+				sourcesPage.setActive(false);
+				RootPanel.get().remove(currentPage);
+				loadInfoPage();
+			}
+		});
+		sourcesPage.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				mainPage.setActive(false);
+				infoPage.setActive(false);
+				sourcesPage.setActive(true);
+				RootPanel.get().remove(currentPage);
+				loadSourcesPage();
+			}
+		});
+		
+		RootPanel.get().add(navbar);
+
+		mainPage.setActive(true);
 		loadMainPage();
 	}
 	
+	
 	private void loadMainPage() {
+		FlowPanel mainPanel = new FlowPanel();
 		Form form = new Form();
 		FieldSet fset = new FieldSet();
 		FormGroup textGroup = new FormGroup();
 		FormGroup buttonGroup = new FormGroup();
 		
 		Legend inputHeader = new Legend("Your input");
-		inputHeader.addStyleName("col-lg-8");
-		inputHeader.addStyleName("col-sm-12");
+		inputHeader.addStyleName(LG_WIDTH);
+		inputHeader.addStyleName(SM_WIDTH);
 		
 		final TextArea inputText = new TextArea();
 		inputText.setVisibleLines(12);
 		inputText.setPlaceholder("Enter your Malayalam text here");
 		FlowPanel textPanel = new FlowPanel();
 		textPanel.addStyleName("col-lg-6");
-		textPanel.addStyleName("col-sm-12");
+		textPanel.addStyleName(SM_WIDTH);
 		textPanel.add(inputText);
 		
 		ClickHandler inFormatHandler = new ClickHandler() {
@@ -181,60 +243,20 @@ public class ISMLAGlosser implements EntryPoint {
 		submit.setType(ButtonType.PRIMARY);
 		submit.addClickHandler(new GlossSubmissionHandler());
 		buttonGroup.add(submit);
-		buttonGroup.addStyleName("col-lg-8");
-		buttonGroup.addStyleName("col-sm-12");
+		buttonGroup.addStyleName(LG_WIDTH);
+		buttonGroup.addStyleName(SM_WIDTH);
 
-		form.addStyleName("col-lg-offset-2");
+		form.addStyleName(LG_OFFSET);
 		
 		fset.add(inputHeader);
 		fset.add(textGroup);
 		fset.add(buttonGroup);
 		
 		form.add(fset);
+		mainPanel.add(form);
 		
-		RootPanel.get().add(form);
-		
-		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിൽ ആണ്.
-		// māṅṅa vāṅṅikkunna payyan cantayil āṇ˘.
-		// maa;n;na vaa;n;nikkunna payyan cantayil aa.n' .
-		// maangnga vaangngikkunna payyan canthayil aaN~.
-		// മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിലാണ്.
-		// പൂച്ച നല്ലയാണ്.
-		GlossedWord maanga = new GlossedWord(
-				"മാങ്ങ",
-				"maːŋːa",
-				new String[]{"māṅṅa"},
-				new String[][]{new String[]{"mango","mango.ACC","mango.NOM"}});
-		GlossedWord vaangikkunna = new GlossedWord(
-				"വാങ്ങിക്കുന്ന",
-				"vaːŋːikʲːun̪ːa",
-				new String[]{"vāṅṅikk-unn-a"},
-				new String[][]{new String[]{"buy-PRS-A"}});
-		GlossedWord payyan = new GlossedWord(
-				"പയ്യൻ",
-				"pajːan",
-				new String[]{"payyan"},
-				new String[][]{new String[]{"boy","boy.ACC","boy.NOM"}});
-		GlossedWord cantayil = new GlossedWord(
-				"ചന്തയിൽ",
-				"t͡ɕan̪d̪ajil",
-				new String[]{"canta-y-il"},
-				new String[][]{new String[]{"market-0-LOC"}});
-		GlossedWord aaNu = new GlossedWord(
-				"ആണ്",
-				"aːɳɨ̆",
-				new String[]{"āṇ˘"},
-				new String[][]{new String[]{"be"}});
-		GlossedWord dot = new GlossedWord(
-				".",
-				"ǀ",
-				new String[]{"."},
-				new String[][]{new String[]{"."}});
-		
-		gloss = Arrays.asList(
-				new GlossedSentence[]{new GlossedSentence("മാങ്ങ വാങ്ങിക്കുന്ന പയ്യൻ ചന്തയിലാണ്.",
-						Arrays.asList(new GlossedWord[]{maanga, vaangikkunna, payyan, cantayil, aaNu, dot}))});
-		reloadGloss();
+		currentPage = mainPanel;
+		RootPanel.get().add(mainPanel);
 	}
 	
 	private MalayalamFormat getFormat(String text) {
@@ -251,18 +273,18 @@ public class ISMLAGlosser implements EntryPoint {
 	
 	private List<FlowPanel> createGlossPanel(boolean finished) {
 		FieldSet fset = new FieldSet();
-		fset.addStyleName("col-lg-offset-2");
+		fset.addStyleName(LG_OFFSET);
 		
 		Legend glossHeader = new Legend((finished) ? "Finished Gloss" : "Gloss");
-		glossHeader.addStyleName("col-lg-8");
-		glossHeader.addStyleName("col-sm-12");
+		glossHeader.addStyleName(LG_WIDTH);
+		glossHeader.addStyleName(SM_WIDTH);
 		fset.add(glossHeader);
 		
 		List<FlowPanel> glossPanels = new ArrayList<>();
 		for (GlossedSentence s : gloss) {
 			FlowPanel panelPanel = new FlowPanel();
-			panelPanel.addStyleName("col-lg-8");
-			panelPanel.addStyleName("col-sm-12");
+			panelPanel.addStyleName(LG_WIDTH);
+			panelPanel.addStyleName(SM_WIDTH);
 			
 			Panel sentPanel = new Panel();
 			PanelHeader origSent = new PanelHeader();
@@ -293,8 +315,8 @@ public class ISMLAGlosser implements EntryPoint {
 			submit.setType(ButtonType.PRIMARY);
 			submit.addClickHandler(new GlossFinishingHandler());
 			buttonPanel.add(submit);
-			buttonPanel.addStyleName("col-lg-8");
-			buttonPanel.addStyleName("col-sm-12");
+			buttonPanel.addStyleName(LG_WIDTH);
+			buttonPanel.addStyleName(SM_WIDTH);
 			buttonPanel.addStyleName("space-below-l");
 			fset.add(buttonPanel);
 		}
@@ -305,7 +327,7 @@ public class ISMLAGlosser implements EntryPoint {
 	}
 	
 	private void resetGloss(FieldSet newGloss, boolean finished) {
-		RootPanel root = RootPanel.get();
+		FlowPanel root = currentPage;
 		if (!finished) {
 			if (glossPage != null)
 				root.remove(glossPage);
@@ -427,5 +449,107 @@ public class ISMLAGlosser implements EntryPoint {
 		g.add(new Text(gloss));
 		g.setStyleName("glossPanel");
 		return g;
+	}
+	
+	
+	private void loadInfoPage() {
+		FlowPanel tablePanel = new FlowPanel();
+		
+		tablePanel.add(applyPageStyles(new Legend("Transcription schemes")));
+		tablePanel.add(applyPageStyles(getTranscriptionTable()));
+		tablePanel.add(applyPageStyles(new Legend("Glossing abbreviations")));
+		tablePanel.add(applyPageStyles(getGlossAbbrTable()));
+
+		currentPage = tablePanel;
+		RootPanel.get().add(tablePanel);
+	}
+	
+	private FlowPanel getTranscriptionTable() {
+		FlowPanel tablePanel = new FlowPanel();
+		CellTable<String[]> transcrTable = new CellTable<>();
+		List<String[]> content = new ArrayList<>();
+		content.add(new String[]{"Script","ISO-Uni","ISO-ASCII","Mozhi"});
+		content.add(new String[]{"ആ","ā","aa","aa"});
+		content.add(new String[]{"ങ","ṅa",";na","nga"});
+		content.add(new String[]{"ശ","śa",";sa","Sa"});
+		
+		TextColumn<String[]> scriptCol = new TextColumn<String[]>() {
+			@Override
+			public String getValue(String[] line) {
+				return line[0];
+			}
+		};
+		transcrTable.addColumn(scriptCol);
+		TextColumn<String[]> uniCol = new TextColumn<String[]>() {
+			@Override
+			public String getValue(String[] line) {
+				return line[1];
+			}
+		};
+		transcrTable.addColumn(uniCol);
+		TextColumn<String[]> asciiCol = new TextColumn<String[]>() {
+			@Override
+			public String getValue(String[] line) {
+				return line[2];
+			}
+		};
+		transcrTable.addColumn(asciiCol);
+		TextColumn<String[]> mozhiCol = new TextColumn<String[]>() {
+			@Override
+			public String getValue(String[] line) {
+				return line[3];
+			}
+		};
+		transcrTable.addColumn(mozhiCol);
+		
+		transcrTable.setRowCount(content.size());
+		transcrTable.setRowData(0, content);
+		tablePanel.add(transcrTable);
+		
+		return tablePanel;
+	}
+	
+	private FlowPanel getGlossAbbrTable() {
+		FlowPanel tablePanel = new FlowPanel();
+		CellTable<String[]> abbrTable = new CellTable<>();
+		List<String[]> content = new ArrayList<>();
+		content.add(new String[]{"Abbr.","Grammatical phenomenon"});
+		content.add(new String[]{"NEG","Negation"});
+		content.add(new String[]{"PRS","Present tense"});
+		content.add(new String[]{"PST","Past tense"});
+		
+		TextColumn<String[]> abbreviationCol = new TextColumn<String[]>() {
+			@Override
+			public String getValue(String[] line) {
+				return line[0];
+			}
+		};
+		abbrTable.addColumn(abbreviationCol);
+		TextColumn<String[]> explanationCol = new TextColumn<String[]>() {
+			@Override
+			public String getValue(String[] line) {
+				return line[1];
+			}
+		};
+		abbrTable.addColumn(explanationCol);
+		
+		abbrTable.setRowCount(content.size());
+		abbrTable.setRowData(0, content);
+		tablePanel.add(abbrTable);
+		
+		return tablePanel;
+	}
+	
+	private void loadSourcesPage() {
+		FlowPanel sourcesPanel = new FlowPanel();
+
+		currentPage = sourcesPanel;
+		RootPanel.get().add(sourcesPanel);
+	}
+	
+	private Widget applyPageStyles(Widget widget) {
+		for (String style : PAGE_STYLES)
+			widget.addStyleName(style);
+		return widget;
 	}
 }

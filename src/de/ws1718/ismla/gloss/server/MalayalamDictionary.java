@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import de.ws1718.ismla.gloss.client.GlossedWord;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
@@ -13,6 +16,7 @@ import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 public class MalayalamDictionary {
 	
 	public static final MalayalamFormat DICT_FORMAT = MalayalamFormat.ISO15919_ASCII;
+	private static final Pattern PUNCT = Pattern.compile("\\p{Punct}");
 	
 	private MalayalamFormat origFormat;
 	private MalayalamFormat glossFormat;
@@ -71,6 +75,8 @@ public class MalayalamDictionary {
 	public GlossedWord lookup(String word, MalayalamTranscriptor transcr) {
 		String orig = (transcr == null) ? word : transcr.convertBetween(word, DICT_FORMAT, origFormat);
 		String ipa = (transcr == null) ? word : transcr.transcribe(word, DICT_FORMAT);
+		if (PUNCT.matcher(word).matches() || NumberUtils.isNumber(word))
+			return new GlossedWord(orig, orig, new String[]{orig}, new String[][]{new String[]{orig}});
 		if (!splits.containsKey(word)) {
 			if (transcr != null)
 				word = transcr.convertFrom(word, DICT_FORMAT);
@@ -84,6 +90,17 @@ public class MalayalamDictionary {
 				spl[i] = transcr.convertFrom(spl[i], DICT_FORMAT);
 		}
 		return new GlossedWord(orig, ipa, spl, gl);
+	}
+	
+	private boolean isNumber(String s) {
+		if (s.isEmpty())
+			return false;
+		for (int i = (s.charAt(0) == '-') ? 1 : 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (!Character.isDigit(c) || c != ',' || c != '.')
+				return false;
+		}
+		return true;
 	}
 	
 }

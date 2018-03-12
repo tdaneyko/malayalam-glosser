@@ -13,8 +13,8 @@ public class MalayalamGlosser {
 	private MalayalamDictionary dict;
 	private MalayalamTranscriptor transcr;
 
-	private static final Pattern SENT_SPLITTER = Pattern.compile("(?<=[\\.:;!?]) ");
-	private static final Pattern TOKENIZER = Pattern.compile(" |(?=[\\.,:;!?](\\z| ))");
+	private static final Pattern SENT_SPLITTER = Pattern.compile("(?<=[\\.:;!?]) |\\n+");
+	private static final Pattern TOKENIZER = Pattern.compile(" |(?=[\\.,:;!?](\\z|\\n| ))");
 
 	public MalayalamGlosser(MalayalamDictionary dict, MalayalamTranscriptor transcr) {
 		this.dict = dict;
@@ -62,10 +62,13 @@ public class MalayalamGlosser {
 			if (dict.contains(word))
 				tokens.add(word);
 			// Word consists of multiple tokens or is unknown -> split
-			else {
+			else {				
 				// Recursively check suffix of string
-				for (int i = word.length()-1; i >= 0; i--) {
+				for (int i = 0; i <word.length(); i++) {
 					String tail = word.substring(i);
+					// Case aa.n' -> aa
+					if (tail.equals("aa"))
+						tail = "aa.n'";
 					if (dict.contains(tail)) {
 						// Collect candidates for remaining string
 						String head = word.substring(0, i);
@@ -73,6 +76,20 @@ public class MalayalamGlosser {
 						candidates.add(head);
 						int z = head.length()-1;
 
+						// SPECIAL CASES
+						// Question particle
+						if (tail.equals("oo")) {
+							if (head.equals("vee.n"))
+								candidates.add("vee.na;m");
+							if (!isVowel(head.charAt(z)))
+								candidates.add(head + 'u');
+						}
+						// aa.n'
+						if (tail.equals("aa.n'")) {
+							if (!isVowel(head.charAt(z)))
+								candidates.add(head + 'a');
+						}
+						
 						// SANDHI EFFECTS
 						// Glide insertion
 						if ((head.charAt(z) == 'y' || head.charAt(z) == 'v') && isVowel(tail.charAt(0)))
