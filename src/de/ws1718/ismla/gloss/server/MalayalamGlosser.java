@@ -78,17 +78,18 @@ public class MalayalamGlosser {
 
 						// SPECIAL CASES
 						// Question particle
-						if (tail.equals("oo")) {
-							if (head.equals("vee.n"))
-								candidates.add("vee.na;m");
-							if (!isVowel(head.charAt(z)))
-								candidates.add(head + 'u');
-						}
+						if (tail.equals("oo") && head.equals("vee.n"))
+							candidates.add("vee.na;m");
+						if ((tail.equals("ee") || tail.equals("oo")) && !isVowel(head.charAt(z)))
+							candidates.add(head + 'u');
 						// aa.n'
 						if (tail.equals("aa.n'")) {
 							if (!isVowel(head.charAt(z)))
 								candidates.add(head + 'a');
 						}
+						// Present tense
+						if (head.endsWith("unn"))
+							candidates.add(head + 'u');
 						
 						// SANDHI EFFECTS
 						// Glide insertion

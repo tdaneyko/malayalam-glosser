@@ -16,6 +16,16 @@
     <url-pattern>/ismlaglosser/gloss</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>filereadServlet</servlet-name>
+    <servlet-class>de.ws1718.ismla.gloss.server.FileReaderServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>filereadServlet</servlet-name>
+    <url-pattern>/ismlaglosser/fileread</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>ISMLAGlosser.html</welcome-file>

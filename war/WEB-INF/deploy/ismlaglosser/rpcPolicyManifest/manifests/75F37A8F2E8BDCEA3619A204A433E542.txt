@@ -1,2 +1,2 @@
 serviceClass: de.ws1718.ismla.gloss.client.GlossService
-path: 2EB8E5CC408B452547F731FD0783EDFF.gwt.rpc
+path: 8DB2C59AF162D79065ACE924E35A33F0.gwt.rpc

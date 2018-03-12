@@ -11,12 +11,15 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import de.ws1718.ismla.gloss.client.GlossedWord;
+import de.ws1718.ismla.gloss.server.translit.GlossNormalizer;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
 public class MalayalamDictionary {
 	
 	public static final MalayalamFormat DICT_FORMAT = MalayalamFormat.ISO15919_ASCII;
 	private static final Pattern PUNCT = Pattern.compile("\\p{Punct}");
+	
+	private GlossNormalizer normalizer;
 	
 	private MalayalamFormat origFormat;
 	private MalayalamFormat glossFormat;
@@ -30,6 +33,7 @@ public class MalayalamDictionary {
 	// ea vs. o normalisieren!!!
 	
 	public MalayalamDictionary(BufferedReader read) {
+		this.normalizer = new GlossNormalizer();
 		this.origFormat = DICT_FORMAT;
 		this.glossFormat = DICT_FORMAT;
 		this.splits = new HashMap<>();
@@ -85,9 +89,9 @@ public class MalayalamDictionary {
 		String[] spl = splits.get(word).stream().toArray(String[]::new);
 		String[][] gl = new String[spl.length][];
 		for (int i = 0; i < spl.length; i++) {
-			gl[i] = glosses.get(spl[i]).stream().toArray(String[]::new);
+			gl[i] = glosses.get(spl[i]).stream().map(g -> normalizer.convert(g)).toArray(String[]::new);
 			if (transcr != null)
-				spl[i] = transcr.convertFrom(spl[i], DICT_FORMAT);
+				spl[i] = normalizer.convert(transcr.convertFrom(spl[i], DICT_FORMAT));
 		}
 		return new GlossedWord(orig, ipa, spl, gl);
 	}
