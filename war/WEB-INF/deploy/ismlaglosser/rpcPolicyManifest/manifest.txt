@@ -1,4 +1,4 @@
 # Module ismlaglosser
 # RPC service class, partial path of RPC policy file
-de.ws1718.ismla.gloss.client.FileReaderService, 4C77B11169D25369F77C4BD51D28F360.gwt.rpc
+de.ws1718.ismla.gloss.client.TableProviderService, CDDA6A67AFFF2645A898793BCD406E4A.gwt.rpc
 de.ws1718.ismla.gloss.client.GlossService, 8DB2C59AF162D79065ACE924E35A33F0.gwt.rpc

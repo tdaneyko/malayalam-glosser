@@ -1,2 +1,0 @@
-serviceClass: de.ws1718.ismla.gloss.client.FileReaderService
-path: 4C77B11169D25369F77C4BD51D28F360.gwt.rpc

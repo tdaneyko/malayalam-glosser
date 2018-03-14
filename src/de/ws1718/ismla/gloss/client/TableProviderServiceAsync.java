@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface FileReaderServiceAsync {
+public interface TableProviderServiceAsync {
 
-	void getLines(String filepath, AsyncCallback<List<String[]>> callback);
+	void getTable(String filepath, AsyncCallback<TableContents> callback);
 
 }

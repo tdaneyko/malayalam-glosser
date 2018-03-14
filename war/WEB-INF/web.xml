@@ -9,6 +9,7 @@
   <servlet>
     <servlet-name>glossServlet</servlet-name>
     <servlet-class>de.ws1718.ismla.gloss.server.GlossServiceImpl</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   
   <servlet-mapping>
@@ -17,13 +18,14 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>filereadServlet</servlet-name>
-    <servlet-class>de.ws1718.ismla.gloss.server.FileReaderServiceImpl</servlet-class>
+    <servlet-name>tableServlet</servlet-name>
+    <servlet-class>de.ws1718.ismla.gloss.server.TableProviderServiceImpl</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>filereadServlet</servlet-name>
-    <url-pattern>/ismlaglosser/fileread</url-pattern>
+    <servlet-name>tableServlet</servlet-name>
+    <url-pattern>/ismlaglosser/table</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

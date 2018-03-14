@@ -44,6 +44,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import de.ws1718.ismla.gloss.server.TableProviderServiceImpl;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
 /**
@@ -62,7 +63,7 @@ public class ISMLAGlosser implements EntryPoint {
 	private static final String[] PAGE_STYLES = new String[]{LG_OFFSET,LG_WIDTH,SM_WIDTH};
 
 	private GlossServiceAsync glossService = GWT.create(GlossService.class);
-	private FileReaderServiceAsync readService = GWT.create(FileReaderService.class);
+	private TableProviderServiceAsync readService = GWT.create(TableProviderService.class);
 	
 	private FlowPanel currentPage;
 	private FlowPanel infoPage = loadInfoPage();
@@ -115,8 +116,8 @@ public class ISMLAGlosser implements EntryPoint {
 		collapseButton.setDataTargetWidget(navCollapse);
 		NavbarNav navEntries = new NavbarNav();
 		final AnchorListItem goToMain = new AnchorListItem("Glosser");
-		final AnchorListItem goToInfo = new AnchorListItem("Info");
-		final AnchorListItem goToSources = new AnchorListItem("Sources");
+		final AnchorListItem goToInfo = new AnchorListItem("How to use");
+		final AnchorListItem goToSources = new AnchorListItem("About");
 		navEntries.add(goToMain);
 		navEntries.add(goToInfo);
 		navEntries.add(goToSources);
@@ -500,27 +501,32 @@ public class ISMLAGlosser implements EntryPoint {
 						+ "your text into the Glosser in one of the romanizations, please make sure to always explicitly write "
 						+ "out a word-final candrakkala, otherwise the words may not be found in the underlying dictionary.")));
 		
-		readService.getLines("/transcription-schemes.tsv", new AsyncCallback<List<String[]>>() {
+		readService.getTable(TableProviderService.TRANSCR_TABLE, new AsyncCallback<TableContents>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Unable to obtain server response: " + caught.getMessage());
 			}
 
 			@Override
-			public void onSuccess(List<String[]> result) {
-				String[] header = new String[]{};
-				List<String[]> fileLines = new ArrayList<>();
-				if (!result.isEmpty())
-					header = result.get(0);
-				for (int i = 1; i < result.size(); i++)
-					fileLines.add(result.get(i));
-				
-				infoPanel.add(applyPageStyles(getTable(fileLines, header, true)));
+			public void onSuccess(TableContents table) {
+				infoPanel.add(applyPageStyles(getTable(table.getRows(), table.getHeader(), false)));
 				
 				infoPanel.add(applyPageStyles(new Legend("Glossing abbreviations")));
-				infoPanel.add(applyPageStyles(getTable(
-						Arrays.asList(new String[]{"NEG","Negation"},new String[]{"PRS","Present tense"},new String[]{"PST","Past tense"}),
-						new String[]{"Abbreviation","Grammatical phenomenon"}, false)));
+				infoPanel.add(applyPageStyles(new HTMLPanel("p",
+						"The following is a list of all the abbreviations used in the generated glosses and the names of the "
+								+ "grammatical phenomena they refer to.")));
+				
+				readService.getTable(TableProviderService.ABBR_TABLE, new AsyncCallback<TableContents>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Unable to obtain server response: " + caught.getMessage());
+					}
+
+					@Override
+					public void onSuccess(TableContents table) {						
+						infoPanel.add(applyPageStyles(getTable(table.getRows(), table.getHeader(), false)));
+					}
+				});
 			}
 		});
 
@@ -557,8 +563,23 @@ public class ISMLAGlosser implements EntryPoint {
 	private FlowPanel loadSourcesPage() {
 		FlowPanel sourcesPanel = new FlowPanel();
 		
-		sourcesPanel.add(applyPageStyles(new Legend("Sources")));
-		sourcesPanel.add(applyPageStyles(new HTML(link("https://sites.google.com/site/cibu/mozhi/mozhi2", "Test"))));
+		sourcesPanel.add(applyPageStyles(new Legend("About")));
+		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
+				"The Malayalam Glosser was created by Thora Daneyko for the course \"Industrial-Strength Multilingual "
+						+ "Language Analysis\" taught by Johannes Dellert and Björn Rudzewitz at the University of "
+						+ "Tübingen in the Winter Semester 2017/18.")));
+		String gwtBootstrap = link("https://", "GWT-Bootstrap library");
+		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
+				"This page was coded in Java using the " + gwtBootstrap + ".")));
+		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
+				"The Malayalam morphology analysis is mainly based on Rodney F. Moag's \"Malayalam: A University Course "
+						+ "and Reference Grammar\" (1994), covering chapters 1 to 13 so far. Further information about "
+						+ "Malayalam grammar was drawn from Ronald E. Asher and T. C. Kumari's \"Malayalam grammar\" (1997).")));
+		String olam = link("https://", "olam.in");
+		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
+				"The underlying dictionary data is composed of an " + olam + " dictionary dump (nouns, verbs, adjectives, "
+				+ "adverbs, adpositions and conjunctions) and manually added entries based on Moag's text book (pronouns "
+				+ "and grammatical particles).")));
 
 		return sourcesPanel;
 	}

@@ -1,0 +1,79 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.8 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{nyt/global/}
+    \entry{asherKumari}{book}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=8b5c27f29e1b761daa8dce22a8243e8f}{%
+           family={Asher},
+           familyi={A\bibinitperiod},
+           given={Ronald\bibnamedelima E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{uniquename=0,hash=ffcc2f5ee45b692e6dd88303582ce394}{%
+           family={Kumari},
+           familyi={K\bibinitperiod},
+           given={T.\bibnamedelimi C.},
+           giveni={T\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Psychology Press}%
+      }
+      \strng{namehash}{8d59b6c581f8eee1564c4abea6082aa7}
+      \strng{fullhash}{8d59b6c581f8eee1564c4abea6082aa7}
+      \strng{authornamehash}{8d59b6c581f8eee1564c4abea6082aa7}
+      \strng{authorfullhash}{8d59b6c581f8eee1564c4abea6082aa7}
+      \field{sortinit}{A}
+      \field{sortinithash}{3248043b5fe8d0a34dab5ab6b8d4309b}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Malayalam}
+      \field{year}{1997}
+    \endentry
+    \entry{moag}{book}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=33ed92512ba1ca01b717ecb56092c0dd}{%
+           family={Moag},
+           familyi={M\bibinitperiod},
+           given={Rodney\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Austin}%
+      }
+      \list{publisher}{1}{%
+        {University of Texas, Center for Asian Studies}%
+      }
+      \strng{namehash}{33ed92512ba1ca01b717ecb56092c0dd}
+      \strng{fullhash}{33ed92512ba1ca01b717ecb56092c0dd}
+      \strng{authornamehash}{33ed92512ba1ca01b717ecb56092c0dd}
+      \strng{authorfullhash}{33ed92512ba1ca01b717ecb56092c0dd}
+      \field{sortinit}{M}
+      \field{sortinithash}{c26a05ef03e4429073ed5c825140fac3}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Malayalam: A University Course and Reference Grammar}
+      \field{year}{1994}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

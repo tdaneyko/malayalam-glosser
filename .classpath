@@ -6,5 +6,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtbootstrap3-0.9.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang3-3.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/trove4j-3.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fst-2.57.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-2.9.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objenesis-2.6.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
