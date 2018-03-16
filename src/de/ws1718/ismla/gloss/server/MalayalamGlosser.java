@@ -114,6 +114,9 @@ public class MalayalamGlosser {
 				// Gemination
 				if (head.charAt(z) == tail.charAt(0))
 					candidates.add(head.substring(0, z));
+				// cillu r -> _r
+				if (head.endsWith("_r"))
+					candidates.add(head.substring(0, z-1) + "r");
 
 				// Test candidates
 				for (String cand : candidates) {

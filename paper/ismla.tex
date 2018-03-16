@@ -9,18 +9,21 @@
 \usepackage[Latin,Malayalam]{ucharclasses}
 \usepackage{amssymb}
 \usepackage{tabularx}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{gb4e}
+\setlength{\glossglue}{3pt plus 2pt minus 1pt}
 
 %\setmainfont{CMU Serif Roman}
 \setmonofont[Scale=0.9]{Consolas}
 %\newfontfamily{\defaultfont}{CMU Serif Roman}
+\newfontfamily{\cmuIPA}{CMU Serif Roman}
 \newfontfamily{\rachana}[Script=Malayalam,Scale=1.1]{Rachana}
 \setTransitionTo{Malayalam}{\rachana}
 \setTransitionFrom{Malayalam}{\fontfamily{lmr}\selectfont}
 
 \newcommand{\typ}[1]{\texttt{#1}}
 \newcommand{\afx}[1]{\textsc{#1}}
+\newcommand{\ipa}[1]{{\cmuIPA{}#1}}
 
 \author{Thora Daneyko}
 \title{ISMLA Project: Malayalam Glosser}
@@ -44,70 +47,63 @@ Miau
 
 Bla bla bla test മലയാളി bla bla.
 
-\section{About Malayalam}
+\section{Malayalam Language Processing}
 
-\subsection{General information}
+\subsection{About Malayalam}
+
+Malayalam is a Dravidian language spoken by over 30 million people in the southern Indian state Kerala. Like most Dravidian languages, Malayalam has SOV word order and a rich agglutinative exclusively suffixing morphology. The verbal morphology is especially complex, as verbs can be marked for various tenses, aspects and moods and may be chained together into long compounds to express subtle differences in meaning \parencite{asherKumari}.
 
 \subsection{NLP challenges}
 
+\subsubsection{Parsing the Malayalam script}
+
+Malayalam is written in Malayalam script, an abugida descended from the Brahmi script. The basic characters represent a syllable composed of a consonant and the inherent vowel /a/. The inherent vowel can be changed by attaching a vowel diacritic to the base character. Hence, the symbol ക represents the syllable /ka/, but with the diacritic for /i/ or /ē/ it becomes കി /ki/ or കേ /kē/. Similarly, the inherent vowel may be deleted using the diacritic that is known as \textit{candrakkala} `half moon' in Malayalam and \textit{virama} or \textit{halant} in many other Indic languages to represent a consonant without vowel, as in ക് /k/. In Malayalam, however, the \textit{candrakkala} has a phonetic value of its own, often transcribed as a short close or mid unrounded vowel ([\ipa{ɨ}] or [\ipa{ə}]). The only consonants that can appear at the end of a word without being followed by this vowel are /m/, /n/, /\ipa{ɳ}/, /l/, /\ipa{ɭ}/ and /r/. For this reason, Malayalam has its own characters for these sounds without the inherent vowel (except /m/, which is represented by the \textit{anusvāraṁ} diacritic ം), called \textit{cillu}: ൻ, ൺ, ൽ, ൾ and ർ.
+
+Each base character and diacritic has its own Unicode code point \parencite[p.~334ff]{unicode5}. Hence, the syllable ക /ka/ consists of one, കി /ki/ of two and ക് /k/ also of two code points. A simple one-to-one mapping on Latin characters is therefore not possible. Vowel diacritics which are visually composed of two others, but denote a single vowel, also have their own code points. For example the diacritic for /o/ ൊ (as in കൊ /ko/) is not a sequence of /e/ െ (as in കെ /ke/) and /ā/ ാ (as in കാ /kā/), but a single, independent code point \parencite[p.~334f]{unicode5}. However, the sequence base glyph + /o/ is visually indistinguishable of base glyph + /e/ + /ā/ in most fonts, so both variants can be observed in Malayalam texts. The \textit{cillu}s now have their own code points as well \parencite{unicode51}, however, before Unicode 5.1, these were typed as base glyph + \textit{candrakkala} + zero-width joiner (U+200D) \parencite[p.~336f]{unicode5}, remnants of which are also still commonly present in Malayalam texts on the web.
+
+Conversion from Malayalam script into some other format therefore holds a few difficulties that one must be aware of. However, converting Malayalam script into some alphabetic representation is an important preprocessing step for morpheme splitting, since Malayalam morphemes are not necessarily syllabic and can therefore only hardly be represented and analyzed in the Malayalam script.
+
 \subsubsection{Tokenization}
 
-അരിപ്പെട്ടി arippeṭṭi `rice box' (ari+peṭṭi), പാൽക്കുപ്പി pālkkuppi `milk bottle' (pāl+kuppi) \parencite[p.~397]{asherKumari}
+The Malayalam script generally separates words by whitespaces, just like the Latin script. However, there is a tendency to merge adjacent words in writing. Thus, the two-word sentence ടീച്ചർ ആണ് \textit{ṭīccar āṇ˘} `is a teacher' may also be written as a single word: ടീച്ചറാണ് \textit{ṭīccaṟāṇ˘}. This may include any number of words from any part of speech and does not only occur in literature, as in (\ref{sandhiAscarya}), but also in everyday speech and writing, as in (\ref{sandhiMoag}).
 
 \begin{exe}
-\ex
+\ex\label{sandhiAscarya}
 മേഘം പോലെ കറുപ്പുനിറഞ്ഞോടുകൂടിയവർ ആണ്. \\
 \textit{Mēghaṁ pōle kaṟuppuniṟaññōṭukūṭiyavar āṇ˘.}
 \glll
-മേഘം പോലെ കറുപ്പ് നിറഞ്ഞോട് കൂടി അവർ ആണ് . \\
-mēghaṁ pōle kaṟupp˘ niṟañ-ñ-ōṭ˘ kūṭi avar āṇ˘ . \\
-cloud like black be.full-\afx{pstpart}-\afx{soc} with they be . \\
+മേഘം പോലെ കറുപ്പ് നിറഞ്ഞോട് കൂടി അവർ ആണ് \\
+mēghaṁ pōle kaṟupp˘ niṟañ-ñ-ōṭ˘ kūṭi avar āṇ˘ \\
+cloud like black be.full-\afx{pstpart}-\afx{soc} with they be \\
 \trans `They are black like clouds.' \parencite[p.~179]{ascaryacudamani}
 \end{exe}
 
 
 \begin{exe}
-\ex
+\ex\label{sandhiMoag}
 അതിന് നിനക്കെന്താ? \\
 \textit{Atin˘ ninakkentā?}
 \glll
-അതിന് നിനക്ക് എന്ത് ആണ് ? \\
-at-in˘ nin-akk˘ ent˘ āṇ˘ ? \\
-that-\afx{dat} you-\afx{dat} what be ? \\
+അതിന് നിനക്ക് എന്ത് ആണ് \\
+at-in˘ nin-akk˘ ent˘ āṇ˘ \\
+that-\afx{dat} you-\afx{dat} what be \\
 \trans `Why do you care?' \parencite[p.~165]{moag}
 \end{exe}
 
-%\begin{exe}
-%\ex
-%ഇവിടെത്തന്നെയാണ് iviṭettanneyāṇ˘ \parencite[p.~179]{ascaryacudamani}
-%\glll
-%ഇവിടെ തന്നെ ആണ് \\
-%iviṭe tanne āṇ˘ \\
-%here EMPH be \\
-%\trans `is (indeed) here'
-%\end{exe}
-%
-%
-%\begin{exe}
-%\ex
-%എനിക്ക് കാപ്പിയേ വേണമെന്നുള്ളൂ. Enikk˘ kāppiyē vēṇamennuḷḷū.
-%\glll
-%എനിക്ക് കാപ്പി ഏ വേണം എന്ന് ഉള്ളൂ . \\
-%en-ikk˘ kāppi ē vēṇaṁ enn˘ uḷḷ-ū . \\
-%I-DAT coffee EMPH want.PRS QUOT be-FUT . \\
-%\trans `I only want coffee.'
-%\end{exe}
-%
-%
-%\begin{exe}
-%\ex
-%ഞാൻ ചന്തയിലെല്ലാം നോക്കി. ñān cantayilellāṁ nōkki.
-%\glll
-%ഞാൻ ചന്തയിൽ എല്ലാം നോക്കി . \\
-%ñān canta-yil ellāṁ nōkk-i . \\
-%I.NOM market-LOC all look-PST . \\
-%\trans `I looked everywhere on the market.'
-%\end{exe}
+The above examples already indicate that even on the phonetic level this process is not always as simple as in ടീച്ചറാണ് \textit{ṭīccaṟāṇ˘}, where the two words are just merged together. The changes that the affected words undergo when written as one are referred to as \textit{external sandhi} \parencite{devadath2014sandhi}. Its counterpart, \textit{internal sandhi}, describes the changes that occur when bound morphemes, such as case endings, are added to a stem. However, these rules are often specific to the suffix in question. The most common \textit{external sandhi} rules that regularly apply when merging arbitrary words in a sentence are the following:
+
+\begin{itemize}
+\item Insertion of a glide between two vowels (/y/ or /v/ depending on the roundedness of the first vowel), as in (\ref{sandhiAscarya}) കൂടിയവർ \textit{kūṭiyavar} (കൂടി \textit{kūṭi} + അവർ \textit{avar}).
+\item Dropping of the \textit{candrakkala} vowel when merging with a word starting with a vowel, as in (\ref{sandhiMoag}) നിനക്കെന്താ(ണ്) \textit{ninakkentā(ṇ˘)} (നിനക്ക് \textit{ninakk˘} + എന്ത് \textit{ent˘} + ആണ് \textit{āṇ˘}).
+\item The \textit{candrakkala} vowel becoming /u/ when merging with a word starting with a consonant, as in (\ref{sandhiAscarya}) കറുപ്പുനിറഞ്ഞോടുകൂടി \textit{kaṟuppuniṟaññōṭukūṭi} (കറുപ്പ് \textit{kaṟupp˘} + നിറഞ്ഞോട് \textit{niṟaññōṭ˘} + കൂടി \textit{kūṭi}).
+\item Doubling of an initial consonant (especially plosives) when preceded by a vowel or \textit{cillu} consonant. This is very frequent in compounds, such as അരിപ്പെട്ടി \textit{arippeṭṭi} `rice box' (അരി \textit{ari} + പെട്ടി \textit{peṭṭi}) or പാൽക്കുപ്പി \textit{pālkkuppi} `milk bottle' (പാൽ \textit{pāl} + കുപ്പി \textit{kuppi}) \parencite[p.~397]{asherKumari}. It also occurs in chains of verbs, e.g. when merging the verb കൊടുക്കുക \textit{koṭukkuka} `to give' with the past tense form of the verb പെടുക \textit{peṭuka} `to fall into' to create the passive expression കൊടുക്കപ്പെട്ടു \textit{koṭukkappeṭṭu} `was given' (കൊടുക്ക \textit{koṭukka} + പെട്ടു \textit{peṭṭu}) \parencite[p.~269]{asherKumari}.
+\item (Orthographic change only:) The \textit{cillu}s and the \textit{anusvāraṁ} becoming their full counterparts before a vowel, as in സുഖമാണോ? \textit{sukhamāṇō?} `how are you/are you well?' (സുഖം \textit{sukhaṁ} + ആണോ \textit{āṇō}) \parencite[p.~30]{moag}.
+\item Dropping of the \textit{anusvāraṁ} before a consonant, as in പുസ്തകപ്രേമം \textit{pustakaprēmaṁ} `love of books' (പുസ്തകം \textit{pustakaṁ} + പ്രേമം \textit{prēmaṁ}) \parencite[p.~398]{asherKumari}.
+\end{itemize}
+
+For a Malayalam tokenizer, it is therefore not sufficient to extract tokens separated by whitespaces and punctuation, it must also be able to identify and split merged words and reverse the \textit{sandhi} that has altered the participating tokens. This task is not trivial, and several strategies have been developed to perform it.
+
+RESEARCH
 
 \section{The Malayalam Glosser}
 
@@ -143,7 +139,7 @@ The straightforward way to represent a dictionary as a Java object is a \typ{Has
 
 In order to compare the performance of a \typ{HashMap} and \typ{ReverseTrie} based dictionary, I measured the memory used by the program before loading the dictionary data and after creating the \typ{HashMap} and Trie (calculated as \typ{Runtime.totalMemory() - Runtime.freeMemory()} after a \typ{System.gc()} call). Then I let the dictionary find the longest known suffix of the test String \textit{aviṭeyuḷḷataṟiññu} (\textit{aviṭe uḷḷat˘ aṟiññu} ``knew (he) was there'') 1,000,000 times and measured the time needed by a MashMap and \typ{ReverseTrie} based dictionary (calculated using \typ{System.currentmillis()}). Finally, I rewrote the tokenizer to also work with a \typ{ReverseTrie} and tested how long tokenization of a short conversation from \textcite{moag} took it with the two dictionary types.
 
-Despite the many shared suffixes, the \typ{HashMap} was smaller than the \typ{ReverseTrie}, taking up 8,318,164.8 bytes on average during five test runs, while the Trie required 12,590,051.2 bytes. However, the memory used by the \typ{HashMap} varied greatly, ranging from only 5,160,456 to 9,801,392 bytes, while the Trie always consumed almost exactly the same amount of memory. This indicates that the measurements might have been verfälscht by background processes such as the garbage collection. However, the \typ{HashMap} still seems to be considerably smaller.
+Despite the many shared suffixes, the \typ{HashMap} was smaller than the \typ{ReverseTrie}, taking up 8,318,164.8 bytes on average during five test runs, while the Trie required 12,590,051.2 bytes. However, the memory used by the \typ{HashMap} varied greatly, ranging from only 5,160,456 to 9,801,392 bytes, while the Trie always consumed almost exactly the same amount of memory. This indicates that the measurements might have been distorted by background processes such as the garbage collection. However, the \typ{HashMap} still seems to be considerably smaller.
 
 As expected, the \typ{ReverseTrie} outperformed the \typ{HashMap} on the looped suffix search of \textit{aviṭeyuḷḷataṟiññu}. The Map took an average of 999 milliseconds during five test runs, while the Trie only needed 312.4 ms. However, the performance of the Trie was very unstable, ranging from 140 to 518 ms between runs, while the \typ{HashMap} always needed between 908 and 1049 ms, which is still much slower than the slowest suffix search of the Trie.
 
@@ -164,7 +160,6 @@ The file storing the serialized \typ{ReverseTrie} was twice as large as the file
 
 \section{Conclusion}
 
-\nocite{*}
 \printbibliography
 
 \end{document}
