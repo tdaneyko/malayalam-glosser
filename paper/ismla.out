@@ -8,7 +8,8 @@
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Supported\040Scripts}{subsection.3.1}% 8
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Transliterators}{subsection.3.1}% 9
 \BOOKMARK [2][-]{subsection.3.2}{Morphology\040Generation}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.3}{Dictionary\040lookup}{section.3}% 11
-\BOOKMARK [2][-]{subsection.3.4}{Tokenization}{section.3}% 12
-\BOOKMARK [2][-]{subsection.3.5}{UI\040Design}{section.3}% 13
-\BOOKMARK [1][-]{section.4}{Conclusion}{}% 14
+\BOOKMARK [2][-]{subsection.3.3}{Tokenization}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.4}{Dictionary\040lookup}{section.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Efficiency\040considerations}{subsection.3.4}% 13
+\BOOKMARK [2][-]{subsection.3.5}{UI\040Design}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Conclusion}{}% 15

@@ -37,14 +37,17 @@ public class GlossedWord implements Serializable {
 	}
 	
 	public String[] getSplits() {
-		return this.splits;
+		return Arrays.copyOf(this.splits, this.splits.length);
+	}
+	
+	public String[] getGlosses(int i) {
+		if (i >= 0 && i < glosses.length)
+			return Arrays.copyOf(this.glosses[i], this.glosses[i].length);
+		return new String[]{};
 	}
 	
 	public String[] getGlosses(String split) {
-		int i = arrayIndexOf(split, this.splits);
-		if (i >= 0)
-			return Arrays.copyOf(this.glosses[i], this.glosses[i].length);
-		return new String[]{};
+		return getGlosses(arrayIndexOf(split, this.splits));
 	}
 	
 	private int arrayIndexOf(String s, String[] a) {

@@ -43,4 +43,18 @@ public class Gloss implements Serializable {
 		return fullTransl;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Gloss) {
+			Gloss other = (Gloss) obj;
+			return this.split.equals(other.split) && this.prefixes.equals(other.prefixes)
+					&& this.suffixes.equals(other.suffixes) && this.transl.equals(other.transl);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 19 + 17 * split.hashCode() + 13 * prefixes.hashCode() + 11 * suffixes.hashCode() + 7 * transl.hashCode();
+	}
 }

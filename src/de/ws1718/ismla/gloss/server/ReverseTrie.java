@@ -15,8 +15,20 @@ public class ReverseTrie implements Serializable {
 	
 	private TrieState start;
 	
-	public ReverseTrie(Map<String, Set<Gloss>> glosses) {
+	public ReverseTrie() {
 		start = new TrieState();
+	}
+	
+	public ReverseTrie(Map<String, Set<Gloss>> glosses) {
+		this();
+		addAll(glosses);
+	}
+	
+	public void add(String word, Gloss gloss) {
+		start.add(word, word.length()-1, gloss);
+	}
+	
+	public void addAll(Map<String, Set<Gloss>> glosses) {
 		for (String form : glosses.keySet()) {
 			for (Gloss gloss : glosses.get(form)) {
 				start.add(form, form.length()-1, gloss);

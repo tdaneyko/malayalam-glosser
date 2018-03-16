@@ -27,4 +27,11 @@ public class TableContents implements Serializable {
 		return rows;
 	}
 	
+	public int cols() {
+		return header.length;
+	}
+	
+	public int rows() {
+		return rows.size();
+	}
 }

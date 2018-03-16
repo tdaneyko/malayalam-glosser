@@ -34,6 +34,8 @@ import org.gwtbootstrap3.client.ui.html.Text;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -47,9 +49,6 @@ import com.google.gwt.user.client.ui.Widget;
 import de.ws1718.ismla.gloss.server.TableProviderServiceImpl;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
 public class ISMLAGlosser implements EntryPoint {
 	
 	private static final String MALAYALAM_SCRIPT = "Malayalam script";
@@ -116,7 +115,7 @@ public class ISMLAGlosser implements EntryPoint {
 		collapseButton.setDataTargetWidget(navCollapse);
 		NavbarNav navEntries = new NavbarNav();
 		final AnchorListItem goToMain = new AnchorListItem("Glosser");
-		final AnchorListItem goToInfo = new AnchorListItem("How to use");
+		final AnchorListItem goToInfo = new AnchorListItem("Help");
 		final AnchorListItem goToSources = new AnchorListItem("About");
 		navEntries.add(goToMain);
 		navEntries.add(goToInfo);
@@ -375,6 +374,7 @@ public class ISMLAGlosser implements EntryPoint {
 		List<FlowPanel> glossPanels = createGlossPanel(true);
 
 		for (int g = 0; g < gloss.size(); g++) {
+			String sentence = gloss.get(g).getSentence();
 			List<GlossedWord> glosses = gloss.get(g).getGlosses();
 			FlowPanel glossPanel = glossPanels.get(g);
 			String line1 = "";
@@ -390,7 +390,7 @@ public class ISMLAGlosser implements EntryPoint {
 				line3 += trans + " ";
 				glossPanel.add(getFinishedGloss(orig, ipa, split, trans));
 			}
-			String glossCode = "\\begin{exe}\n" + "\\ex\n" + "\\glll\n"
+			String glossCode = "\\begin{exe}\n" + "\\ex\n" + sentence + "\n\\glll\n"
 					+ escapeLaTeXChars(line1) + "\\\\\n"
 					+ escapeLaTeXChars(line2) + "\\\\\n"
 					+ escapeLaTeXChars(line3) + "\\\\\n"
@@ -426,9 +426,18 @@ public class ISMLAGlosser implements EntryPoint {
 		return esc.toString();
 	}
 	
-	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splits, String[] glosses, int i, int j) {
-		ListBox splitBox = getListBox(splits);
-		ListBox glossBox = getListBox(glosses);
+	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splts, String[] glsses, final int i, final int j) {
+		ChangeHandler splitChangeHandler = new ChangeHandler() {
+			GlossedWord word = gloss.get(i).getGlosses().get(j);
+			@Override
+			public void onChange(ChangeEvent event) {
+				transl[i][j].clear();
+				fillListBox(transl[i][j], word.getGlosses(splits[i][j].getSelectedIndex()));
+			}
+		};
+		ListBox splitBox = fillListBox(new ListBox(), splts);
+		splitBox.addChangeHandler(splitChangeHandler);
+		ListBox glossBox = fillListBox(new ListBox(), glsses);
 		this.splits[i][j] = splitBox;
 		this.transl[i][j] = glossBox;
 		
@@ -441,11 +450,12 @@ public class ISMLAGlosser implements EntryPoint {
 		return g;
 	}
 	
-	private ListBox getListBox(String[] items) {
-		ListBox box = new ListBox();
+	private ListBox fillListBox(ListBox box, String[] items) {
 		for (String item : items)
 			box.addItem(item);
-		if (items.length == 1)
+		if (items.length > 1)
+			box.setEnabled(true);
+		else
 			box.setEnabled(false);
 		return box;
 	}
@@ -508,8 +518,8 @@ public class ISMLAGlosser implements EntryPoint {
 			}
 
 			@Override
-			public void onSuccess(TableContents table) {
-				infoPanel.add(applyPageStyles(getTable(table.getRows(), table.getHeader(), false)));
+			public void onSuccess(TableContents transcrTable) {
+				infoPanel.add(applyPageStyles(getTable(transcrTable.getRows(), transcrTable.getHeader(), true)));
 				
 				infoPanel.add(applyPageStyles(new Legend("Glossing abbreviations")));
 				infoPanel.add(applyPageStyles(new HTMLPanel("p",
@@ -523,8 +533,8 @@ public class ISMLAGlosser implements EntryPoint {
 					}
 
 					@Override
-					public void onSuccess(TableContents table) {						
-						infoPanel.add(applyPageStyles(getTable(table.getRows(), table.getHeader(), false)));
+					public void onSuccess(TableContents abbrTable) {						
+						infoPanel.add(applyPageStyles(getTable(abbrTable.getRows(), abbrTable.getHeader(), false)));
 					}
 				});
 			}
@@ -568,14 +578,17 @@ public class ISMLAGlosser implements EntryPoint {
 				"The Malayalam Glosser was created by Thora Daneyko for the course \"Industrial-Strength Multilingual "
 						+ "Language Analysis\" taught by Johannes Dellert and Björn Rudzewitz at the University of "
 						+ "Tübingen in the Winter Semester 2017/18.")));
-		String gwtBootstrap = link("https://", "GWT-Bootstrap library");
+		String gwtBootstrap = link("https://github.com/gwtbootstrap3/gwtbootstrap3", "GWT-Bootstrap library");
+		String nel = link("https://", "NorthEuraLex");
 		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
-				"This page was coded in Java using the " + gwtBootstrap + ".")));
+				"This page was coded in Java using the " + gwtBootstrap + ". For the phonetic transcription and "
+				+ "transliteration between the different scripts, I used the transliterator system that was designed "
+				+ "for the " + nel + " database.")));
 		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
 				"The Malayalam morphology analysis is mainly based on Rodney F. Moag's \"Malayalam: A University Course "
 						+ "and Reference Grammar\" (1994), covering chapters 1 to 13 so far. Further information about "
-						+ "Malayalam grammar was drawn from Ronald E. Asher and T. C. Kumari's \"Malayalam grammar\" (1997).")));
-		String olam = link("https://", "olam.in");
+						+ "Malayalam grammar was drawn from Ronald E. Asher and T. C. Kumari's \"Malayalam\" (1997) grammar.")));
+		String olam = link("https://olam.in/", "olam.in");
 		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
 				"The underlying dictionary data is composed of an " + olam + " dictionary dump (nouns, verbs, adjectives, "
 				+ "adverbs, adpositions and conjunctions) and manually added entries based on Moag's text book (pronouns "
