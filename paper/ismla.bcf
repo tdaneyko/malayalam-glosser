@@ -91,7 +91,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxbibnames</bcf:key>
-      <bcf:value>3</bcf:value>
+      <bcf:value>99</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
@@ -139,7 +139,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniquename</bcf:key>
-      <bcf:value>2</bcf:value>
+      <bcf:value>0</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>uniqueprimaryauthor</bcf:key>
@@ -2149,14 +2149,45 @@
     <bcf:citekey order="3">unicode5</bcf:citekey>
     <bcf:citekey order="4">unicode51</bcf:citekey>
     <bcf:citekey order="5">unicode5</bcf:citekey>
-    <bcf:citekey order="6">ascaryacudamani</bcf:citekey>
-    <bcf:citekey order="7">moag</bcf:citekey>
-    <bcf:citekey order="8">devadath2014sandhi</bcf:citekey>
-    <bcf:citekey order="9">asherKumari</bcf:citekey>
+    <bcf:citekey order="6">bindu2011pos</bcf:citekey>
+    <bcf:citekey order="7">ascaryacudamani</bcf:citekey>
+    <bcf:citekey order="8">moag</bcf:citekey>
+    <bcf:citekey order="9">devadath2014sandhi</bcf:citekey>
     <bcf:citekey order="10">asherKumari</bcf:citekey>
-    <bcf:citekey order="11">moag</bcf:citekey>
-    <bcf:citekey order="12">asherKumari</bcf:citekey>
-    <bcf:citekey order="13">moag</bcf:citekey>
+    <bcf:citekey order="11">asherKumari</bcf:citekey>
+    <bcf:citekey order="12">moag</bcf:citekey>
+    <bcf:citekey order="13">asherKumari</bcf:citekey>
+    <bcf:citekey order="14">asherKumari</bcf:citekey>
+    <bcf:citekey order="15">asherKumari</bcf:citekey>
+    <bcf:citekey order="16">asherKumari</bcf:citekey>
+    <bcf:citekey order="17">jayan2011translation</bcf:citekey>
+    <bcf:citekey order="18">jayan2011translation</bcf:citekey>
+    <bcf:citekey order="19">jayan2011translation</bcf:citekey>
+    <bcf:citekey order="20">devadath2014sandhi</bcf:citekey>
+    <bcf:citekey order="21">manju2009pos</bcf:citekey>
+    <bcf:citekey order="21">bindu2011pos</bcf:citekey>
+    <bcf:citekey order="22">devadath2016parser</bcf:citekey>
+    <bcf:citekey order="23">sebastian2018morph</bcf:citekey>
+    <bcf:citekey order="24">nisha2016sandhi</bcf:citekey>
+    <bcf:citekey order="25">jayan2011translation</bcf:citekey>
+    <bcf:citekey order="26">manju2009pos</bcf:citekey>
+    <bcf:citekey order="27">bindu2011pos</bcf:citekey>
+    <bcf:citekey order="28">devadath2014sandhi</bcf:citekey>
+    <bcf:citekey order="29">prathyusha2015sandhi</bcf:citekey>
+    <bcf:citekey order="30">nisha2016sandhi</bcf:citekey>
+    <bcf:citekey order="31">manju2009pos</bcf:citekey>
+    <bcf:citekey order="32">bindu2011pos</bcf:citekey>
+    <bcf:citekey order="33">rajeev2007morph</bcf:citekey>
+    <bcf:citekey order="34">jayan2011translation</bcf:citekey>
+    <bcf:citekey order="35">manju2009pos</bcf:citekey>
+    <bcf:citekey order="36">fsm</bcf:citekey>
+    <bcf:citekey order="37">sebastian2018morph</bcf:citekey>
+    <bcf:citekey order="38">mozhi</bcf:citekey>
+    <bcf:citekey order="39">iso-15919</bcf:citekey>
+    <bcf:citekey order="40">northeuralex</bcf:citekey>
+    <bcf:citekey order="41">daneyko2016translit</bcf:citekey>
+    <bcf:citekey order="42">daneyko2016translit</bcf:citekey>
+    <bcf:citekey order="43">moag</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="nyt/global/" type="entry" sortscheme="nyt" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

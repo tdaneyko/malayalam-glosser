@@ -2,7 +2,7 @@
 \documentclass[a4paper]{article}
 \usepackage[parfill]{parskip}
 
-\usepackage[backend=biber,style=authoryear]{biblatex}
+\usepackage[backend=biber,style=authoryear,maxbibnames=99,uniquename=false]{biblatex}
 \addbibresource{ismla.bib}
 \usepackage[american]{babel}
 \usepackage{fontspec,xunicode}
@@ -10,8 +10,14 @@
 \usepackage{amssymb}
 \usepackage{tabularx}
 \usepackage[hidelinks]{hyperref}
-\usepackage{gb4e}
-\setlength{\glossglue}{3pt plus 2pt minus 1pt}
+\usepackage{expex}
+\usepackage{graphicx}
+\usepackage[font=small,labelfont=bf,justification=justified]{caption} %,singlelinecheck=false
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{scrextend}
 
 %\setmainfont{CMU Serif Roman}
 \setmonofont[Scale=0.9]{Consolas}
@@ -20,6 +26,11 @@
 \newfontfamily{\rachana}[Script=Malayalam,Scale=1.1]{Rachana}
 \setTransitionTo{Malayalam}{\rachana}
 \setTransitionFrom{Malayalam}{\fontfamily{lmr}\selectfont}
+
+\definelingstyle{Malayalam}{glhangstyle=none,exskip=5pt,interpartskip=0pt,belowglpreambleskip=0pt,aboveglftskip=0pt,everygla={},everyglb=\itshape}
+
+\newcommand{\asciiapo}{\XeTeXglyph\XeTeXcharglyph"0027\relax}
+\newcommand{\asciiquot}{\XeTeXglyph\XeTeXcharglyph"0022\relax}
 
 \newcommand{\typ}[1]{\texttt{#1}}
 \newcommand{\afx}[1]{\textsc{#1}}
@@ -43,6 +54,9 @@ Miau
 %5) A paragraph stating clearly who contributed which parts to the project.
 %6) References for all the sources you used, much as in a normal term paper.
 
+\begingroup
+\lingset{lingstyle=Malayalam}
+
 \section{Introduction}
 
 Bla bla bla test മലയാളി bla bla.
@@ -51,13 +65,13 @@ Bla bla bla test മലയാളി bla bla.
 
 \subsection{About Malayalam}
 
-Malayalam is a Dravidian language spoken by over 30 million people in the southern Indian state Kerala. Like most Dravidian languages, Malayalam has SOV word order and a rich agglutinative exclusively suffixing morphology. The verbal morphology is especially complex, as verbs can be marked for various tenses, aspects and moods and may be chained together into long compounds to express subtle differences in meaning \parencite{asherKumari}.
+Malayalam is a Dravidian language spoken by over 30 million people in the southern Indian state Kerala. Like most Dravidian languages, Malayalam has a very free SOV word order and a rich agglutinative exclusively suffixing morphology. The verbal morphology is especially complex, as verbs can be marked for various tenses, aspects and moods and may be chained together into long compounds to express subtle differences in meaning \parencite{asherKumari}.
 
 \subsection{NLP challenges}
 
 \subsubsection{Parsing the Malayalam script}
 
-Malayalam is written in Malayalam script, an abugida descended from the Brahmi script. The basic characters represent a syllable composed of a consonant and the inherent vowel /a/. The inherent vowel can be changed by attaching a vowel diacritic to the base character. Hence, the symbol ക represents the syllable /ka/, but with the diacritic for /i/ or /ē/ it becomes കി /ki/ or കേ /kē/. Similarly, the inherent vowel may be deleted using the diacritic that is known as \textit{candrakkala} `half moon' in Malayalam and \textit{virama} or \textit{halant} in many other Indic languages to represent a consonant without vowel, as in ക് /k/. In Malayalam, however, the \textit{candrakkala} has a phonetic value of its own, often transcribed as a short close or mid unrounded vowel ([\ipa{ɨ}] or [\ipa{ə}]). The only consonants that can appear at the end of a word without being followed by this vowel are /m/, /n/, /\ipa{ɳ}/, /l/, /\ipa{ɭ}/ and /r/. For this reason, Malayalam has its own characters for these sounds without the inherent vowel (except /m/, which is represented by the \textit{anusvāraṁ} diacritic ം), called \textit{cillu}: ൻ, ൺ, ൽ, ൾ and ർ.
+Malayalam is written in Malayalam script, an abugida descended from the Brahmi script. The basic characters represent a syllable composed of a consonant and the inherent vowel /a/. The inherent vowel can be changed by attaching a vowel diacritic to the base character. Hence, the symbol ക represents the syllable /ka/, but with the diacritic for /i/ or /ē/ it becomes കി /ki/ or കേ /kē/. Similarly, the inherent vowel may be deleted using the diacritic that is known as \textit{candrakkala} `half moon' in Malayalam and \textit{virama} or \textit{halant} in many other Indic languages to represent a consonant without vowel, as in ക് /k/, or to type consonant clusters, as in ക്​ഷ /kṣa/ (usually displayed as the ligature ക്ഷ). In Malayalam, however, the \textit{candrakkala} has a phonetic value of its own at the end of a word, often transcribed as a short close or mid unrounded vowel ([\ipa{ɨ}] or [\ipa{ə}]), as in കാട് \textit{kāṭŭ} `forest' being pronounced [\ipa{kaːɖɨ̆}], not [\ipa{kaːʈ}], with intervocalic voicing applying just as between any other two vowels. The \textit{candrakkala} therefore serves two quite different purposes. The only consonants that can appear at the end of a word without being followed by the \textit{candrakkala} vowel are /m/, /n/, /\ipa{ɳ}/, /l/, /\ipa{ɭ}/ and /r/. For this reason, Malayalam has its own characters for these sounds without the inherent vowel (except /m/, which is represented by the \textit{anusvāraṁ} diacritic ം), called \textit{cillu}: ൻ, ൺ, ൽ, ൾ and ർ.
 
 Each base character and diacritic has its own Unicode code point \parencite[p.~334ff]{unicode5}. Hence, the syllable ക /ka/ consists of one, കി /ki/ of two and ക് /k/ also of two code points. A simple one-to-one mapping on Latin characters is therefore not possible. Vowel diacritics which are visually composed of two others, but denote a single vowel, also have their own code points. For example the diacritic for /o/ ൊ (as in കൊ /ko/) is not a sequence of /e/ െ (as in കെ /ke/) and /ā/ ാ (as in കാ /kā/), but a single, independent code point \parencite[p.~334f]{unicode5}. However, the sequence base glyph + /o/ is visually indistinguishable of base glyph + /e/ + /ā/ in most fonts, so both variants can be observed in Malayalam texts. The \textit{cillu}s now have their own code points as well \parencite{unicode51}, however, before Unicode 5.1, these were typed as base glyph + \textit{candrakkala} + zero-width joiner (U+200D) \parencite[p.~336f]{unicode5}, remnants of which are also still commonly present in Malayalam texts on the web.
 
@@ -65,65 +79,128 @@ Conversion from Malayalam script into some other format therefore holds a few di
 
 \subsubsection{Tokenization}
 
-The Malayalam script generally separates words by whitespaces, just like the Latin script. However, there is a tendency to merge adjacent words in writing. Thus, the two-word sentence ടീച്ചർ ആണ് \textit{ṭīccar āṇ˘} `is a teacher' may also be written as a single word: ടീച്ചറാണ് \textit{ṭīccaṟāṇ˘}. This may include any number of words from any part of speech and does not only occur in literature, as in (\ref{sandhiAscarya}), but also in everyday speech and writing, as in (\ref{sandhiMoag}).
+The Malayalam script generally separates words by whitespaces, just like the Latin script. However, there is a strong tendency to merge adjacent words in writing. Thus, the two-word sentence ടീച്ചർ ആണ് \textit{ṭīccar āṇŭ} `is a teacher' may also be written as a single word: ടീച്ചറാണ് \textit{ṭīccaṟāṇŭ}. This may include any number of words from any part of speech and does not only occur in literature, as in (\ref{sandhiAscarya}), but also in everyday speech and writing, as in (\ref{sandhiMoag}). \textcite{bindu2011pos} estimate that ``80-85\% of words in Malayalam text documents are compound words'', though it is not entirely clear whether they only refer to the merging of independent words or also to suffixing.
 
-\begin{exe}
-\ex\label{sandhiAscarya}
-മേഘം പോലെ കറുപ്പുനിറഞ്ഞോടുകൂടിയവർ ആണ്. \\
-\textit{Mēghaṁ pōle kaṟuppuniṟaññōṭukūṭiyavar āṇ˘.}
-\glll
-മേഘം പോലെ കറുപ്പ് നിറഞ്ഞോട് കൂടി അവർ ആണ് \\
-mēghaṁ pōle kaṟupp˘ niṟañ-ñ-ōṭ˘ kūṭi avar āṇ˘ \\
-cloud like black be.full-\afx{pstpart}-\afx{soc} with they be \\
-\trans `They are black like clouds.' \parencite[p.~179]{ascaryacudamani}
-\end{exe}
+\ex\label{sandhiAscarya}\begingl
+\glpreamble മേഘം പോലെ കറുപ്പുനിറഞ്ഞോടുകൂടിയവർ ആണ്. \\
+\textit{Mēghaṁ pōle kaṟuppuniṟaññōṭukūṭiyavar āṇŭ.} //
+\gla മേഘം പോലെ കറുപ്പ് നിറഞ്ഞോട് കൂടി അവർ ആണ് //
+\glb mēghaṁ pōle kaṟuppŭ niṟañ-ñ-ōṭŭ kūṭi avar āṇŭ //
+\glc cloud like black be.full-\afx{pst.part}-\afx{soc} with they \afx{cop} //
+\glft `They are black like clouds.' \parencite[p.~179]{ascaryacudamani} //
+\endgl\xe
 
 
-\begin{exe}
-\ex\label{sandhiMoag}
-അതിന് നിനക്കെന്താ? \\
-\textit{Atin˘ ninakkentā?}
-\glll
-അതിന് നിനക്ക് എന്ത് ആണ് \\
-at-in˘ nin-akk˘ ent˘ āṇ˘ \\
-that-\afx{dat} you-\afx{dat} what be \\
-\trans `Why do you care?' \parencite[p.~165]{moag}
-\end{exe}
+\ex\label{sandhiMoag}\begingl
+\glpreamble അതിന് നിനക്കെന്താ? \\
+\textit{Atinŭ ninakkentā?} //
+\gla അതിന് നിനക്ക് എന്ത് ആണ് //
+\glb at-inŭ nin-akkŭ entŭ āṇŭ //
+\glc that-\afx{dat} you-\afx{dat} what \afx{cop} //
+\glft `Why do you care?' \parencite[p.~165]{moag} //
+\endgl\xe
 
-The above examples already indicate that even on the phonetic level this process is not always as simple as in ടീച്ചറാണ് \textit{ṭīccaṟāṇ˘}, where the two words are just merged together. The changes that the affected words undergo when written as one are referred to as \textit{external sandhi} \parencite{devadath2014sandhi}. Its counterpart, \textit{internal sandhi}, describes the changes that occur when bound morphemes, such as case endings, are added to a stem. However, these rules are often specific to the suffix in question. The most common \textit{external sandhi} rules that regularly apply when merging arbitrary words in a sentence are the following:
+The above examples already indicate that even on the phonetic level this process is not always as simple as in ടീച്ചറാണ് \textit{ṭīccaṟāṇŭ}, where the two words are just merged together. The changes that the affected words undergo when written as one are referred to as \textit{external sandhi} \parencite{devadath2014sandhi}. Its counterpart, \textit{internal sandhi}, describes the changes that occur when bound morphemes, such as case endings, are added to a stem. However, these rules are often specific to the suffix in question. The most common \textit{external sandhi} rules that regularly apply when merging arbitrary words in a sentence are the following:
 
 \begin{itemize}
 \item Insertion of a glide between two vowels (/y/ or /v/ depending on the roundedness of the first vowel), as in (\ref{sandhiAscarya}) കൂടിയവർ \textit{kūṭiyavar} (കൂടി \textit{kūṭi} + അവർ \textit{avar}).
-\item Dropping of the \textit{candrakkala} vowel when merging with a word starting with a vowel, as in (\ref{sandhiMoag}) നിനക്കെന്താ(ണ്) \textit{ninakkentā(ṇ˘)} (നിനക്ക് \textit{ninakk˘} + എന്ത് \textit{ent˘} + ആണ് \textit{āṇ˘}).
-\item The \textit{candrakkala} vowel becoming /u/ when merging with a word starting with a consonant, as in (\ref{sandhiAscarya}) കറുപ്പുനിറഞ്ഞോടുകൂടി \textit{kaṟuppuniṟaññōṭukūṭi} (കറുപ്പ് \textit{kaṟupp˘} + നിറഞ്ഞോട് \textit{niṟaññōṭ˘} + കൂടി \textit{kūṭi}).
+\item Dropping of the \textit{candrakkala} vowel when merging with a word starting with a vowel, as in (\ref{sandhiMoag}) നിനക്കെന്താ(ണ്) \textit{ninakkentā(ṇŭ)} (നിനക്ക് \textit{ninakkŭ} + എന്ത് \textit{entŭ} + ആണ് \textit{āṇŭ}).
+\item The \textit{candrakkala} vowel becoming /u/ when merging with a word starting with a consonant, as in (\ref{sandhiAscarya}) കറുപ്പുനിറഞ്ഞോടുകൂടി \textit{kaṟuppuniṟaññōṭukūṭi} (കറുപ്പ് \textit{kaṟuppŭ} + നിറഞ്ഞോട് \textit{niṟaññōṭŭ} + കൂടി \textit{kūṭi}).
 \item Doubling of an initial consonant (especially plosives) when preceded by a vowel or \textit{cillu} consonant. This is very frequent in compounds, such as അരിപ്പെട്ടി \textit{arippeṭṭi} `rice box' (അരി \textit{ari} + പെട്ടി \textit{peṭṭi}) or പാൽക്കുപ്പി \textit{pālkkuppi} `milk bottle' (പാൽ \textit{pāl} + കുപ്പി \textit{kuppi}) \parencite[p.~397]{asherKumari}. It also occurs in chains of verbs, e.g. when merging the verb കൊടുക്കുക \textit{koṭukkuka} `to give' with the past tense form of the verb പെടുക \textit{peṭuka} `to fall into' to create the passive expression കൊടുക്കപ്പെട്ടു \textit{koṭukkappeṭṭu} `was given' (കൊടുക്ക \textit{koṭukka} + പെട്ടു \textit{peṭṭu}) \parencite[p.~269]{asherKumari}.
 \item (Orthographic change only:) The \textit{cillu}s and the \textit{anusvāraṁ} becoming their full counterparts before a vowel, as in സുഖമാണോ? \textit{sukhamāṇō?} `how are you/are you well?' (സുഖം \textit{sukhaṁ} + ആണോ \textit{āṇō}) \parencite[p.~30]{moag}.
 \item Dropping of the \textit{anusvāraṁ} before a consonant, as in പുസ്തകപ്രേമം \textit{pustakaprēmaṁ} `love of books' (പുസ്തകം \textit{pustakaṁ} + പ്രേമം \textit{prēmaṁ}) \parencite[p.~398]{asherKumari}.
 \end{itemize}
 
-For a Malayalam tokenizer, it is therefore not sufficient to extract tokens separated by whitespaces and punctuation, it must also be able to identify and split merged words and reverse the \textit{sandhi} that has altered the participating tokens. This task is not trivial, and several strategies have been developed to perform it.
+For a Malayalam tokenizer, it is therefore not sufficient to extract tokens separated by whitespaces and punctuation, it must also be able to identify and split merged words and reverse the \textit{sandhi} that has altered the participating tokens.
 
-RESEARCH
+\subsubsection{Morphological analysis}
+
+Malayalam is a highly agglutinative language and even individual tokens can get quite long under the load of multiple inflectional endings. Luckily, Malayalam is exclusively suffixing, so once the individual words of a sentence have been identified, each of them will always begin with the root or stem and optionally end in a sequence of suffixes. Also, apart from the \textit{internal sandhi} operating at morpheme boundaries, Malayalam grammar is very regular.
+
+Malayalam's core vocabulary mainly consists of nouns and verbs. It only has a handful of non-derived adjectives, while all other adjective-like words have been derived from verb phrases. Also, adjectives do not have any inflections of their own; instead, they are usually nominalized \parencite[p.~349ff]{asherKumari}. Nouns are only marked for number and case, of which Malayalam has seven.
+
+Verbs, on the other hand, display a rather rich and complex morphology. They can have up to three causatives, passive voice and various aspects, moods and tenses. (\ref{inflVerb}) is an example of a heavily inflected Malayalam verb.
+
+\ex\label{inflVerb}\begingl[everygla=\itshape]
+\glpreamble പാഠങ്ങൾ പഠിപ്പിക്കപ്പെട്ടുകൊണ്ടിരുന്നിട്ടുണ്ടാകണം. \\
+\textit{pāṭhaṅṅaḷ paṭhippikkappeṭṭukoṇṭirunniṭṭuṇṭākaṇaṁ.} //
+\gla pāṭhaṅ -ṅaḷ {} paṭhi -ppi -kka -ppeṭ -ṭu -koṇṭ -irunn -iṭṭ -uṇṭāk -aṇaṁ //
+\glc lesson -\afx{pl} {} learn -\afx{cau} -\afx{cau} -\afx{pass} -\afx{pst} -\afx{prog} -\afx{pst} -\afx{perf} -be -\afx{des.prs} //
+\glft `Lessons must have been being taught.' \parencite[p.~304]{asherKumari} //
+\endgl\xe
+
+Even though most verbs that actually occur in texts come with a much smaller number of suffixes, every verb will be inflected somehow, and the possibilities are vast. As \textcite{asherKumari} note, it seems that ``all morphological combinations are possible that are semantically interpretable and compatible'' (p.~304). Also, Malayalam has a tendency to chain verbs to express even more subtle semantic differences, so a typical Malayalam sentences will often contain multiple verbs. As mentioned above, almost all adjectives are actually adjectivized verbs, which may be inflected as well.
+
+When processing Malayalam morphology, one can take advantage of the fact that Malayalam exclusively uses suffixes which are also rather regular. However, one must also beachten the \textit{internal sandhi} between suffixes which is sometimes peculiar for a certain suffix. For verbs, the amount of possible combinations of suffixes is huge, which is a besondere hindrance for paradigm generation.
+
+\section{Previous work}
+
+In their \citeyear{jayan2011translation} paper on automatic machine translation between Malayalam and Tamil, \citeauthor{jayan2011translation} draw a pessimistic conclusion regarding Malayalam morphological analysis: ``A sandhi splitter demands a morphological analyzer and a morphological analyzer demands a sandhi splitter. There is a dead lock between the two.'' While it is true that there is a certain dependency between resolving sandhi-merged words into individual tokens and analyzing the morphology of these tokens, many researchers following \textcite{jayan2011translation} have now overcome the ``dead lock'' and found successful ways to perform sandhi splitting and morphological analysis separately.
+
+\subsection{Sandhi splitting}
+
+The importance of sandhi splitting for the processing of Dravidian languages and especially Malayalam has recently been recognized and addressed by several researchers. \textcite{devadath2014sandhi} note that ``[s]andhi acts as a bottle-neck for all term distribution based approaches for any NLP and IR task''. The developed applications serve as preprocessors for POS Taggers \parencite{manju2009pos,bindu2011pos}, Parsers \parencite{devadath2016parser} and Morphological Analyzers \parencite{sebastian2018morph}. Further Anwendungsgebiete for sandhi splitters are ``document indexing and topic modeling'' \parencite{nisha2016sandhi} and machine translation \parencite{jayan2011translation}.
+
+\textcite{manju2009pos} and \textcite{bindu2011pos} use a dictionary lookup approach for sandhi splitting. They maintain a lexicon of Malayalam words and recursively search for the longest known substring in an input string. For each possible substring, they also reverse any sandhi rule that might have applied and thus generate a number of forms to look up. Since their sandhi splitters are only a preprocessing step for their POS Taggers, they do not report any performance measures.
+
+Statistical methods for sandhi splitting are much more popular that rule based methods. \textcite{devadath2014sandhi} explore a hybrid approach where they first determine the split points statistically relying on n-gram frequencies and then modify the identified tokens using predefined sandhi rules. Their system reaches an accuracy of 91.1 \% (meaning words that were split exactly as in the gold standard).
+
+\textcite{prathyusha2015sandhi} develop a purely statistical language independent sandhi splitter which they evaluate on Telugu and Malayalam. The train a Conditional Random Fields model to identify split points and applicable sandhi rules based on the characters of the word and surrounding segments to resolve ambiguous splits and sandhi processes. They reach an accuracy of 89.07 \% for Telugu and 90.50 \% for Malayalam.
+
+\textcite{nisha2016sandhi} employ Memory Based Language Processing to create a sandhi splitter and morphological analyzer for Malayalam. Their system divides words in the training corpus into a root and suffix part and matches unseen data against the already encountered suffixes, finding the closest match using a distance measure. They report an accuracy of 90 \%.
+% " Sandhi  splitting  is  essential  for  morphological  analysis,  document  indexing  and  topic  modeling."
+
+Machine learning is by far the preferred method for building a sandhi splitter and the systems reach a high accuracy. However, while token merging and sandhi processes are frequent in Malayalam, the involved sandhi rules are rather few and usually very simple. Collecting large training sets and building complex statistical models seems exaggerated for this task. Since Malayalam (external) sandhi is either simple insertion or only affects the final characters of the preceding word and leaves the following word untouched, a recursive lookup strategy from right to left, as employed by \textcite{manju2009pos} and \textcite{bindu2011pos}, seems to be fitting the task quite nicely. Of course, this requires a large dictionary that either contains all possible inflected forms or comes with a morphological analyzer, and will also fail on unknown words or forms. The big advantage of the statistical models here is that they easily generalize to unseen data.
+
+\subsection{Morphological analysis}
+
+Bla bla
+
+\textcite{rajeev2007morph} and \textcite{jayan2011translation} make use of Malayalam's suffixing nature and employ a suffix stripping method: On a tokenized sentence, they recursively remove recognized suffixes from the word, paying attention to sandhi processes, until the remaining stem can be found in a dictionary. For Malayalam, this method is very effective, but requires a predefined set of suffixes and a large dictionary of stems. Also, it is not generalizable to languages with prefixes or a non-agglutinative morphology.
+
+\textcite{manju2009pos} take a less specialized direction by parsing and analyzing Malayalam words using a Finite State Transducer (FST). FSTs have long proven to be very suitable for morphological analysis, especially of agglutinative languages \parencite{fsm}. They are also very fast, producing an analysis in the time that is needed to read the input string once. However, FSTs can quickly get very complex and they require hand-crafted rules for recognizing the individual morphemes, just as the suffix stripping method.
+
+In contrast to these manual methods, \textcite{sebastian2018morph} employ a machine learning approach to their Malayalam morphological analyzer. They train a Naive Bayes classifier on a split point and sandhi rule annotated data set. The overall performance of their system is not entirely clear, as they only provide accuracy measures for words ending in \textit{-yalla} (negation), \textit{-yuṭe} (genitive case), \textit{-yāṇŭ} and \textit{-yāyi} (two forms of \textit{ākuka} `to be', actually cases of \textit{external sandhi}), only covering one rather predictable type of \textit{sandhi} (glide insertion). For these four examples, their analyzer recognizes and applies 92.06 \% of the desired splits.
 
 \section{The Malayalam Glosser}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{systemarchitecture.png}
+\caption{The architecture of the Malayalam Glosser.}
+\label{architecture}
+\end{figure}
 
 Bla bla
 
 \subsection{Transliteration}
 
+Due to its syllabic nature, morpheme splitting is a tedious task in the Malayalam script and is best carried out in an alphabetic transcription. Also, while the Malayalam script has been included in Unicode for quite some time and Malayalam keyboard layouts are preinstalled on most modern machines, even native speakers of Malayalam frequently type Malayalam in a Latin romanization. Language learners, the primary target audience of the Malayalam Glosser, often do not know how to use the Malayalam script on a computer, especially when they are beginners. It is therefore necessary to convert Malayalam text between the script and various romanizations to be able to support the most popular input formats and display the finished glosses in a readable way.
+
 \subsubsection{Supported Scripts}
+
+Apart from the Malayalam script, the Malayalam Glosser currently supports two additional romanization schemes, Mozhi and ISO-15919. The Mozhi romanization is very popular especially among Malayalis to write Malayalam on the web. It consists only of ASCII characters and utilizes capitalization to enlarge the set of available characters \parencite{mozhi}. The ISO-15919 or National Library at Kolkata romanization is the default romanization scheme in scientific texts for all Indic languages (it is also the one used in this paper). It makes heavy use of diacritics and is thus not easily typable on the average English keyboard. Because of this, there also is an ASCII version of ISO-15919 which replaces the diacritics by punctuation characters \parencite{iso-15919}. Both variants of ISO-15919, Unicode and ASCII based, are supported by the Malayalam Glosser.
+
+A full table with all Malayalam characters in the different scripts (Malayalam script, ISO-15919 Unicode, ISO-15919 ASCII and Mozhi) can be found in the appendix. (\ref{supportedScripts}) is an example of how the sentence `xxx' is spelled in the four supported scripts.
+
+\ex
+Malayalam: \\
+ISO-15919 Unicode: \\
+ISO-15919 ASCII: \\
+Mozhi: 
+\label{supportedScripts}\xe
+
+The ISO-15919 ASCII romanization is also the underlying representation of all dictionary entries, since the Malayalam rules of the \typ{MorphGen} are written in this format.
 
 \subsubsection{Transliterators}
 
-MalayalamTranscriptor
+The main class handling all transliterations between the different scripts in the \typ{MalayalamTranscriptor}. However, it mostly serves as an interface to the transliterator system designed for the NorthEuraLex database by the EVOLAEMP project \parencite{northeuralex}. To display phonetic transcriptions for the lexical entries in their database, they developed automatic rule-based transliterators that are able to convert from orthography to IPA based on language-specific rule sets \parencite{daneyko2016translit}. Since phonetic transcription is just another type of transliteration, the same infrastructure can also be used to convert between different romanization schemes. The EVOLAEMP transliterators also have an efficient FST based implementation, the Java version of which is quite platform-dependent, so the basic Java implementation (called `simple transliterators' in \textcite{daneyko2016translit}) was used in a slightly altered form.
+
+Transliterator rules from Malayalam script to ISO-15919 Unicode and from ISO-15919 Unicode to IPA were already written for the NorthEuraLex database. Hence, ISO-15919 Unicode was selected as the intermediate representation for the transliterators and additional rules were written for ISO-15919 Unicode to Malayalam script, ISO-15919 Unicode from and to ISO-15919 ASCII, and ISO-15919 Unicode from and to Mozhi.
 
 \subsection{Morphology Generation}
 
 MorphGen
-
-\subsection{Tokenization}
-
-MalayalamGlosser
 
 \subsection{Dictionary lookup}
 
@@ -135,9 +212,9 @@ Considering that the dictionary may be very large and that the main function of 
 
 \subsubsection*{\typ{HashMap} vs. \typ{ReverseTrie}}
 
-The straightforward way to represent a dictionary as a Java object is a \typ{HashMap}. Apart from being readily available and easy to use, querying a \typ{HashMap} is fast. However, this also means that all entries are stored as their complete String representation, which may consume quite a lot of space. Considering that the inflected forms of the words share most of their characters, a trie representation seemed quite suitable and might be able to save space compared to a simple \typ{HashMap}. Since Malayalam is exclusively suffixing, I programmed a \typ{ReverseTrie} which reads and retrieves the strings from last to first character, in order to save as much space as possible. A useful side effect of this is that the tokenizer does not need to look up all suffixes of a compound word in the dictionary, but can simply do a suffix search of the \typ{ReverseTrie} to get the longest contained suffix.
+The straightforward way to represent a dictionary as a Java object is a \typ{HashMap}. Apart from being readily available and easy to use, querying a \typ{HashMap} is fast. However, this also means that all entries are stored as their complete \typ{String} representation, which may consume quite a lot of space. Considering that the inflected forms of the words share most of their characters, a trie representation seemed quite suitable and might be able to save space compared to a simple \typ{HashMap}. Since Malayalam is exclusively suffixing, I programmed a \typ{ReverseTrie} which reads and retrieves the strings from last to first character, in order to save as much space as possible. A useful side effect of this is that the tokenizer does not need to look up all suffixes of a compound word in the dictionary, but can simply do a suffix search of the \typ{ReverseTrie} to get the longest contained suffix.
 
-In order to compare the performance of a \typ{HashMap} and \typ{ReverseTrie} based dictionary, I measured the memory used by the program before loading the dictionary data and after creating the \typ{HashMap} and Trie (calculated as \typ{Runtime.totalMemory() - Runtime.freeMemory()} after a \typ{System.gc()} call). Then I let the dictionary find the longest known suffix of the test String \textit{aviṭeyuḷḷataṟiññu} (\textit{aviṭe uḷḷat˘ aṟiññu} ``knew (he) was there'') 1,000,000 times and measured the time needed by a MashMap and \typ{ReverseTrie} based dictionary (calculated using \typ{System.currentmillis()}). Finally, I rewrote the tokenizer to also work with a \typ{ReverseTrie} and tested how long tokenization of a short conversation from \textcite{moag} took it with the two dictionary types.
+In order to compare the performance of a \typ{HashMap} and \typ{ReverseTrie} based dictionary, I measured the memory used by the program before loading the dictionary data and after creating the \typ{HashMap} and Trie (calculated as \typ{Runtime.totalMemory() - Runtime.freeMemory()} after a \typ{System.gc()} call). Then I let the dictionary find the longest known suffix of the test String \textit{aviṭeyuḷḷataṟiññu} (\textit{aviṭe uḷḷatŭ aṟiññu} ``knew (he) was there'') 1,000,000 times and measured the time needed by a MashMap and \typ{ReverseTrie} based dictionary (calculated using \typ{System.currentmillis()}). Finally, I rewrote the tokenizer to also work with a \typ{ReverseTrie} and tested how long tokenization of the short conversation from lesson 11 of \textcite[p.164f]{moag} took it with the two dictionary types.
 
 Despite the many shared suffixes, the \typ{HashMap} was smaller than the \typ{ReverseTrie}, taking up 8,318,164.8 bytes on average during five test runs, while the Trie required 12,590,051.2 bytes. However, the memory used by the \typ{HashMap} varied greatly, ranging from only 5,160,456 to 9,801,392 bytes, while the Trie always consumed almost exactly the same amount of memory. This indicates that the measurements might have been distorted by background processes such as the garbage collection. However, the \typ{HashMap} still seems to be considerably smaller.
 
@@ -156,10 +233,103 @@ During five test runs, parsing the text file into an object took 278.2 ms on ave
 The file storing the serialized \typ{ReverseTrie} was twice as large as the file with the \typ{HashMap}. This confirms my assertions from the previous section that the Trie takes more space than the \typ{HashMap}.
 
 
+\subsection{Tokenization}
+
+MalayalamGlosser
+
 \subsection{UI Design}
 
 \section{Conclusion}
 
 \printbibliography
+\clearpage
+
+\appendix
+
+\section{Abbreviations used in glosses}
+
+\begin{multicols}{2}
+\begin{labeling}{XXXX}
+\itemsep0em
+\item [\textsc{cau}] Causative
+\item [\textsc{cop}] The copula \textit{āṇŭ}
+\item [\textsc{dat}] Dative case
+\item [\textsc{des}] Desiderative mood
+\item [\textsc{pass}] Passive voice
+\item [\textsc{perf}] Perfect aspect
+\item [\textsc{pl}] Plural number
+\item [\textsc{prog}] Progressive aspect
+\item [\textsc{prs}] Present tense
+\item [\textsc{pst}] Past tense
+\item [\textsc{part}] Participle
+\item [\textsc{soc}] Sociative case
+\end{labeling}
+\end{multicols}
+
+\section{Transcription schemes}
+
+\begin{longtable}[l]{p{2.3cm} p{2.3cm} p{2.3cm} p{2.3cm}}
+\textbf{Script} & \textbf{ISO (Uni)} & \textbf{ISO (ASCII)} & \textbf{Mozhi} \\[1ex]
+അ & a & a & a \\
+ആ & ā & aa & aa \\
+ഇ & i & i & i \\
+ഈ & ī & ii & ii \\
+ഉ & u & u & u \\
+ഊ & ū & uu & uu \\
+ഋ & r̥ & ,r & R \\
+എ & e & e & e \\
+ഏ & ē & ee & E \\
+ഐ & ai & ai & ai \\
+ഒ & o & o & o \\
+ഓ & ō & oo & O \\
+ഔ & au & au & au \\
+അം & aṁ & a;m & am \\
+അഃ & aḥ & a.h & ah \\
+ക & ka & ka & ka \\
+ഖ & kha & kha & kha \\
+ഗ & ga & ga & ga \\
+ഘ & gha & gha & gha \\
+ങ & ṅa & ;na & nga \\
+ച & ca & ca & cha \\
+ഛ & cha & cha & chha \\
+ജ & ja & ja & ja \\
+ഝ & jha & jha & jha \\
+ഞ & ña & \textasciitilde{}na & nja \\
+ട & ṭa & .ta & Ta \\
+ഠ & ṭha & .tha & Tha \\
+ഡ & ḍa & .da & Da \\
+ഢ & ḍha & .dha & Dha \\
+ണ & ṇa & .na & Na \\
+ത & ta & ta & tha \\
+ഥ & tha & tha & thha \\
+ദ & da & da & da \\
+ധ & dha & dha & dha \\
+ന & na & na & na \\
+പ & pa & pa & pa \\
+ഫ & pha & pha & pha \\
+ബ & ba & ba & ba \\
+ഭ & bha & bha & bha \\
+മ & ma & ma & ma \\
+യ & ya & ya & ya \\
+ര & ra & ra & ra \\
+ല & la & la & la \\
+വ & va & va & va \\
+ശ & śa & ;sa & Sa \\
+ഷ & ṣa & .sa & sha \\
+സ & sa & sa & sa \\
+ഹ & ha & ha & ha \\
+ള & ḷa & .la & La \\
+ഴ & ḻa & \_la & zha \\
+റ & ṟa & \_ra & rra \\
+റ്റ & ṯṯa/ṟṟa & \_t\_ta/\_r\_ra & ta \\
+ന്റ & nṯa/nṟa & n\_ta/n\_ra & nta \\
+ൻ & n & n & n \\
+ൺ & ṇ & .n & N \\
+ർ & r & r & r \\
+ൽ & l & l & l \\
+ൾ & ḷ & .l & L \\
+ൿ & k & k & k \\
+ക് & kŭ & k\textasciicircum{}u & k\textasciitilde \\
+\end{longtable}
 
 \end{document}

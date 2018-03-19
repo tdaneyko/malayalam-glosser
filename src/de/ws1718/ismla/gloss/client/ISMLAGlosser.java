@@ -60,6 +60,9 @@ public class ISMLAGlosser implements EntryPoint {
 	private static final String LG_WIDTH = "col-lg-8";
 	private static final String SM_WIDTH = "col-sm-12";
 	private static final String[] PAGE_STYLES = new String[]{LG_OFFSET,LG_WIDTH,SM_WIDTH};
+	
+	private static enum GlossPackage {GB4E, EXPEX}
+	private GlossPackage selectedGlossPackage = GlossPackage.GB4E;
 
 	private GlossServiceAsync glossService = GWT.create(GlossService.class);
 	private TableProviderServiceAsync readService = GWT.create(TableProviderService.class);
@@ -320,12 +323,37 @@ public class ISMLAGlosser implements EntryPoint {
 			}
 			
 			FlowPanel buttonPanel = new FlowPanel();
+			applyPageStyles(buttonPanel);
+			buttonPanel.addStyleName("space-below-lg");
+			
 			Button submit = new Button("Finish");
 			submit.setType(ButtonType.PRIMARY);
 			submit.addClickHandler(new GlossFinishingHandler());
 			buttonPanel.add(submit);
-			applyPageStyles(buttonPanel);
-			buttonPanel.addStyleName("space-below-lg");
+			
+			RadioButton gb4e = new RadioButton("gb4e");
+			gb4e.setText("gb4e");
+			gb4e.setValue(true);
+			gb4e.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) { selectedGlossPackage = GlossPackage.GB4E; }
+			});
+			RadioButton expex = new RadioButton("expex");
+			expex.setText("expex");
+			expex.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) { selectedGlossPackage = GlossPackage.EXPEX; }
+			});
+			selectedGlossPackage = GlossPackage.GB4E;
+			StringRadioGroup glossFormat = new StringRadioGroup("Gloss package");
+			glossFormat.add(gb4e);
+			glossFormat.add(expex);
+			FormLabel glossFormatLabel = new FormLabel();
+			glossFormatLabel.setFor("glossFormat");
+			glossFormatLabel.setText("LaTeX code for:");
+			buttonPanel.add(glossFormatLabel);
+			buttonPanel.add(glossFormat);
+			
 			fset.add(buttonPanel);
 		}
 
@@ -390,16 +418,27 @@ public class ISMLAGlosser implements EntryPoint {
 				line3 += trans + " ";
 				glossPanel.add(getFinishedGloss(orig, ipa, split, trans));
 			}
-			String glossCode = "\\begin{exe}\n" + "\\ex\n" + sentence + "\n\\glll\n"
-					+ escapeLaTeXChars(line1) + "\\\\\n"
-					+ escapeLaTeXChars(line2) + "\\\\\n"
-					+ escapeLaTeXChars(line3) + "\\\\\n"
-					+ "\\trans `Insert your translation here...'\n" + "\\end{exe}\n";
 			Pre codePanel = new Pre();
-			codePanel.setText(glossCode);
+			codePanel.setText(getGlossCode(sentence, line1, line2, line3));
 			codePanel.addStyleName("space-above-sm");
 			glossPanel.add(codePanel);
 		}
+	}
+	
+	private String getGlossCode(String sentence, String line1, String line2, String line3) {
+		if (selectedGlossPackage.equals(GlossPackage.GB4E))
+			return "\\begin{exe}\n" + "\\ex\n" + sentence + "\n\\glll\n"
+			+ escapeLaTeXChars(line1) + "\\\\\n"
+			+ escapeLaTeXChars(line2) + "\\\\\n"
+			+ escapeLaTeXChars(line3) + "\\\\\n"
+			+ "\\trans `Insert your translation here...'\n" + "\\end{exe}\n";
+		if (selectedGlossPackage.equals(GlossPackage.EXPEX))
+			return "\\ex\\begingl\n" + "\\glpreamble " + sentence + " //\n"
+			+ "\\gla " + escapeLaTeXChars(line1) + "//\n"
+			+ "\\glb " + escapeLaTeXChars(line2) + "//\n"
+			+ "\\glc " + escapeLaTeXChars(line3) + "//\n"
+			+ "\\glft `Insert your translation here...' //\n" + "\\endgl\\xe\n";
+		return "";
 	}
 	
 	private String escapeLaTeXChars(String code) {
@@ -476,13 +515,14 @@ public class ISMLAGlosser implements EntryPoint {
 
 		infoPanel.add(applyPageStyles(new Legend("How to use the Glosser")));
 		String gb4eLink = link("https://ctan.org/pkg/gb4e", "gb4e");
+		String expexLink = link("https://ctan.org/pkg/expex", "expex");
 		infoPanel.add(applyPageStyles(new HTMLPanel("p",
 				"The Malayalam Glosser is a tool to break any Malayalam text apart into its individual morphemes. "
 						+ "It is a tokenizer in the sense that it will split contracted expressions such as വീട്ടിലാണ് into "
 						+ "their individual tokens (വീട്ടിൽ and ആണ്), but first and foremost it is a morphology analyzer which "
 						+ "can split inflected words such as വീട്ടിൽ into their individual morphemes (വീട് and the locative ending "
 						+ "-ഇൽ) and annotate them accordingly. The finished glosses are also converted to LaTeX code (using the "
-						+ gb4eLink + " package) so that you can easily insert them into you LaTeX document.")));
+						+ gb4eLink + " or " + expexLink + " package) so that you can easily insert them into you LaTeX document.")));
 		infoPanel.add(applyPageStyles(new HTMLPanel("p",
 				"To use the Glosser, simply enter your Malayalam text in one of the four supported input scripts (see "
 						+ "below). Make sure to select the input script that you used, and choose a script to display the "
@@ -579,7 +619,7 @@ public class ISMLAGlosser implements EntryPoint {
 						+ "Language Analysis\" taught by Johannes Dellert and Björn Rudzewitz at the University of "
 						+ "Tübingen in the Winter Semester 2017/18.")));
 		String gwtBootstrap = link("https://github.com/gwtbootstrap3/gwtbootstrap3", "GWT-Bootstrap library");
-		String nel = link("https://", "NorthEuraLex");
+		String nel = link("http://northeuralex.org/", "NorthEuraLex");
 		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
 				"This page was coded in Java using the " + gwtBootstrap + ". For the phonetic transcription and "
 				+ "transliteration between the different scripts, I used the transliterator system that was designed "

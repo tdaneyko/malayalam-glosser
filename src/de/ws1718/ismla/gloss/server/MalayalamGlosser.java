@@ -75,7 +75,7 @@ public class MalayalamGlosser {
 				String tail = word.substring(i);
 				// Case aa.n' -> aa
 				if (tail.equals("aa"))
-					tail = "aa.n'";
+					tail = "aa.n^u";
 				List<String> candidates = new ArrayList<>();
 				candidates.add(head);
 				int z = head.length()-1;
@@ -86,8 +86,11 @@ public class MalayalamGlosser {
 					candidates.add("vee.na;m");
 				if ((tail.equals("ee") || tail.equals("oo")) && !isVowel(head.charAt(z)))
 					candidates.add(head + 'u');
+				// Coordination clitic u;m
+				if (tail.equals("u;m") && head.charAt(z) == 'v')
+					candidates.add(head.substring(0, z) + ";m");
 				// aa.n'
-				if (tail.equals("aa.n'")) {
+				if (tail.equals("aa.n^u")) {
 					if (!isVowel(head.charAt(z)))
 						candidates.add(head + 'a');
 				}
@@ -107,10 +110,10 @@ public class MalayalamGlosser {
 					candidates.add(head + ";m");
 				// Candrakkala deletion
 				if (isVowel(tail.charAt(0)) && !isVowel(head.charAt(z)))
-					candidates.add(head + '\'');
+					candidates.add(head + "^u");
 				// Candrakkala -> u
-				if (head.charAt(z) == 'u' && !isVowel(tail.charAt(0)))
-					candidates.add(head.substring(0, z) + '\'');
+				if (head.charAt(z) == 'u' && head.charAt(z-1) != '^' && !isVowel(tail.charAt(0)))
+					candidates.add(head.substring(0, z) + "^u");
 				// Gemination
 				if (head.charAt(z) == tail.charAt(0))
 					candidates.add(head.substring(0, z));
