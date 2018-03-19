@@ -10,6 +10,7 @@ import org.gwtbootstrap3.client.ui.FieldSet;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.FormLabel;
+import org.gwtbootstrap3.client.ui.InlineRadio;
 import org.gwtbootstrap3.client.ui.Legend;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.client.ui.Navbar;
@@ -195,25 +196,19 @@ public class ISMLAGlosser implements EntryPoint {
 				currentInFormat = getFormat(button.getText());
 			}
 		};
-		RadioButton biScript = new RadioButton(MALAYALAM_SCRIPT);
+		RadioButton biScript = new RadioButton("inFormat");
 		biScript.setText(MALAYALAM_SCRIPT);
 		biScript.setValue(true);
 		biScript.addClickHandler(inFormatHandler);
-		RadioButton biMozhi = new RadioButton(MOZHI);
+		RadioButton biMozhi = new RadioButton("inFormat");
 		biMozhi.setText(MOZHI);
 		biMozhi.addClickHandler(inFormatHandler);
-		RadioButton biUni = new RadioButton(ISO15919_UNICODE);
+		RadioButton biUni = new RadioButton("inFormat");
 		biUni.setText(ISO15919_UNICODE);
 		biUni.addClickHandler(inFormatHandler);
-		RadioButton biAscii = new RadioButton(ISO15919_ASCII);
+		RadioButton biAscii = new RadioButton("inFormat");
 		biAscii.setText(ISO15919_ASCII);
 		biAscii.addClickHandler(inFormatHandler);
-		StringRadioGroup inFormat = new StringRadioGroup("Input format");
-		inFormat.add(biScript);
-		inFormat.add(biUni);
-		inFormat.add(biAscii);
-		inFormat.add(biMozhi);
-		inFormat.addStyleName("space-below-sm");
 		FormLabel labelIn = new FormLabel();
 		labelIn.setFor("inFormat");
 		labelIn.setText("Input script:");
@@ -225,30 +220,32 @@ public class ISMLAGlosser implements EntryPoint {
 				currentOutFormat = getFormat(button.getText());
 			}
 		};
-		RadioButton boUni = new RadioButton(ISO15919_UNICODE);
+		RadioButton boUni = new RadioButton("outFormat");
 		boUni.setText(ISO15919_UNICODE);
 		boUni.setValue(true);
 		boUni.addClickHandler(outFormatHandler);
-		RadioButton boAscii = new RadioButton(ISO15919_ASCII);
+		RadioButton boAscii = new RadioButton("outFormat");
 		boAscii.setText(ISO15919_ASCII);
 		boAscii.addClickHandler(outFormatHandler);
-		RadioButton boMozhi = new RadioButton(MOZHI);
+		RadioButton boMozhi = new RadioButton("outFormat");
 		boMozhi.setText(MOZHI);
 		boMozhi.addClickHandler(outFormatHandler);
-		StringRadioGroup outFormat = new StringRadioGroup("Output format");
-		outFormat.add(boUni);
-		outFormat.add(boAscii);
-		outFormat.add(boMozhi);
 		FormLabel labelOut = new FormLabel();
 		labelOut.setFor("outFormat");
 		labelOut.setText("Gloss script:");
+		labelOut.addStyleName("space-above-sm");
 		
 		FlowPanel inOutFormatPanel = new FlowPanel();
 		inOutFormatPanel.addStyleName("col-lg-2");
 		inOutFormatPanel.add(labelIn);
-		inOutFormatPanel.add(inFormat);
+		inOutFormatPanel.add(biScript);
+		inOutFormatPanel.add(biUni);
+		inOutFormatPanel.add(biAscii);
+		inOutFormatPanel.add(biMozhi);
 		inOutFormatPanel.add(labelOut);
-		inOutFormatPanel.add(outFormat);
+		inOutFormatPanel.add(boUni);
+		inOutFormatPanel.add(boAscii);
+		inOutFormatPanel.add(boMozhi);
 		
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
@@ -331,28 +328,29 @@ public class ISMLAGlosser implements EntryPoint {
 			submit.addClickHandler(new GlossFinishingHandler());
 			buttonPanel.add(submit);
 			
-			RadioButton gb4e = new RadioButton("gb4e");
+			InlineRadio gb4e = new InlineRadio("glossFormat");
 			gb4e.setText("gb4e");
+			gb4e.addStyleName("space-left-sm");
 			gb4e.setValue(true);
 			gb4e.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) { selectedGlossPackage = GlossPackage.GB4E; }
 			});
-			RadioButton expex = new RadioButton("expex");
+			InlineRadio expex = new InlineRadio("glossFormat");
 			expex.setText("expex");
+			expex.addStyleName("space-left-sm");
 			expex.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) { selectedGlossPackage = GlossPackage.EXPEX; }
 			});
 			selectedGlossPackage = GlossPackage.GB4E;
-			StringRadioGroup glossFormat = new StringRadioGroup("Gloss package");
-			glossFormat.add(gb4e);
-			glossFormat.add(expex);
 			FormLabel glossFormatLabel = new FormLabel();
 			glossFormatLabel.setFor("glossFormat");
 			glossFormatLabel.setText("LaTeX code for:");
+			glossFormatLabel.addStyleName("space-left-sm");
 			buttonPanel.add(glossFormatLabel);
-			buttonPanel.add(glossFormat);
+			buttonPanel.add(gb4e);
+			buttonPanel.add(expex);
 			
 			fset.add(buttonPanel);
 		}

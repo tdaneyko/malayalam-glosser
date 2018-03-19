@@ -2184,10 +2184,11 @@
     <bcf:citekey order="37">sebastian2018morph</bcf:citekey>
     <bcf:citekey order="38">mozhi</bcf:citekey>
     <bcf:citekey order="39">iso-15919</bcf:citekey>
-    <bcf:citekey order="40">northeuralex</bcf:citekey>
-    <bcf:citekey order="41">daneyko2016translit</bcf:citekey>
+    <bcf:citekey order="40">malOmniglot</bcf:citekey>
+    <bcf:citekey order="41">northeuralex</bcf:citekey>
     <bcf:citekey order="42">daneyko2016translit</bcf:citekey>
-    <bcf:citekey order="43">moag</bcf:citekey>
+    <bcf:citekey order="43">daneyko2016translit</bcf:citekey>
+    <bcf:citekey order="44">moag</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="nyt/global/" type="entry" sortscheme="nyt" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

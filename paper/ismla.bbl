@@ -19,6 +19,33 @@
 
 \refsection{0}
   \sortlist[entry]{nyt/global/}
+    \entry{malOmniglot}{online}{}
+      \name{author}{1}{}{%
+        {{hash=64657b85bb4f8bfe27a2de9782f62a74}{%
+           family={Ager},
+           familyi={A\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{64657b85bb4f8bfe27a2de9782f62a74}
+      \strng{fullhash}{64657b85bb4f8bfe27a2de9782f62a74}
+      \strng{authornamehash}{64657b85bb4f8bfe27a2de9782f62a74}
+      \strng{authorfullhash}{64657b85bb4f8bfe27a2de9782f62a74}
+      \field{sortinit}{A}
+      \field{sortinithash}{3248043b5fe8d0a34dab5ab6b8d4309b}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Malayalam (മലയാളം)}
+      \field{urlday}{19}
+      \field{urlmonth}{3}
+      \field{urlyear}{2018}
+      \field{year}{2011}
+      \field{urldateera}{ce}
+      \verb{url}
+      \verb https://www.omniglot.com/writing/malayalam.htm
+      \endverb
+    \endentry
     \entry{asherKumari}{book}{}
       \name{author}{2}{}{%
         {{hash=8b5c27f29e1b761daa8dce22a8243e8f}{%
@@ -121,8 +148,12 @@
       \field{labeldatesource}{year}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Mozhi - Detailed specification}
+      \field{title}{Mozhi -- Detailed specification}
+      \field{urlday}{18}
+      \field{urlmonth}{3}
+      \field{urlyear}{2018}
       \field{year}{2008}
+      \field{urldateera}{ce}
       \verb{url}
       \verb https://sites.google.com/site/cibu/mozhi/mozhi2
       \endverb

@@ -18,6 +18,7 @@
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{scrextend}
+\usepackage{listings}
 
 %\setmainfont{CMU Serif Roman}
 \setmonofont[Scale=0.9]{Consolas}
@@ -31,6 +32,8 @@
 
 \newcommand{\asciiapo}{\XeTeXglyph\XeTeXcharglyph"0027\relax}
 \newcommand{\asciiquot}{\XeTeXglyph\XeTeXcharglyph"0022\relax}
+\newcommand{\ci}{\textasciicircum}
+\newcommand{\tab}{~~~}
 
 \newcommand{\typ}[1]{\texttt{#1}}
 \newcommand{\afx}[1]{\textsc{#1}}
@@ -181,13 +184,13 @@ Due to its syllabic nature, morpheme splitting is a tedious task in the Malayala
 
 Apart from the Malayalam script, the Malayalam Glosser currently supports two additional romanization schemes, Mozhi and ISO-15919. The Mozhi romanization is very popular especially among Malayalis to write Malayalam on the web. It consists only of ASCII characters and utilizes capitalization to enlarge the set of available characters \parencite{mozhi}. The ISO-15919 or National Library at Kolkata romanization is the default romanization scheme in scientific texts for all Indic languages (it is also the one used in this paper). It makes heavy use of diacritics and is thus not easily typable on the average English keyboard. Because of this, there also is an ASCII version of ISO-15919 which replaces the diacritics by punctuation characters \parencite{iso-15919}. Both variants of ISO-15919, Unicode and ASCII based, are supported by the Malayalam Glosser.
 
-A full table with all Malayalam characters in the different scripts (Malayalam script, ISO-15919 Unicode, ISO-15919 ASCII and Mozhi) can be found in the appendix. (\ref{supportedScripts}) is an example of how the sentence `xxx' is spelled in the four supported scripts.
+A full table with all Malayalam characters in the different scripts (Malayalam script, ISO-15919 Unicode, ISO-15919 ASCII and Mozhi) can be found in the appendix. (\ref{supportedScripts}) is an example of how the sentence `all human beings are born free and equal in dignity and rights' is spelled in the four supported scripts \parencite{malOmniglot}.
 
 \ex
-Malayalam: \\
-ISO-15919 Unicode: \\
-ISO-15919 ASCII: \\
-Mozhi: 
+\textbf{Malayalam:} മനുഷ്യരെല്ലാവരും തുല്യാവകാശങ്ങളോടും അന്തസ്സോടും \\ സ്വാതന്ത്ര്യത്തോടുംകൂടി ജനിച്ചവരാണ്. \\[1ex]
+\textbf{ISO-15919 Unicode:} manuṣyarellāvaruṁ tulyāvakāśaṅṅaḷōṭuṁ antassōṭuṁ svātantryattōṭuṁkūṭi janiccavarāṇŭ. \\[1ex]
+\textbf{ISO-15919 ASCII:} manu.syarellaavaru;m tulyaavakaa;sa;n;na.loo.tu;m antassoo.tu;m svaatantryattoo.tu;mkuu.ti janiccavaraa.n\^{}u. \\[1ex]
+\textbf{Mozhi:} manushyarellaavarum thulyaavakaaSangngaLOTum anthassOTum svaathanthryaththOTumkuuTi janichchavaraaN\textasciitilde{}.
 \label{supportedScripts}\xe
 
 The ISO-15919 ASCII romanization is also the underlying representation of all dictionary entries, since the Malayalam rules of the \typ{MorphGen} are written in this format.
@@ -198,9 +201,59 @@ The main class handling all transliterations between the different scripts in th
 
 Transliterator rules from Malayalam script to ISO-15919 Unicode and from ISO-15919 Unicode to IPA were already written for the NorthEuraLex database. Hence, ISO-15919 Unicode was selected as the intermediate representation for the transliterators and additional rules were written for ISO-15919 Unicode to Malayalam script, ISO-15919 Unicode from and to ISO-15919 ASCII, and ISO-15919 Unicode from and to Mozhi.
 
-\subsection{Morphology Generation}
+
+\subsection{Morphological generation}
 
 MorphGen
+
+\subsubsection{File format}
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{>{\ttfamily}l >{\ttfamily}l}
+{}[*]\ci{}u|DAT & [1]|in\ci{}u \\
+{}[*]u|DAT & [1]u|vin\ci{}u \\
+{}[*];m|DAT & [1]tt|in\ci{}u \\
+{}[*][!. \_]l|DAT & [1][2]l|kk\ci{}u \\
+{}[*][!l r]|DAT & [1][2]|in\ci{}u \\
+{}[*]n|DAT & [1]n|\ci{}u \\
+{}[*]|DAT & [1]|kk\ci{}u \\
+\end{tabular}
+\caption{The dative rules from the Malayalam \typ{MorphGen} rule set.}
+\label{dative-rules}
+\end{figure}
+
+\typ{MorphGen} requires one file containing the rules for generating the inflected words from a given gloss. The rule file is a simple text file, with one rule per line, input and output side of each rule separated by a tab stop. Figure \ref{dative-rules} shows an excerpt from the Malayalam rule file.
+
+Since some scripts, notably the ISO-15919 ASCII romanization for Malayalam, may use the \typ{-} and \typ{.}\ characters that are usually displayed in glosses, \typ{MorphGen} operates on \typ{|} and \typ{\&} instead. Hence, the gloss `mouse.\afx{pl}-\afx{gen}' would be written \typ{mouse\&PL|GEN} in the \typ{MorphGen} format. For infixes, \typ{<>} is used (e.g. \typ{mouse<>PL|GEN}).
+
+A couple of special characters can be used inside rules for easier matching:
+
+\begin{itemize}
+\item{} \typ{[*]} is a wildcard matching any number (including none) of characters. The matched characters can be referred to on the output side by an integer corresponding to the position of the wildcard on the left side. Applying the rule \typ{[*]x[*]y[*] \tab x[3][2]z[2]} to the input \typ{aaxbyccc}, for example, would assign \typ{aa} to 1, \typ{b} to 2 and \typ{ccc} to 3 and hence produce the output \typ{xcccbzb}. These wildcards can also be named and referred to by their name on the right side, as in \typ{[*]x[name]y[*] \tab x[2][name]z[name]}. Note that these names do not increase the counter for the wildcard labels: The variable previously referred to as 3 on the right side is now labeled 2.
+\item By default, \typ{MorphGen} inserts wildcards at the beginning and end of the string if not present and matches them once at the beginning and end on the right side. The rule \typ{a \tab b} gets translated to \typ{[*]a[*] \tab [1]b[2]}, for example. To prevent this, word boundaries may explicitly be matched by a hash tag \typ{\#} on the left side. Thus, the rule \typ{a\# \tab b} will be converted to \typ{[*]a \tab [1]b}, matching only \typ{a}s at the end of a string.
+\item A frequently recurring group of characters to match can be defined on top of the file using the keyword \typ{\#def} followed by the variable name followed by the group contents in square brackets, as in \typ{\#def \tab \#V \tab [aa ai au ee ii oo uu a e i o u]} which define the set of vowels in Malayalam. Note that the \typ{\#def} keyword, the group name and the group definition are tab separated, while the strings inside the group definition are separated by whitespaces. The name of a group variable must always begin with a hash tag \typ{\#} to distinguish it from the named wildcards. These groups can be referenced on the left side of a rule with \typ{[\#name]} and on the right side with their integer label just like wildcards, as in \typ{[*][\#V]t[\#V][*] \tab [1][2]d[3][4]}.
+\item Ad-hoc groups for a single rule may be created with \typ{[!item1 item2 ...]}, as in the example in Figure \ref{dative-rules}.
+\item An optional group, i.e. a group matching one or none of the contained characters can be introduced with \typ{[?item1 item2 ...]}. Predefined groups may also be optionalized by referring to them with \typ{[?\#name]}. Consider for example the rule \typ{\#[?\#C][\#V].tuka|PST \tab [1][2].t|.tu} used to produce the past tense form of Malayalam verbs of the (C)Vṭuka. The optionally matched initial consonant is reprinted in the \typ{[1]} position on the right side only if it was actually found.
+\item Sometimes the realization of same form may differ between words. For instance, the past tense of the verb വിൽക്കുക \textit{vilkkuka} `to sell' is \textit{viṟṟu}, while that of നിൽക്കുക \textit{nilkkuka} `to stand' is \textit{ninnu}. The phonological cues for selecting the appropriate past tense form have long been lost on these verbs, hence to get a complete paradigm, we may want to generate both forms. Multiple output sides for a single input side are separated by \typ{||}, as in this past tense rule for verbs ending in \textit{-lkkuka}: \typ{[*]lkkuka|PST	[1]\_r|\_ru || [1]n|nu}.
+\end{itemize}
+
+\typ{MorphGen} optionally requires a second file specifying the templates for paradigm generation (see section \ref{pargen}). In this file, the possible inflections for each part of speech and the order in which they may occur are defined in a regular expression-like notation. This is the specification for Malayalam nouns:
+
+\typ{[n] PL (NOM || ACC || DAT || GEN || SOC || INS || LOC)}
+
+This means that a Malayalam word labeled with the part of speech tag \typ{n} can optionally have the feature \typ{PL}, optionally followed by any of the case features. It spells out as: \typ{n}, \typ{n PL}, \typ{n PL NOM}, \typ{n NOM}, \typ{n PL ACC}, etc. A whitespace is used to separate two features or feature groups that optionally occur in this order. \typ{||} means `or'. The whitespace takes precedence over the `or' operator, hence the case labels in the above have to be grouped together by parentheses.
+
+This is part of the specification for Malayalam verbs (the actual one is much larger and more complex):
+
+\typ{[v] PASS (((PRS || PST) (Nn || Nm || Nf) || PST\_STAT) (NEG || A)}
+
+Here, a verb can (optionally) take the passive (\typ{PASS}). This may (optionally) be followed by either the present/past tense (\typ{PRS || PST}) and (optionally) a nominalizer (\typ{Nn || Nm || Nf}), or the past tense obligatorily followed by the stative perfect marker \textit{iṭṭŭ} (\typ{PST\_STAT}). Finally, the verb can (optionally) either be negated or adjectivized (\typ{NEG || A}). Note that the underscore \typ{\_} is used to delete the optionality of the whitespace and force the two features to occur together. The above rule will produce \typ{v} and \typ{v PST STAT} (and \typ{v PST} due to the earlier mentioning of \typ{PST}), but not \typ{v STAT}.
+
+\subsubsection{Automated inflection}
+
+\subsubsection{Paradigm generation}\label{pargen}
+
 
 \subsection{Dictionary lookup}
 
@@ -236,8 +289,6 @@ The file storing the serialized \typ{ReverseTrie} was twice as large as the file
 \subsection{Tokenization}
 
 MalayalamGlosser
-
-\subsection{UI Design}
 
 \section{Conclusion}
 
@@ -276,7 +327,7 @@ MalayalamGlosser
 ഈ & ī & ii & ii \\
 ഉ & u & u & u \\
 ഊ & ū & uu & uu \\
-ഋ & r̥ & ,r & R \\
+ഋ & \ipa{r̥} & ,r & R \\
 എ & e & e & e \\
 ഏ & ē & ee & E \\
 ഐ & ai & ai & ai \\
@@ -329,7 +380,7 @@ MalayalamGlosser
 ൽ & l & l & l \\
 ൾ & ḷ & .l & L \\
 ൿ & k & k & k \\
-ക് & kŭ & k\textasciicircum{}u & k\textasciitilde \\
+ക് & kŭ & k\^{}u & k\textasciitilde \\
 \end{longtable}
 
 \end{document}
