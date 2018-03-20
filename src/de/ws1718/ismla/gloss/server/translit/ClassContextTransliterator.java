@@ -14,7 +14,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class ClassContextTransliterator implements Transliterator
+/**
+ * @author Johannes Dellert
+ */
+public class ClassContextTransliterator extends Transliterator
 {
 	List<ReplacementRule> rules;
 	HashMap<String, Set<String>> classes;

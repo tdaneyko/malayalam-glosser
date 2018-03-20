@@ -1,0 +1,33 @@
+The folder "morphgen" contains the MorphGen module, which is a separate preprocessing program for the actual Malayalam Glosser (as explained in the paper). The class MorphGen has a main method which produces the fully inflected vocabulary in mal-dict-all.tsv from the basic vocabulary file mal-dict.tsv. The rule file is mal-rules.tsv and the paradigm file is mal-affixes.tsv. All .tsv files are under src/test/resources/ where I have also stored a number of gold standard glosses referenced by the JUnit test.
+
+The folder "ISMLAGlosser" contains the actual GWT-based program. The EntryPoint class is ISMLAGlosser. Since for reasons elaborated in the term paper the vocabulary of the application is not very large and it will thus not be able to understand random texts from the web, I have copied the lesson 11 conversation from the text book I used as a reference for you to try the program out (both in Malayalam script and romanization). A gold standard gloss and translation of the dialogue can be found in the appendix of the paper.
+
+ചേച്ചി: അനിയൻ ആ മുറിയിൽ ആയിരുന്നല്ലോ. ഇപ്പോൾ അവനെ കാണുന്നില്ല. എവിടെ പോയി?
+അമ്മ: ഞാൻ അവനെ ചന്തയിൽ അയച്ചു.
+ചേച്ചി: ഓ! എന്തിനാണ് അയച്ചത്.
+അമ്മ: ഇറച്ചി തീർന്നുപോയി. അത് വാങ്ങിക്കാനാണ് അയച്ചത്.
+ചേച്ചി: അവൻ അതാ വരുന്നല്ലോ. ഇറച്ചി വാങ്ങിച്ചോ?
+അനിയൻ: വാങ്ങിച്ചു. പക്ഷെ, അത്ര നല്ലത് കിട്ടിയില്ല.
+ചേച്ചി: എന്തിനാണ് നീ ചീത്ത ഇറച്ചി കൊണ്ടുവന്നത്?
+അനിയൻ: ഞാൻ ചന്തയിലെല്ലാം നോക്കി. നല്ല ഇറച്ചി ഇല്ലായിരുന്നു.
+ചേച്ചി: ഇതിന് എത്ര രൂപ കൊടുത്തു?
+അനിയൻ: പതിനഞ്ച് രൂപ.
+ചേച്ചി: അയ്യോ! അത് വളരെ കൂടുതലാണല്ലോ. അത്രയും രൂപ വെറുതെ കളഞ്ഞല്ലോ.
+അമ്മ: അതിന് നിനക്കെന്താ? പോകട്ടെ. എന്നാലും അത്ര ചീത്തയല്ല. കറി വെക്കാം. ചിലപ്പോൾ നന്നായിരിക്കും.
+ചേച്ചി: ഞാൻ കഴിക്കുകയില്ല. പട്ടിക്ക് കൊടുക്കാം.
+അമ്മ: അങ്ങനെ പറയണ്ടാ, കേട്ടോ! നിനക്ക് അടി വേണോ?
+
+cēcci: aniyan ā muṟiyil āyirunnallō. ippōḷ avane kāṇunnilla. eviṭe pōyi?
+amma: ñān avane cantayil ayaccu.
+cēcci: ō! entināṇŭ ayaccatŭ.
+amma: iṟacci tīrnnupōyi. atŭ vāṅṅikkānāṇŭ ayaccatŭ.
+cēcci: avan atā varunnallō. iṟacci vāṅṅiccō?
+aniyan: vāṅṅiccu. pakṣe, atra nallatŭ kiṭṭiyilla.
+cēcci: entināṇŭ nī cītta iṟacci koṇṭuvannatŭ?
+aniyan: ñān cantayilellāṁ nōkki. nalla iṟacci illāyirunnu.
+cēcci: itinŭ etra rūpa koṭuttu?
+aniyan: patinañcŭ rūpa.
+cēcci: ayyō! atŭ vaḷare kūṭutalāṇallō. atrayuṁ rūpa veṟute kaḷaññallō.
+amma: atinŭ ninakkentā? pōkaṭṭe. ennāluṁ atra cīttayalla. kaṟi vekkāṁ. cilappōḷ nannāyirikkuṁ.
+cēcci: ñān kaḻikkukayilla. paṭṭikkŭ koṭukkāṁ.
+amma: aṅṅane paṟayaṇṭā, kēṭṭō! ninakkŭ aṭi vēṇō?

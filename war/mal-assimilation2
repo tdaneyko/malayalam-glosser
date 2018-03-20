@@ -1,3 +1,5 @@
+// From NorthEuraLex transliterators
+
 #def	vowel	[a a: i i: u u: r1 e e: ai_^ o o: au_^ 1_X N J n_d n` m j]
 #def	front	[i i: ai_^]
 

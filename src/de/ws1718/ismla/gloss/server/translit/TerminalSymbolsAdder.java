@@ -1,6 +1,9 @@
 package de.ws1718.ismla.gloss.server.translit;
 
-public class TerminalSymbolsAdder implements Transliterator
+/**
+ * @author Johannes Dellert
+ */
+public class TerminalSymbolsAdder extends Transliterator
 {
 	@Override
 	public String convert(String str) 

@@ -19,6 +19,8 @@
 \usepackage{multicol}
 \usepackage{scrextend}
 \usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,automata,positioning}
 
 %\setmainfont{CMU Serif Roman}
 \setmonofont[Scale=0.9]{Consolas}
@@ -34,6 +36,7 @@
 \newcommand{\asciiquot}{\XeTeXglyph\XeTeXcharglyph"0022\relax}
 \newcommand{\ci}{\textasciicircum}
 \newcommand{\tab}{~~~}
+\newcommand{\arr}{$\rightarrow$ }
 
 \newcommand{\typ}[1]{\texttt{#1}}
 \newcommand{\afx}[1]{\textsc{#1}}
@@ -64,7 +67,7 @@ Miau
 
 Bla bla bla test മലയാളി bla bla.
 
-\section{Malayalam Language Processing}
+\section{Malayalam Language Processing}\label{malnlp}
 
 \subsection{About Malayalam}
 
@@ -134,7 +137,7 @@ Verbs, on the other hand, display a rather rich and complex morphology. They can
 
 Even though most verbs that actually occur in texts come with a much smaller number of suffixes, every verb will be inflected somehow, and the possibilities are vast. As \textcite{asherKumari} note, it seems that ``all morphological combinations are possible that are semantically interpretable and compatible'' (p.~304). Also, Malayalam has a tendency to chain verbs to express even more subtle semantic differences, so a typical Malayalam sentences will often contain multiple verbs. As mentioned above, almost all adjectives are actually adjectivized verbs, which may be inflected as well.
 
-When processing Malayalam morphology, one can take advantage of the fact that Malayalam exclusively uses suffixes which are also rather regular. However, one must also beachten the \textit{internal sandhi} between suffixes which is sometimes peculiar for a certain suffix. For verbs, the amount of possible combinations of suffixes is huge, which is a besondere hindrance for paradigm generation.
+When processing Malayalam morphology, one can take advantage of the fact that Malayalam exclusively uses suffixes which are also rather regular. However, one must also pay attention to the \textit{internal sandhi} between suffixes which is sometimes peculiar to a certain suffix. For verbs, the amount of possible combinations of suffixes is huge, which is a particular hindrance for paradigm generation.
 
 \section{Previous work}
 
@@ -180,17 +183,17 @@ Bla bla
 
 Due to its syllabic nature, morpheme splitting is a tedious task in the Malayalam script and is best carried out in an alphabetic transcription. Also, while the Malayalam script has been included in Unicode for quite some time and Malayalam keyboard layouts are preinstalled on most modern machines, even native speakers of Malayalam frequently type Malayalam in a Latin romanization. Language learners, the primary target audience of the Malayalam Glosser, often do not know how to use the Malayalam script on a computer, especially when they are beginners. It is therefore necessary to convert Malayalam text between the script and various romanizations to be able to support the most popular input formats and display the finished glosses in a readable way.
 
-\subsubsection{Supported Scripts}
+\subsubsection{Supported Scripts}\label{scripts}
 
 Apart from the Malayalam script, the Malayalam Glosser currently supports two additional romanization schemes, Mozhi and ISO-15919. The Mozhi romanization is very popular especially among Malayalis to write Malayalam on the web. It consists only of ASCII characters and utilizes capitalization to enlarge the set of available characters \parencite{mozhi}. The ISO-15919 or National Library at Kolkata romanization is the default romanization scheme in scientific texts for all Indic languages (it is also the one used in this paper). It makes heavy use of diacritics and is thus not easily typable on the average English keyboard. Because of this, there also is an ASCII version of ISO-15919 which replaces the diacritics by punctuation characters \parencite{iso-15919}. Both variants of ISO-15919, Unicode and ASCII based, are supported by the Malayalam Glosser.
 
 A full table with all Malayalam characters in the different scripts (Malayalam script, ISO-15919 Unicode, ISO-15919 ASCII and Mozhi) can be found in the appendix. (\ref{supportedScripts}) is an example of how the sentence `all human beings are born free and equal in dignity and rights' is spelled in the four supported scripts \parencite{malOmniglot}.
 
 \ex
-\textbf{Malayalam:} മനുഷ്യരെല്ലാവരും തുല്യാവകാശങ്ങളോടും അന്തസ്സോടും \\ സ്വാതന്ത്ര്യത്തോടുംകൂടി ജനിച്ചവരാണ്. \\[1ex]
-\textbf{ISO-15919 Unicode:} manuṣyarellāvaruṁ tulyāvakāśaṅṅaḷōṭuṁ antassōṭuṁ svātantryattōṭuṁkūṭi janiccavarāṇŭ. \\[1ex]
-\textbf{ISO-15919 ASCII:} manu.syarellaavaru;m tulyaavakaa;sa;n;na.loo.tu;m antassoo.tu;m svaatantryattoo.tu;mkuu.ti janiccavaraa.n\^{}u. \\[1ex]
-\textbf{Mozhi:} manushyarellaavarum thulyaavakaaSangngaLOTum anthassOTum svaathanthryaththOTumkuuTi janichchavaraaN\textasciitilde{}.
+\textbf{Malayalam:} മനുഷ്യരെല്ലാവരും തുല്യാവകാശങ്ങളോടും അന്തസ്സോടും സ്വാ\-ത\-ന്ത്ര്യ\-ത്തോ\-ടും\-കൂ\-ടി ജനിച്ചവരാണ്. \\[1ex]
+\textbf{ISO-15919 Unicode:} manuṣyarellāvaruṁ tulyāvakāśaṅṅaḷōṭuṁ antassōṭ\-uṁ svātantryattōṭuṁkūṭi janiccavarāṇŭ. \\[1ex]
+\textbf{ISO-15919 ASCII:} manu.syarellaavaru;m tulyaavakaa;sa;n;na.loo.tu;m antassoo.t\-u;m svaatantryattoo.tu;mkuu.ti janiccavaraa.n\^{}u. \\[1ex]
+\textbf{Mozhi:} manushyarellaavarum thulyaavakaaSangngaLOTum anthassOT\-um svaathanthryaththOTumkuuTi janichchavaraaN\textasciitilde{}.
 \label{supportedScripts}\xe
 
 The ISO-15919 ASCII romanization is also the underlying representation of all dictionary entries, since the Malayalam rules of the \typ{MorphGen} are written in this format.
@@ -234,11 +237,11 @@ A couple of special characters can be used inside rules for easier matching:
 \item By default, \typ{MorphGen} inserts wildcards at the beginning and end of the string if not present and matches them once at the beginning and end on the right side. The rule \typ{a \tab b} gets translated to \typ{[*]a[*] \tab [1]b[2]}, for example. To prevent this, word boundaries may explicitly be matched by a hash tag \typ{\#} on the left side. Thus, the rule \typ{a\# \tab b} will be converted to \typ{[*]a \tab [1]b}, matching only \typ{a}s at the end of a string.
 \item A frequently recurring group of characters to match can be defined on top of the file using the keyword \typ{\#def} followed by the variable name followed by the group contents in square brackets, as in \typ{\#def \tab \#V \tab [aa ai au ee ii oo uu a e i o u]} which define the set of vowels in Malayalam. Note that the \typ{\#def} keyword, the group name and the group definition are tab separated, while the strings inside the group definition are separated by whitespaces. The name of a group variable must always begin with a hash tag \typ{\#} to distinguish it from the named wildcards. These groups can be referenced on the left side of a rule with \typ{[\#name]} and on the right side with their integer label just like wildcards, as in \typ{[*][\#V]t[\#V][*] \tab [1][2]d[3][4]}.
 \item Ad-hoc groups for a single rule may be created with \typ{[!item1 item2 ...]}, as in the example in Figure \ref{dative-rules}.
-\item An optional group, i.e. a group matching one or none of the contained characters can be introduced with \typ{[?item1 item2 ...]}. Predefined groups may also be optionalized by referring to them with \typ{[?\#name]}. Consider for example the rule \typ{\#[?\#C][\#V].tuka|PST \tab [1][2].t|.tu} used to produce the past tense form of Malayalam verbs of the (C)Vṭuka. The optionally matched initial consonant is reprinted in the \typ{[1]} position on the right side only if it was actually found.
+\item An optional group, i.e. a group matching one or none of the contained characters can be introduced with \typ{[?item1 item2 ...]}. Predefined groups may also be optionalized by referring to them with \typ{[?\#name]}. Consider for example the rule \typ{\#[?\#C][\#V].tuka|PST \tab [1][2].t|.tu} used to produce the past tense form of Malayalam verbs of the type (C)V\textit{ṭuka}. The optionally matched initial consonant is reprinted in the \typ{[1]} position on the right side only if it was actually found.
 \item Sometimes the realization of same form may differ between words. For instance, the past tense of the verb വിൽക്കുക \textit{vilkkuka} `to sell' is \textit{viṟṟu}, while that of നിൽക്കുക \textit{nilkkuka} `to stand' is \textit{ninnu}. The phonological cues for selecting the appropriate past tense form have long been lost on these verbs, hence to get a complete paradigm, we may want to generate both forms. Multiple output sides for a single input side are separated by \typ{||}, as in this past tense rule for verbs ending in \textit{-lkkuka}: \typ{[*]lkkuka|PST	[1]\_r|\_ru || [1]n|nu}.
 \end{itemize}
 
-\typ{MorphGen} optionally requires a second file specifying the templates for paradigm generation (see section \ref{pargen}). In this file, the possible inflections for each part of speech and the order in which they may occur are defined in a regular expression-like notation. This is the specification for Malayalam nouns:
+\label{parfile}\typ{MorphGen} optionally requires a second file specifying the templates for paradigm generation (see section \ref{pargen}). In this file, the possible inflections for each part of speech and the order in which they may occur are defined in a regular expression-like notation. This is the specification for Malayalam nouns:
 
 \typ{[n] PL (NOM || ACC || DAT || GEN || SOC || INS || LOC)}
 
@@ -252,16 +255,48 @@ Here, a verb can (optionally) take the passive (\typ{PASS}). This may (optionall
 
 \subsubsection{Automated inflection}
 
+One task of \typ{MorphGen} is the generation of the inflected form of a word according to its feature tags in the \typ{generate} method. The input \typ{kaa.nuka|PRS|NEG}, for example, will produce the morpheme-split negated present tense form of the verb \textit{kāṇuka} `to see', \typ{kaa.n|unn|illa}.
+
+\begin{figure}
+\begin{tikzpicture}[shorten >=2pt,node distance=1.5cm,auto] 
+\node[state,initial] (0) {0};
+\node[state] (1) [right=of 0] {1};
+\node[state] (2) [right=of 1] {2};
+\node[state] (3) [right=of 2] {3};
+\node[state,accepting] (4) [right=of 3] {4}; 
+\path[->] 
+(0) edge[bend left] node {\typ{c $\in$ \#C \arr 1}} (1)
+(0) edge[bend right] node[below] {\typ{$\varepsilon$ \arr 1}} (1)
+(1) edge[bend right] node[below] {\typ{v $\in$ \#V \arr 2}} (2)
+(2) edge[bend left] node {\typ{.tuka|PST}} (3)
+(3) edge[bend right] node[below] {\typ{* \arr 3}} (4);
+\end{tikzpicture}
+\caption{The automaton representing the left side of the rule \typ{\#[?\#C][\#V].tuka|PST \tab [1][2].t|.tu} (converted to \typ{[?\#C][\#V].tuka|PST[*] before).}}
+\label{morphrule}
+\end{figure}
+
+To achieve this, \typ{MorphGen} stores the rules specified in the rule file as a automaton-like representation and applies them in the order in which they are listed in the file. This means that the output of each rule serves as the input to the next one. Figure \ref{morphrule} illustrates the structure of such a rule automaton for the past tense rule for (C)V\textit{ṭuka} verbs discussed in the previous section.
+
+Given an input such as \typ{i.tuka|PST|Nn} `to drop', \typ{MorphGen} will attempt to reach the final state of the rule while matching the characters of the input against the labels of the transitions and saving matched characters to variables where applicable. In this example, the start state of the rule has outgoing transitions for each of the characters in the \typ{\#C} group and an epsilon transition matching the empty string, because the match is optional. Since \textit{iṭuka} starts with a vowel, none of the \typ{\#C} transitions apply and the rule will take the epsilon transition, saving the empty string to the variable \typ{1}. To reach the next state, it must match a member of the \typ{\#V} group. Luckily, the current character, \typ{i}, satisfies this condition and is saved to the variable \typ{2}. Left with the string \typ{.tuka|PST|Nn}, the rule can take the literal transition \typ{.tuka|PST}. The final transition is a wildcard, consuming the remaining string \typ{|Nn} and saving it to the variable \typ{3}. The final state is reached and the string is accepted.
+
+Now the output will be generated by unfolding the right hand side of the rule, \typ{[1][2].t|.tu[3]}. Here, \typ{MorphGen} simply inserts the values saved to the different variables, yielding the output string $\varepsilon$ + \typ{i} + \typ{.t|.tu} + \typ{|Nn} = \typ{i.t|.tu|Nn} which can now serve as the input to the next rule. If a string is not accepted by a rule in the first place, it will remain unaltered. If there are still feature tags (such as \typ{PST} or \typ{Nn}) left in the output after all rules have been applied, it is considered to be ungrammatical.
+
 \subsubsection{Paradigm generation}\label{pargen}
+
+The second task of \typ{MorphGen} is the generation of all possible glossed or feature tagged forms of a word in the \typ{getParadigm} method. In principle, this simply means spelling out all possible inflection tags that are specified for the word's part of speech in the paradigm template file (see section \ref{parfile}). Hence, given e.g. the word \textit{pūcca} `cat' and the part of speech tag \typ{n}, the paradigm generator will return the strings \typ{puucca}, \typ{puucca PL}, \typ{puucca PL GEN}, \typ{puucca GEN}, \typ{puucca PL ACC}, etc. These can now serve as input to the inflection rules.
+
+When given a string such as \typ{puucca GEN}, \typ{MorphGen} will first fill the whitespaces between the feature tags with the separators \typ{|}, \typ{\&} and \typ{<>}. Hence, \typ{puucca PL GEN} will first be converted to the three strings \typ{puucca|GEN}, \typ{puucca\&GEN} and \typ{puucca<>GEN}. The latter two will hopefully not be matched by any rule and thus be sorted out as ungrammatical, while the first one can be realized as \typ{puucca|yu.te}, serving as the only possible output for \typ{puucca GEN}.
+
+The two steps are combined in the \typ{getInflections} method, which accepts a word and a part of speech tag, e.g. \typ{puucca} and \typ{n}, and returns all possible inflections and glosses of that word (\typ{puucca puucca}, \typ{puucca|GEN puucca|yu.te}, \typ{puucca|PL|GEN puucca|ka.l|u.te}, \typ{puucca|ACC puucca|ye}, etc.). Finally, a whole vocabulary list can be given to the \typ{unfoldVocabulary} method to get a file with all inflected forms of all words in that list.
 
 
 \subsection{Dictionary lookup}
 
-MalayalamDictionary
+The fully inflected dictionary provided by \typ{MorphGen} is handled by the \typ{MalayalamDictionary} class. Given a raw word (such as \typ{vii.tuka.lil}), it will return the matching morpheme-split string (\typ{vii.tu|ka.l|il}) and glosses (\typ{house|PL|LOC} and \typ{home|PL|LOC}). It is also able to carry out a suffix search on a string, returning the start index of the longest suffix found in the dictionary. For \typ{aavii.t.til} (\textit{ā} `that' + \textit{vīṭṭil} `house-\afx{loc}'), for example, it will return 2, since the longest known suffix, the inflected word \textit{vīṭṭil}, starts at index 2.
 
 \subsubsection{Efficiency considerations}
 
-Considering that the dictionary may be very large and that the main function of the Glosser is to look words up in this dictionary, being able to load and query it very quickly is essential for the performance of the Glosser. Hence, I experimented with a few alternatives for storing the dictionary data and investigated their efficiency. The tests elaborated below are not very exact or well-designed and were only meant to quickly assess the usefulness of the considered methods.
+Considering that the dictionary may be very large and that the main function of the Glosser is to look words up in this dictionary, being able to load and query it very fast is essential for the performance of the Glosser. Hence, I experimented with a few alternatives for storing the dictionary data and investigated their efficiency. The tests elaborated below are not very exact or well-designed and were only meant to quickly assess the usefulness of the considered methods.
 
 \subsubsection*{\typ{HashMap} vs. \typ{ReverseTrie}}
 
@@ -299,6 +334,8 @@ MalayalamGlosser
 
 \section{Abbreviations used in glosses}
 
+These are the abbreviations used in the glosses of section \ref{malnlp}. A list of the abbreviations used by the Malayalam Glosser can be found on the Help page of the application.
+
 \begin{multicols}{2}
 \begin{labeling}{XXXX}
 \itemsep0em
@@ -318,6 +355,8 @@ MalayalamGlosser
 \end{multicols}
 
 \section{Transcription schemes}
+
+This is a list of the Malayalam characters in the four supported scripts of the Malayalam Glosser as outlined in section \ref{scripts}.
 
 \begin{longtable}[l]{p{2.3cm} p{2.3cm} p{2.3cm} p{2.3cm}}
 \textbf{Script} & \textbf{ISO (Uni)} & \textbf{ISO (ASCII)} & \textbf{Mozhi} \\[1ex]
@@ -382,5 +421,137 @@ MalayalamGlosser
 ൿ & k & k & k \\
 ക് & kŭ & k\^{}u & k\textasciitilde \\
 \end{longtable}
+
+\section{Glossed translation of lesson 11 conversation}
+
+The following is the complete conversation from lesson 11 (introducing the past tense, nominalization and cleft sentences with the copula \textit{āṇŭ}) of \textcite{moag} that I frequently used as a test input, as it was glossed by the Malayalam Glosser, translated by myself.
+
+\ex\begingl
+\glpreamble ചേച്ചി: അനിയൻ ആ മുറിയിൽ ആയിരുന്നല്ലോ. ഇപ്പോൾ അവനെ കാണുന്നില്ല. എവിടെ പോയി? \\
+\itshape cēcci: aniyan ā muṟiyil āyirunnallō. ippōḷ avane kāṇunnilla. eviṭe pōyi?//
+\gla അനിയൻ ആ മുറിയിൽ ആയിരുന്നല്ലോ . + ഇപ്പോൾ അവനെ കാണുന്നില്ല . + എവിടെ പോയി ? //
+\glb aniyan ā muṟi-yil āyirun-n-allō . ippōḷ avan-e kāṇ-unn-illa . eviṭe pōy-i ? //
+\glc younger\_brother that room-LOC temporarily\_be-PST-PAM . now he-ACC see-PRS-NEG . where go-PST ? //
+\glft Older sister: `Younger brother used to be in that room. Now I don't see him. Where did he go?' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble അമ്മ: ഞാൻ അവനെ ചന്തയിൽ അയച്ചു. \\
+\itshape amma: ñān avane cantayil ayaccu. //
+\gla ഞാൻ അവനെ ചന്തയിൽ അയച്ചു . //
+\glb ñān avan-e canta-yil ayac-cu . //
+\glc I.NOM he-ACC market-LOC send-PST . //
+\glft Mother: `I sent him to the market.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble ചേച്ചി: ഓ! എന്തിനാണ് അയച്ചത്. \\
+\itshape cēcci: ō! entināṇŭ ayaccatŭ. //
+\gla ഓ ! എന്തിന് ആണ് അയച്ചത് . //
+\glb ō ! ent-inŭ āṇŭ ayac-c-atŭ . //
+\glc QPRT\footnotemark{} ! what-DAT COP send-PST-Nn . //
+\glft Older sister: `Oh! Why is it that you sent him?' //
+\endgl\xe
+
+\footnotetext{This is of course not the question particle, but the interjection `oh', which is not contained in the dictionary.}
+
+\ex\begingl
+\glpreamble അമ്മ: ഇറച്ചി തീർന്നുപോയി. അത് വാങ്ങിക്കാനാണ് അയച്ചത്. \\
+\itshape amma: iṟacci tīrnnupōyi. atŭ vāṅṅikkānāṇŭ ayaccatŭ. //
+\gla ഇറച്ചി തീര്നനുപോയി . + അത് വാങ്ങിക്കാൻ ആണ് അയച്ചത് . //
+\glb iṟacci tīrnnupōy-i . atŭ vāṅṅikk-ān āṇŭ ayac-c-atŭ . //
+\glc meat run\_out-PST . that.ACC buy-GER COP send-PST-Nn . //
+\glft Mother: `I ran out of meat. I sent him to buy that.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble ചേച്ചി: അവൻ അതാ വരുന്നല്ലോ. ഇറച്ചി വാങ്ങിച്ചോ? \\
+\itshape cēcci: avan atā varunnallō. iṟacci vāṅṅiccō? //
+\gla അവൻ അത് ആണ് വരുന്നല്ലോ . + ഇറച്ചി വാങ്ങിച്ചു ഓ ? //
+\glb avan atŭ āṇŭ var-unn-allō . iṟacci vāṅṅic-cu ō ? //
+\glc he that COP come-PRS-PAM . meat.ACC buy-PST QPRT ? //
+\glft Older sister: `There he comes. Did you buy meat?' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble അനിയൻ: വാങ്ങിച്ചു. പക്ഷെ, അത്ര നല്ലത് കിട്ടിയില്ല. \\
+\itshape aniyan: vāṅṅiccu. pakṣe, atra nallatŭ kiṭṭiyilla. //
+\gla വാങ്ങിച്ചു . + പക്ഷെ , അത്ര നല്ലത് കിട്ടിയില്ല . //
+\glb vāṅṅic-cu . pakṣe , atra nall-atŭ kiṭṭ-i-yilla . //
+\glc buy-PST . but , that\_many good-Nn find-PST-NEG . //
+\glft Younger brother: `I did. But I didn't find that much good (meat).' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble ചേച്ചി: എന്തിനാണ് നീ ചീത്ത ഇറച്ചി കൊണ്ടുവന്നത്? \\
+\itshape cēcci: entināṇŭ nī cītta iṟacci koṇṭuvannatŭ? //
+\gla എന്തിന് ആണ് നീ ചീത്ത ഇറച്ചി കൊണ്ടുവന്നത് ? //
+\glb ent-inŭ āṇŭ nī cītta iṟacci koṇṭuvan-n-atŭ ? //
+\glc what-DAT COP you.NOM bad meat.ACC bring-PST-Nn ? //
+\glft Older sister: `Why is it that you bring bad meat?' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble അനിയൻ: ഞാൻ ചന്തയിലെല്ലാം നോക്കി. നല്ല ഇറച്ചി ഇല്ലായിരുന്നു. \\
+\itshape aniyan: ñān cantayilellāṁ nōkki. nalla iṟacci illāyirunnu. //
+\gla ഞാൻ ചന്തയിൽ എല്ലാം നോക്കി . + നല്ല ഇറച്ചി ഇല്ലായിരുന്നു . //
+\glb ñān canta-yil ellāṁ nōkk-i . nalla iṟacci illāyirunnu . //
+\glc I market-LOC all look-PST . good meat be.PST.NEG . //
+\glft Younger brother: `I looked everywhere on the market. There was no good meat.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble ചേച്ചി: ഇതിന് എത്ര രൂപ കൊടുത്തു? \\
+\itshape cēcci: itinŭ etra rūpa koṭuttu? //
+\gla ഇതിന് എത്ര രൂപ കൊടുത്തു ? //
+\glb it-inŭ etra rūpa koṭut-tu ? //
+\glc this-DAT how\_many rupee.ACC give-PST ? //
+\glft Older sister: `How many rupees did you pay for this?' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble അനിയൻ: പതിനഞ്ച് രൂപ. \\
+\itshape aniyan: patinañcŭ rūpa. //
+\gla പതിനഞ്ച് രൂപ . //
+\glb patinañcŭ rūpa . //
+\glc +1.*10.+5 rupee . //
+\glft Younger brother: `Fifteen rupees.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble ചേച്ചി: അയ്യോ! അത് വളരെ കൂടുതലാണല്ലോ. അത്രയും രൂപ വെറുതെ ക\-ള\-ഞ്ഞ\-ല്ലോ. \\
+\itshape cēcci: ayyō! atŭ vaḷare kūṭutalāṇallō. atrayuṁ rūpa veṟute kaḷaññallō.//
+\gla അയ്യോ ! അത് വളരെ കൂടുതൽ ആണല്ലോ . +  അത്രയും രൂപ വെറുതെ കളഞ്ഞല്ലോ . //
+\glb ayyō ! atŭ vaḷare kūṭutal āṇ-allō . atrayuṁ rūpa veṟute kaḷañ-ñ-allō . //
+\glc \textless{}unknown\textgreater{} ! that very\_much too\_much COP-PAM . as\_much\_as\_that rupee uselessly throw\_away-PST-PAM . //
+\glft Older sister: `Oho! That is far too much. You threw away that many rupees for nothing.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble അമ്മ: അതിന് നിനക്കെന്താ? പോകട്ടെ. എന്നാലും അത്ര ചീത്തയല്ല. കറി വെക്കാം. ചിലപ്പോൾ നന്നായിരിക്കും. \\
+\itshape amma: atinŭ ninakkentā? pōkaṭṭe. ennāluṁ atra cīttayalla. kaṟi vekkāṁ. cilappōḷ nannāyirikkuṁ. //
+\gla അതിന് നിനക്ക് എന്ത് ആണ് ? + പോകട്ടെ . + എന്നാലും അത്ര ചീത്ത അല്ല . + കറി വെക്കാം . + ചിലപ്പോൾ നന്ന് ആയിരിക്കും . //
+\glb at-inŭ nin-akkŭ entŭ āṇŭ ? pōk-aṭṭe . ennāluṁ atra cītta alla . kaṟi vekk-āṁ . cilappōḷ nannŭ āyirikk-uṁ . //
+\glc that-DAT you-DAT what COP ? go-PERM . anyway that\_many bad be.NEG . curry.ACC put-INT . perhaps good\_one temporarily\_be-FUT . //
+\glft Mother: `Why do you care? It's okay. There isn't that much bad (meat) anyway. I will make curry. Perhaps it will be good.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble ചേച്ചി: ഞാൻ കഴിക്കുകയില്ല. പട്ടിക്ക് കൊടുക്കാം. \\
+\itshape cēcci: ñān kaḻikkukayilla. paṭṭikkŭ koṭukkāṁ. //
+\gla ഞാൻ കഴിക്കുകയില്ല . + പട്ടിക്ക് കൊടുക്കാം . //
+\glb ñān kaḻikk-ukayilla . paṭṭi-kkŭ koṭukk-āṁ . //
+\glc I.NOM eat-INT.NEG . dog-DAT give-INT . //
+\glft Older sister: `I'm not going to eat it. I'll give it to the dog.' //
+\endgl\xe
+
+\ex\begingl
+\glpreamble അമ്മ: അങ്ങനെ പറയണ്ടാ, കേട്ടോ! നിനക്ക് അടി വേണോ? \\
+\itshape amma: aṅṅane paṟayaṇṭā, kēṭṭō! ninakkŭ aṭi vēṇō? //
+\gla അങ്ങനെ പറയണ്ട ആണ് , കേട്ടു ഓ ! + നിനക്ക് അടി വേണം ഓ ? //
+\glb aṅṅane paṟay-aṇṭa āṇŭ , kēṭ-ṭu ō ! nin-akkŭ aṭi vēṇaṁ ō ? //
+\glc that\_way speak-DES.NEG COP , hear-PST QPRT ! you-DAT spanking.NOM want.PRS QPRT ? //
+\glft Mother: `You're not allowed to speak like that, did you hear! Do you want a spanking?' //
+\endgl\xe
 
 \end{document}

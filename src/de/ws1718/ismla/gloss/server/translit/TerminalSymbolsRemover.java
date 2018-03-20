@@ -1,6 +1,9 @@
 package de.ws1718.ismla.gloss.server.translit;
 
-public class TerminalSymbolsRemover implements Transliterator
+/**
+ * @author Johannes Dellert
+ */
+public class TerminalSymbolsRemover extends Transliterator
 {
 	@Override
 	public String convert(String str) 

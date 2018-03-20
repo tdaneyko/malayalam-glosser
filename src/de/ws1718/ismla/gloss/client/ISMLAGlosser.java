@@ -543,8 +543,8 @@ public class ISMLAGlosser implements EntryPoint {
 		String mozhiLink = link("https://sites.google.com/site/cibu/mozhi/mozhi2", "this");
 		infoPanel.add(applyPageStyles(new HTMLPanel("p",
 				"The Malayalam Glosser supports four ways to write Malayalam: Malayalam script, the ISO-15919 (National Library "
-						+ "at Kolkata) romanization both with Unicode and ASCII characters (following " + isoLink + " page with small "
-						+ "additions by myself), and the popular Mozhi romanization (following " + mozhiLink + " page). The chart below "
+						+ "at Kolkata) romanization both with Unicode and ASCII characters (following " + isoLink + " page), and "
+						+ "the popular Mozhi romanization (following " + mozhiLink + " page). The chart below "
 						+ "shows which Malayalam character maps to which Latin character in the different scripts. When typing "
 						+ "your text into the Glosser in one of the romanizations, please make sure to always explicitly write "
 						+ "out a word-final candrakkala, otherwise the words may not be found in the underlying dictionary.")));

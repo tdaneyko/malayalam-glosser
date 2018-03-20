@@ -8,7 +8,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class SimpleTransliterator implements Transliterator
+/**
+ * @author Johannes Dellert
+ */
+public class SimpleTransliterator extends Transliterator
 {
 	HashMap<String, String> mapping;
 	boolean verbose = false;

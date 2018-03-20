@@ -1,6 +1,10 @@
 package de.ws1718.ismla.gloss.shared;
 
+/**
+ * Faster String split() and join() implementations.
+ */
 public class StringUtils {
+	
     public static String[] split(String s, char c) {
         String[] res = new String[count(s, c) + 1];
         int i = s.indexOf(c);

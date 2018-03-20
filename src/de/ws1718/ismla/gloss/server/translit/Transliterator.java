@@ -1,6 +1,9 @@
 package de.ws1718.ismla.gloss.server.translit;
 
-public interface Transliterator 
+/**
+ * @author Johannes Dellert
+ */
+public abstract class Transliterator 
 {
-	String convert(String str);
+	public abstract String convert(String str);
 }

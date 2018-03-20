@@ -12,8 +12,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-public class MalayalamUniISOToAsciiISOTransliterator extends RemoteServiceServlet implements Transliterator
+/**
+ * @author Johannes Dellert
+ * 
+ * I removed the main method and added the ServletContext to the constructor.
+ */
+public class MalayalamUniISOToAsciiISOTransliterator extends Transliterator
 {
 	
  ArrayList<Transliterator> translits;

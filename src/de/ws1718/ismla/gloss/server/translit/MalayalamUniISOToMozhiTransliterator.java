@@ -10,8 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-public class MalayalamUniISOToMozhiTransliterator implements Transliterator
+/**
+ * @author Johannes Dellert
+ * 
+ * I removed the main method and added the ServletContext to the constructor.
+ */
+public class MalayalamUniISOToMozhiTransliterator extends Transliterator
 {
 	
  ArrayList<Transliterator> translits;

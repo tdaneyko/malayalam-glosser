@@ -1,6 +1,9 @@
 package de.ws1718.ismla.gloss.server.translit;
 
-public class GlossNormalizer implements Transliterator
+/**
+ * @author Thora Daneyko
+ */
+public class GlossNormalizer extends Transliterator
 {
 	@Override
 	public String convert(String str) 
