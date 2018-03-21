@@ -32,6 +32,7 @@ import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 import org.gwtbootstrap3.client.ui.gwt.HTMLPanel;
 import org.gwtbootstrap3.client.ui.html.Text;
 
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -50,60 +51,65 @@ import com.google.gwt.user.client.ui.Widget;
 import de.ws1718.ismla.gloss.server.TableProviderServiceImpl;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
+/**
+ * The user interface of the Malayalam Glosser.
+ */
 public class ISMLAGlosser implements EntryPoint {
-	
+	// The names of the supported scripts
 	private static final String MALAYALAM_SCRIPT = "Malayalam script";
 	private static final String ISO15919_UNICODE = "ISO-15919 (Unicode)";
 	private static final String ISO15919_ASCII = "ISO-15919 (ASCII)";
 	private static final String MOZHI = "Mozhi romanization";
 	
+	// A couple of recurring style settings
 	private static final String LG_OFFSET = "col-lg-offset-2";
 	private static final String LG_WIDTH = "col-lg-8";
 	private static final String SM_WIDTH = "col-sm-12";
 	private static final String[] PAGE_STYLES = new String[]{LG_OFFSET,LG_WIDTH,SM_WIDTH};
 	
+	// Representations of the supported LaTeX packages for glossing
 	private static enum GlossPackage {GB4E, EXPEX}
+	// The package currently selected by the user
 	private GlossPackage selectedGlossPackage = GlossPackage.GB4E;
 
+	// The interface to the actual Glosser on the server
 	private GlossServiceAsync glossService = GWT.create(GlossService.class);
+	// The service providing the table contents for the help page
 	private TableProviderServiceAsync readService = GWT.create(TableProviderService.class);
 	
+	// The page currently opened by the user
 	private FlowPanel currentPage;
+	// The static help page
 	private FlowPanel infoPage = loadInfoPage();
+	// The static about page
 	private FlowPanel sourcePage = loadSourcesPage();
 	
+	// The input script currently selected by the user
 	private MalayalamFormat currentInFormat = MalayalamFormat.MALAYALAM_SCRIPT;
+	// The gloss script currently selected by the user
 	private MalayalamFormat currentOutFormat = MalayalamFormat.ISO15919_UNICODE;
-	
+
+	// The submit button
 	private Button submit = new Button("Gloss");
 	
+	// The current gloss
 	private List<GlossedSentence> gloss = new ArrayList<>();
+	// The list boxes for the editable morpheme splits of the current gloss
 	private ListBox[][] splits = new ListBox[0][];
+	// The list boxes for the editable glosses of the current gloss
 	private ListBox[][] transl = new ListBox[0][];
 	
+	// The editable gloss section, or null if not visible
 	private FieldSet glossPage = null;
+	// The finished gloss section, or null if not visible
 	private FieldSet finGlossPage = null;
-	
-	private class GlossCallBack implements AsyncCallback<List<GlossedSentence>> {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			Window.alert("Unable to obtain server response: " + caught.getMessage());
-		}
-
-		@Override
-		public void onSuccess(List<GlossedSentence> result) {
-			gloss = result;
-			reloadGloss();
-			submit.state().reset();
-		}
-		
-	}
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		// CREATE THE NAVBAR
 		Navbar navbar = new Navbar();
 		
 		NavbarHeader navHeader = new NavbarHeader();
@@ -127,6 +133,7 @@ public class ISMLAGlosser implements EntryPoint {
 		navCollapse.add(navEntries);
 		navbar.add(navCollapse);
 		
+		// Add handlers for the Navbar entries
 		goToMain.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -163,12 +170,16 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		RootPanel.get().add(navbar);
 
+		// Load main page
 		goToMain.setActive(true);
 		currentPage = loadMainPage();
 		RootPanel.get().add(currentPage);
 	}
 	
-	
+	/**
+	 * Load the main page with the glosser UI.
+	 * @return The panel containing the main page
+	 */
 	private FlowPanel loadMainPage() {
 		FlowPanel mainPanel = new FlowPanel();
 		Form form = new Form();
@@ -178,6 +189,7 @@ public class ISMLAGlosser implements EntryPoint {
 		Legend inputHeader = new Legend("Your input");
 		applyPageStyles(inputHeader);
 		
+		// Create text area for user to type input in
 		final TextArea inputText = new TextArea();
 		inputText.setVisibleLines(14);
 		inputText.setPlaceholder("Enter your Malayalam text here");
@@ -189,6 +201,7 @@ public class ISMLAGlosser implements EntryPoint {
 		textPanel.addStyleName("space-below-lg");
 		textPanel.add(inputText);
 		
+		// Create input format selection buttons
 		ClickHandler inFormatHandler = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -213,6 +226,7 @@ public class ISMLAGlosser implements EntryPoint {
 		labelIn.setFor("inFormat");
 		labelIn.setText("Input script:");
 		
+		// Create gloss format selection buttons
 		ClickHandler outFormatHandler = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -235,6 +249,7 @@ public class ISMLAGlosser implements EntryPoint {
 		labelOut.setText("Gloss script:");
 		labelOut.addStyleName("space-above-sm");
 		
+		// Build input and gloss format selection panel
 		FlowPanel inOutFormatPanel = new FlowPanel();
 		inOutFormatPanel.addStyleName("col-lg-2");
 		inOutFormatPanel.add(labelIn);
@@ -250,6 +265,7 @@ public class ISMLAGlosser implements EntryPoint {
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
 		
+		// Create submit button
 		submit = new Button("Gloss");
 		submit.setType(ButtonType.PRIMARY);
 		submit.setDataLoadingText("Glossing...");
@@ -257,11 +273,24 @@ public class ISMLAGlosser implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				submit.state().loading();
-				glossService.getGloss(inputText.getText(), currentInFormat, currentOutFormat, new GlossCallBack());
+				glossService.getGloss(inputText.getText(), currentInFormat, currentOutFormat, new AsyncCallback<List<GlossedSentence>>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Unable to obtain server response: " + caught.getMessage());
+					}
+
+					@Override
+					public void onSuccess(List<GlossedSentence> result) {
+						gloss = result;
+						reloadGloss();
+						submit.state().reset();
+					}
+				});
 			}
 		});
 		textPanel.add(submit);
 		
+		// Add everything together
 		fset.add(inputHeader);
 		fset.add(textGroup);
 		
@@ -271,6 +300,10 @@ public class ISMLAGlosser implements EntryPoint {
 		return mainPanel;
 	}
 	
+	/**
+	 * @param text The name of a Malayalam script
+	 * @return The corresponding MalayalamFormat object
+	 */
 	private MalayalamFormat getFormat(String text) {
 		if (text.equals(MALAYALAM_SCRIPT))
 			return MalayalamFormat.MALAYALAM_SCRIPT;
@@ -283,13 +316,20 @@ public class ISMLAGlosser implements EntryPoint {
 		return MalayalamFormat.UNKNOWN;
 	}
 	
+	/**
+	 * Create the panel containing the glossed text
+	 * @param finished Make editable if false
+	 * @return A list of FlowPanels to fill with the actual gloss content
+	 */
 	private List<FlowPanel> createGlossPanel(boolean finished) {
 		FieldSet fset = new FieldSet();
 		
+		// Create header
 		Legend glossHeader = new Legend((finished) ? "Finished Gloss" : "Gloss");
 		applyPageStyles(glossHeader);
 		fset.add(glossHeader);
 		
+		// Prepare a panel for each glossed sentence
 		List<FlowPanel> glossPanels = new ArrayList<>();
 		for (GlossedSentence s : gloss) {
 			FlowPanel panelPanel = new FlowPanel();
@@ -311,23 +351,24 @@ public class ISMLAGlosser implements EntryPoint {
 			fset.add(panelPanel);
 		}
 
+		// Create "Finish" button if gloss is editable
 		if (!finished) {
-			class GlossFinishingHandler implements ClickHandler {
-				@Override
-				public void onClick(ClickEvent event) {
-					finishGloss();
-				}
-			}
-			
 			FlowPanel buttonPanel = new FlowPanel();
 			applyPageStyles(buttonPanel);
 			buttonPanel.addStyleName("space-below-lg");
 			
+			// Create button
 			Button submit = new Button("Finish");
 			submit.setType(ButtonType.PRIMARY);
-			submit.addClickHandler(new GlossFinishingHandler());
+			submit.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					finishGloss();
+				}
+			});
 			buttonPanel.add(submit);
 			
+			// Create gloss package selection
 			InlineRadio gb4e = new InlineRadio("glossFormat");
 			gb4e.setText("gb4e");
 			gb4e.addStyleName("space-left-sm");
@@ -355,11 +396,17 @@ public class ISMLAGlosser implements EntryPoint {
 			fset.add(buttonPanel);
 		}
 
+		// Remove any previous glosses and display the new one
 		resetGloss(fset, finished);
 		
 		return glossPanels;
 	}
 	
+	/**
+	 * Remove previous gloss(es) to display a new one
+	 * @param newGloss The new gloss section
+	 * @param finished True if newGloss contains finished glosses, false if they are editable
+	 */
 	private void resetGloss(FieldSet newGloss, boolean finished) {
 		FlowPanel root = currentPage;
 		if (!finished) {
@@ -378,9 +425,15 @@ public class ISMLAGlosser implements EntryPoint {
 		}
 	}
 	
+	/**
+	 * Reload the displayed glosses to fit the new submitted user input.
+	 */
 	private void reloadGloss() {
+		// Remove any finished glosses from previous run
 		resetGloss(null, true);
+		// Get panels for new editable glosses
 		List<FlowPanel> glossPanels = createGlossPanel(false);
+		// Fill panels with gloss data
 		this.splits = new ListBox[gloss.size()][];
 		this.transl = new ListBox[gloss.size()][];
 		for (int g = 0; g < gloss.size(); g++) {
@@ -396,13 +449,19 @@ public class ISMLAGlosser implements EntryPoint {
 		}
 	}
 	
+	/**
+	 * Update the finished gloss according to the user selections in the editable gloss part.
+	 */
 	private void finishGloss() {
+		// Get panels for new finished glosses
 		List<FlowPanel> glossPanels = createGlossPanel(true);
 
+		// Fill panels with gloss data and create LaTeX codes
 		for (int g = 0; g < gloss.size(); g++) {
 			String sentence = gloss.get(g).getSentence();
 			List<GlossedWord> glosses = gloss.get(g).getGlosses();
 			FlowPanel glossPanel = glossPanels.get(g);
+			// Lines for LaTeX glosses (original word, split word, gloss)
 			String line1 = "";
 			String line2 = "";
 			String line3 = "";
@@ -416,6 +475,7 @@ public class ISMLAGlosser implements EntryPoint {
 				line3 += trans + " ";
 				glossPanel.add(getFinishedGloss(orig, ipa, split, trans));
 			}
+			// LaTeX code panel
 			Pre codePanel = new Pre();
 			codePanel.setText(getGlossCode(sentence, line1, line2, line3));
 			codePanel.addStyleName("space-above-sm");
@@ -423,6 +483,14 @@ public class ISMLAGlosser implements EntryPoint {
 		}
 	}
 	
+	/**
+	 * Create the LaTeX code for a glossed sentence.
+	 * @param sentence Original sentence
+	 * @param line1 Space separated original tokens
+	 * @param line2 Space separated morpheme splits of the tokens
+	 * @param line3 Space separated glosses of the tokens
+	 * @return LaTeX code for gb4e or expex depending on the user's selection
+	 */
 	private String getGlossCode(String sentence, String line1, String line2, String line3) {
 		if (selectedGlossPackage.equals(GlossPackage.GB4E))
 			return "\\begin{exe}\n" + "\\ex\n" + sentence + "\n\\glll\n"
@@ -439,6 +507,10 @@ public class ISMLAGlosser implements EntryPoint {
 		return "";
 	}
 	
+	/**
+	 * @param code String to inserted into LaTeX code
+	 * @return The same string with LaTeX special characters escaped correctly
+	 */
 	private String escapeLaTeXChars(String code) {
 		StringBuilder esc = new StringBuilder();
 		for (int i = 0; i < code.length(); i++) {
@@ -463,17 +535,25 @@ public class ISMLAGlosser implements EntryPoint {
 		return esc.toString();
 	}
 	
+	/**
+	 * @param orig A token in its original script
+	 * @param ipa The IPA transcription of the token
+	 * @param splts The possible morpheme splits of the token
+	 * @param glsses The possible glosses for the currently selected morpheme split
+	 * @param i The index of the sentence this token belongs to
+	 * @param j The position of the token in the sentence
+	 * @return The vertical panel containing the editable gloss for this token
+	 */
 	private VerticalPanel getEditableGloss(String orig, String ipa, String[] splts, String[] glsses, final int i, final int j) {
-		ChangeHandler splitChangeHandler = new ChangeHandler() {
+		ListBox splitBox = fillListBox(new ListBox(), splts);
+		splitBox.addChangeHandler(new ChangeHandler() {
 			GlossedWord word = gloss.get(i).getGlosses().get(j);
 			@Override
 			public void onChange(ChangeEvent event) {
 				transl[i][j].clear();
 				fillListBox(transl[i][j], word.getGlosses(splits[i][j].getSelectedIndex()));
 			}
-		};
-		ListBox splitBox = fillListBox(new ListBox(), splts);
-		splitBox.addChangeHandler(splitChangeHandler);
+		});
 		ListBox glossBox = fillListBox(new ListBox(), glsses);
 		this.splits[i][j] = splitBox;
 		this.transl[i][j] = glossBox;
@@ -487,6 +567,12 @@ public class ISMLAGlosser implements EntryPoint {
 		return g;
 	}
 	
+	/**
+	 * Fill a list box with an array of strings
+	 * @param box A ListBox
+	 * @param items The string array
+	 * @return The filled list box (same as the one passed to the method)
+	 */
 	private ListBox fillListBox(ListBox box, String[] items) {
 		for (String item : items)
 			box.addItem(item);
@@ -497,6 +583,13 @@ public class ISMLAGlosser implements EntryPoint {
 		return box;
 	}
 	
+	/**
+	 * @param orig A token in its original script
+	 * @param ipa The IPA transcription of the token
+	 * @param split The currently selected morpheme split of the token
+	 * @param gloss The currently selected gloss for the token
+	 * @return The vertical panel containing the finished gloss for this token
+	 */
 	private VerticalPanel getFinishedGloss(String orig, String ipa, String split, String gloss) {
 		VerticalPanel g = new VerticalPanel();
 		g.add(new Text(orig));
@@ -508,6 +601,9 @@ public class ISMLAGlosser implements EntryPoint {
 	}
 	
 	
+	/**
+	 * @return The panel containing the help page
+	 */
 	private FlowPanel loadInfoPage() {
 		final FlowPanel infoPanel = new FlowPanel();
 
@@ -531,12 +627,6 @@ public class ISMLAGlosser implements EntryPoint {
 						+ "or multiple possible annotations of a gloss, you will be able to select your preferred one via a "
 						+ "dropdown list. When you are done editing your gloss, click \"Finish\" to get you final glosses and "
 						+ "gb4e codes.")));
-
-//		infoPanel.add(applyPageStyles(new Legend("Troubleshooting")));
-//		Panel faq1 = new Panel();
-//		PanelHeader q1 = new PanelHeader();
-//		q1.setText("There are characters missing. / The gloss text is not displayed correctly. / I see square boxes/question marks in my gloss.");
-//		PanelBody a1 = new PanelBody();
 
 		infoPanel.add(applyPageStyles(new Legend("Supported scripts")));
 		String isoLink = link("https://en.wikipedia.org/w/index.php?title=ISO_15919&oldid=825271114", "this");
@@ -581,6 +671,13 @@ public class ISMLAGlosser implements EntryPoint {
 		return infoPanel;
 	}
 	
+	/**
+	 * @param content The rows of a table
+	 * @param colHeaders The header of the table columns
+	 * @param equalSize True if all columns in the table should be of equal width,
+	 * 					false if the width should be dependent on the content
+	 * @return A CellTabe widget with the specified contents and settings
+	 */
 	private FlowPanel getTable(List<String[]> content, String[] colHeaders, boolean equalSize) {
 		FlowPanel tablePanel = new FlowPanel();
 		CellTable<String[]> table = new CellTable<>();
@@ -608,6 +705,9 @@ public class ISMLAGlosser implements EntryPoint {
 		return tablePanel;
 	}
 	
+	/**
+	 * @return The panel containing the about page
+	 */
 	private FlowPanel loadSourcesPage() {
 		FlowPanel sourcesPanel = new FlowPanel();
 		
@@ -626,21 +726,33 @@ public class ISMLAGlosser implements EntryPoint {
 				"The Malayalam morphology analysis is mainly based on Rodney F. Moag's \"Malayalam: A University Course "
 						+ "and Reference Grammar\" (1994), covering chapters 1 to 13 so far. Further information about "
 						+ "Malayalam grammar was drawn from Ronald E. Asher and T. C. Kumari's \"Malayalam\" (1997) grammar.")));
-		String olam = link("https://olam.in/", "olam.in");
+//		String olam = link("https://olam.in/", "olam.in");
+//		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
+//				"The underlying dictionary data is composed of an " + olam + " dictionary dump (nouns, verbs, adjectives, "
+//				+ "adverbs, adpositions and conjunctions) and manually added entries based on Moag's text book (pronouns "
+//				+ "and grammatical particles).")));
 		sourcesPanel.add(applyPageStyles(new HTMLPanel("p",
-				"The underlying dictionary data is composed of an " + olam + " dictionary dump (nouns, verbs, adjectives, "
-				+ "adverbs, adpositions and conjunctions) and manually added entries based on Moag's text book (pronouns "
-				+ "and grammatical particles).")));
+				"The underlying dictionary data is based on lessons 1 to 11 of the Moag textbook.")));
 
 		return sourcesPanel;
 	}
 	
+	/**
+	 * Apply some common page styles to a widget
+	 * @param widget A widget
+	 * @return The same widget
+	 */
 	private Widget applyPageStyles(Widget widget) {
 		for (String style : PAGE_STYLES)
 			widget.addStyleName(style);
 		return widget;
 	}
 	
+	/**
+	 * @param url A URL
+	 * @param label The text that should be linked with this URL
+	 * @return The HTML code for that link
+	 */
 	private String link(String url, String label) {
 		return "<a  target=\"_blank\" rel=\"noopener noreferrer\" href=\"" + url + "\">" + label + "</a>";
 	}

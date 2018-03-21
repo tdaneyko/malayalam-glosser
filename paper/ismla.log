@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (MiKTeX 2.9.6210) (preloaded format=xelatex 2017.1.25)  20 MAR 2018 22:49
+This is XeTeX, Version 3.14159265-2.6-0.99996 (MiKTeX 2.9.6210) (preloaded format=xelatex 2017.1.25)  21 MAR 2018 13:25
 entering extended mode
 **./ismla.tex
 (ismla.tex
@@ -1651,85 +1651,87 @@ Overfull \hbox (30.0pt too wide) in paragraph at lines 130--136
  [][][][] 
  []
 
-[4] [5]
+[4] [5] [6]
 File: systemarchitecture.png Graphic file (type QTm)
- <use  "systemarchitecture.png" > [6] [7]
+ <use  "systemarchitecture.png" > [7]
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 
-Overfull \hbox (1.20837pt too wide) in paragraph at lines 193--197
+Overfull \hbox (1.20837pt too wide) in paragraph at lines 197--201
  \EU1/lmr/bx/n/10 ISO-15919 Unicode: \EU1/lmr/m/n/10 manuṣyarellāvaruṁ tulyāvak
 āśaṅṅaḷōṭuṁ antassōṭ-
  []
 
 LaTeX Font Info:    Font shape `EU1/Consolas(0)/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 199.
+(Font)              scaled to size 8.99994pt on input line 203.
+[8]
 LaTeX Font Info:    Font shape `EU1/Consolas(0)/m/n' will be
-(Font)              scaled to size 8.09995pt on input line 225.
-[8] [9]
+(Font)              scaled to size 8.09995pt on input line 229.
+ [9]
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
-Overfull \hbox (1.68541pt too wide) in paragraph at lines 252--253
+ [10]
+Overfull \hbox (1.68541pt too wide) in paragraph at lines 256--257
 []\EU1/Consolas(0)/m/n/10 [v] PASS (((PRS || PST) (Nn || Nm || Nf) || PST_STAT)
  (NEG || A) 
  []
 
-[10]
-Overfull \hbox (0.47769pt too wide) in paragraph at lines 278--279
+
+Overfull \hbox (0.47769pt too wide) in paragraph at lines 282--283
 []\EU1/lmr/m/n/10 To achieve this, \EU1/Consolas(0)/m/n/10 MorphGen \EU1/lmr/m/
 n/10 stores the rules specified in the rule file as a automaton-
  []
 
 [11]
-Overfull \hbox (6.46646pt too wide) in paragraph at lines 290--291
+Overfull \hbox (6.46646pt too wide) in paragraph at lines 294--295
 \EU1/Consolas(0)/m/n/10 puucca|PL|GEN puucca|ka.l|u.te\EU1/lmr/m/n/10 , \EU1/Co
 nsolas(0)/m/n/10 puucca|ACC puucca|ye\EU1/lmr/m/n/10 , etc.). Finally, a whole
  []
 
 
-Overfull \hbox (3.14343pt too wide) in paragraph at lines 295--296
+Overfull \hbox (3.14343pt too wide) in paragraph at lines 299--300
 \EU1/lmr/m/n/10 the matching morpheme-split string (\EU1/Consolas(0)/m/n/10 vii
 .tu|ka.l|il\EU1/lmr/m/n/10 ) and glosses (\EU1/Consolas(0)/m/n/10 house|PL|LOC
  []
 
-LaTeX Font Info:    Font shape `EU1/Consolas(0)/bx/n' will be
-(Font)              scaled to size 8.99994pt on input line 301.
 [12]
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+LaTeX Font Info:    Font shape `EU1/Consolas(0)/bx/n' will be
+(Font)              scaled to size 8.99994pt on input line 305.
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
  [13]
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+ [14]
 
 LaTeX Font Warning: Font shape `EU1/Rachana(0)/m/it' undefined
-(Font)              using `EU1/Rachana(0)/m/n' instead on input line 330.
+(Font)              using `EU1/Rachana(0)/m/n' instead on input line 347.
 
 
-Overfull \hbox (0.72879pt too wide) in paragraph at lines 331--331
+Overfull \hbox (0.72879pt too wide) in paragraph at lines 348--348
 [][]\EU1/lmr/m/n/10 Bindu, M. S. and Sumam Mary Idicula (2011). “High Order Con
 ditional Random
  []
 
-[14] [15]
+[15] [16]
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ḻ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
- [16
+ [17
 
 ]
-Overfull \hbox (19.36792pt too wide) in paragraph at lines 425--425
+Overfull \hbox (19.36792pt too wide) in paragraph at lines 442--442
 []\EU1/lmr/bx/n/14.4 Glossed translation of lesson 11 conversation 
  []
 
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (14.42784pt too wide) in paragraph at lines 431--431
+Overfull \hbox (14.42784pt too wide) in paragraph at lines 448--448
 \EU1/lmr/m/it/10 cēcci: aniyan ā muṟiyil āyirunnallō. ippōḷ avane kāṇunnilla. e
 viṭe pōyi?| 
  []
@@ -1737,39 +1739,17 @@ viṭe pōyi?|
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 429--436
- [][][] 
- []
-
-[17]
-Overfull \hbox (30.0pt too wide) in paragraph at lines 438--445
- [][][] 
- []
-
-
-Overfull \hbox (30.0pt too wide) in paragraph at lines 447--454
- [][][] 
- []
-
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
-Overfull \hbox (30.0pt too wide) in paragraph at lines 458--465
+Overfull \hbox (30.0pt too wide) in paragraph at lines 446--453
  [][][] 
  []
 
 [18]
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
-Overfull \hbox (30.0pt too wide) in paragraph at lines 467--474
+Overfull \hbox (30.0pt too wide) in paragraph at lines 455--462
  [][][] 
  []
 
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 476--483
+Overfull \hbox (30.0pt too wide) in paragraph at lines 464--471
  [][][] 
  []
 
@@ -1777,35 +1757,57 @@ Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 485--492
- [][][] 
- []
-
-Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
-Overfull \hbox (30.0pt too wide) in paragraph at lines 494--501
+Overfull \hbox (30.0pt too wide) in paragraph at lines 475--482
  [][][] 
  []
 
 [19]
-Overfull \hbox (30.0pt too wide) in paragraph at lines 503--510
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 484--491
  [][][] 
  []
 
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 512--519
+Overfull \hbox (30.0pt too wide) in paragraph at lines 493--500
+ [][][] 
+ []
+
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 502--509
+ [][][] 
+ []
+
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 511--518
+ [][][] 
+ []
+
+[20]
+Overfull \hbox (30.0pt too wide) in paragraph at lines 520--527
+ [][][] 
+ []
+
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 529--536
  [][][] 
  []
 
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (12.18117pt too wide) in paragraph at lines 523--523
+Overfull \hbox (12.18117pt too wide) in paragraph at lines 540--540
 \EU1/lmr/m/it/10 cēcci: ayyō! atŭ vaḷare kūṭutalāṇallō. atrayuṁ rūpa veṟute kaḷ
 aññallō.| 
  []
@@ -1815,7 +1817,7 @@ Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 521--528
+Overfull \hbox (30.0pt too wide) in paragraph at lines 538--545
  [][][] 
  []
 
@@ -1832,11 +1834,11 @@ Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 530--537
+Overfull \hbox (30.0pt too wide) in paragraph at lines 547--554
  [][][] 
  []
 
-[20]
+[21]
 Missing character: There is no ḻ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ḻ in font [lmroman10-italic]:mapping=tex-text!
@@ -1844,7 +1846,7 @@ Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ḻ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 539--546
+Overfull \hbox (30.0pt too wide) in paragraph at lines 556--563
  [][][] 
  []
 
@@ -1854,16 +1856,16 @@ Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 548--555
+Overfull \hbox (30.0pt too wide) in paragraph at lines 565--572
  [][][] 
  []
 
-[21] [22]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 557.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 557.
+[22] [23]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 574.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 574.
  (ismla.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 557.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 557.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 574.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 574.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1877,12 +1879,12 @@ Package logreq Info: Writing requests to 'ismla.run.xml'.
 ### semi simple group (level 1) entered at line 63 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 44448 strings out of 428441
- 846177 string characters out of 3160047
+ 44449 strings out of 428441
+ 846188 string characters out of 3160047
  1300698 words of memory out of 3000000
- 47308 multiletter control sequences out of 15000+200000
+ 47309 multiletter control sequences out of 15000+200000
  10600 words of font info for 73 fonts, out of 3000000 for 9000
  1314 hyphenation exceptions out of 8191
  64i,11n,92p,10389b,4868s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ismla.pdf (22 pages).
+Output written on ismla.pdf (23 pages).

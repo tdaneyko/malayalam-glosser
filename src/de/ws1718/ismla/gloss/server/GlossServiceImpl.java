@@ -16,10 +16,15 @@ import de.ws1718.ismla.gloss.client.GlossedSentence;
 import de.ws1718.ismla.gloss.client.GlossedWord;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
+/**
+ * This class receives the user input and hands it to the actual glosser.
+ */
 public class GlossServiceImpl extends RemoteServiceServlet implements GlossService {
 	
+	// The path to the fully inflected dictionary file
 	private static final String dictPath = "/mal-dict-all.tsv";
 	
+	// The glosser/tokenizer
 	MalayalamGlosser glosser;
 	
 	@Override
@@ -35,19 +40,15 @@ public class GlossServiceImpl extends RemoteServiceServlet implements GlossServi
 		}
 	}
 
+	/**
+	 * @param text A user-input Malayalam text
+	 * @param inFormat The script used in the text
+	 * @param outFormat The script to be used in glosses
+	 * @return The glossed text
+	 */
 	@Override
 	public List<GlossedSentence> getGloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat) {
-//		try {
-//			ServletContext servletContext = getServletContext();
-//			MalayalamDictionary dict = new MalayalamDictionary(new BufferedReader(new InputStreamReader(
-//					servletContext.getResourceAsStream(dictPath), "UTF-8")));
-//			MalayalamGlosser glosser = new MalayalamGlosser(dict, new MalayalamTranscriptor(servletContext));
-			return glosser.gloss(text, inFormat, outFormat);
-//		}
-//		catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-//		return new ArrayList<>();
+		return glosser.gloss(text, inFormat, outFormat);
 	}
-
+	
 }

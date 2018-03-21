@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A sentence with glossed words.
+ */
 public class GlossedSentence implements Serializable {
 
 	private String sentence;

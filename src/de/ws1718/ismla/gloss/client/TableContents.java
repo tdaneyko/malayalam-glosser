@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class representing a table with a column header.
+ */
 public class TableContents implements Serializable {
 	
 	private String[] header;

@@ -170,6 +170,10 @@ In contrast to these manual methods, \textcite{sebastian2018morph} employ a mach
 
 \section{The Malayalam Glosser}
 
+The Malayalam Glosser presented in this paper uses a manual approach with handcrafted rules and does not involve any machine learning. The reason for this is that I believe Malayalam morphology and sandhi to be regular enough that it can be captured by a reasonably large rule set. The manual approach has the advantage that it is more precise than a machine learning approach, which is also very dependent on the availability of large annotated training data sets, while morphological rules can be compiled using a decent reference grammar book.
+
+The Malayalam Glosser is also experimental in that it relies on morphological generation instead of morphological analysis to recognize and gloss inflected words. This means that the input is not run through a morphological analyzer that splits off morphemes trying to find a recognizable stem, but that a morphological generator provides all possible inflected forms of the word in the underlying dictionary, so that a token's gloss can be directly looked up in that dictionary.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.5\textwidth]{systemarchitecture.png}
@@ -177,7 +181,7 @@ In contrast to these manual methods, \textcite{sebastian2018morph} employ a mach
 \label{architecture}
 \end{figure}
 
-Bla bla
+The architecture of the system is illustrated in Figure \ref{architecture}. The heart of the program, the tokenizer, receives input from the user which it attempts to split into units that can be found in the dictionary. The entries in the dictionary are provided by the morphological generator. A transcriptor converting between different representations of Malayalam is wrapped around the tokenizer to make sure that the input and output are in the format desired by the user and the dictionary. The following sections elaborate the workflow of the individual parts of the Malayalam Glosser in more detail.
 
 \subsection{Transliteration}
 
@@ -207,7 +211,7 @@ Transliterator rules from Malayalam script to ISO-15919 Unicode and from ISO-159
 
 \subsection{Morphological generation}
 
-MorphGen
+The morphological generator, MorphGen, is a standalone module responsible for generating the fully inflected paradigms of a lemma. It is based on user-provided rule sets and is thus not specialized on Malayalam, but can serve as a morphological generator for any language.
 
 \subsubsection{File format}
 
@@ -321,9 +325,22 @@ During five test runs, parsing the text file into an object took 278.2 ms on ave
 The file storing the serialized \typ{ReverseTrie} was twice as large as the file with the \typ{HashMap}. This confirms my assertions from the previous section that the Trie takes more space than the \typ{HashMap}.
 
 
-\subsection{Tokenization}
+\subsection{Tokenization and Glossing}
 
-MalayalamGlosser
+The core of the system is the \typ{MalayalamGlosser} which handles both the tokenization and glossing of the input text with the help of the \typ{MalayalamTranscriptor} and \typ{MalayalamDictionary} classes.
+
+Given an input text, it will first split it into individual sentences using a simple regular expression that matches punctuation characters. For each sentence, it will then perform a simple whitespace tokenization. The resulting `coarse' tokens are then converted to the ASCII ISO-15919 format that is used by the dictionary and handed to the sandhi splitter.
+
+The sandhi split method recursively does a suffix search in the dictionary to remove the final token from the word. The remaining prefix of the string is then checked against a range of sandhi rules to generate candidate strings for the next sandhi split. One candidate is always the unmodified string. Then, if for example the prefix ends in a glide (\textit{y} or \textit{v}) and the recognized suffix starts with a vowel, another candidate is the prefix without the final glide, since it might have been subject to glide insertion. If at some point the prefix is empty, the string was successfully tokenized. If it could not be split into tokens in this way, i.e. if no valid candidate could be generated for a prefix, it will be tagged as \typ{<unknown>}. Of course, this means that if any of the tokens in the string is not known to the dictionary, the whole compound will be marked as unknown and is not split.
+
+The identified tokens of each sentence are finally looked up in the dictionary and tagged with their possible morpheme splits and glosses in the selected output script as well as provided with a phonetic transcription in IPA. Also, since the original word might have been split into several tokens, each token is converted back from the dictionary format (ASCII ISO-15919) to the original input script.
+
+
+\section{Evaluation}
+
+\subsection{MorphGen}
+
+\subsection{Malayalam Glosser}
 
 \section{Conclusion}
 

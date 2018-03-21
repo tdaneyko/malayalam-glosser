@@ -14,9 +14,14 @@ import de.ws1718.ismla.gloss.client.TableProviderService;
 import de.ws1718.ismla.gloss.client.TableContents;
 import de.ws1718.ismla.gloss.shared.StringUtils;
 
+/**
+ * This class loads the tables to be displayed on the help page at launch, so that they don't have
+ * to be read over and over again.
+ */
 public class TableProviderServiceImpl extends RemoteServiceServlet implements TableProviderService {
-	
+	// The table containing the transcription schemes
 	TableContents transcr;
+	// The table containing the gloss abbreviations
 	TableContents abbr;
 	
 	@Override
@@ -25,6 +30,11 @@ public class TableProviderServiceImpl extends RemoteServiceServlet implements Ta
 		abbr = readTable(ABBR_TABLE);
 	}
 	
+	/**
+	 * Parse a tsv file into a TableContents object.
+	 * @param path The path to the tsv file
+	 * @return The parsed table
+	 */
 	private TableContents readTable(String path) {
 		boolean firstLine = true;
 		List<String[]> rows = new ArrayList<>();
@@ -48,6 +58,10 @@ public class TableProviderServiceImpl extends RemoteServiceServlet implements Ta
 		return new TableContents(header, rows);
 	}
 
+	/**
+	 * @param filepath The path to a tsv file
+	 * @return The previously loaded contents of that tsv file
+	 */
 	@Override
 	public TableContents getTable(String filepath) {
 		if (filepath.equals(TRANSCR_TABLE))

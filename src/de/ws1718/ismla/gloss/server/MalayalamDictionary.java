@@ -27,28 +27,33 @@ import de.ws1718.ismla.gloss.server.translit.GlossNormalizer;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 import de.ws1718.ismla.gloss.shared.StringUtils;
 
+/**
+ * A fully inflected Malayalam Dictionary.
+ */
 public class MalayalamDictionary {
-	
+	// Use a trie or hash map to store the entries?
 	private static final boolean TRIE = false;
-	
+	// Script in which the dictionary entries are stored
 	public static final MalayalamFormat DICT_FORMAT = MalayalamFormat.ISO15919_ASCII;
+	// Regular expression matching a single punctuation character
 	private static final Pattern PUNCT = Pattern.compile("\\p{Punct}");
 	
+	// A Transliterator normalizing the gloss symbols (| -> -, & -> . and <> -> <>)
 	private GlossNormalizer normalizer;
 	
-	private MalayalamFormat origFormat;
-	private MalayalamFormat glossFormat;
-	
-	private Map<String, Set<Gloss>> glosses;
+	// The actual dictionary as a map or trie
+	private Map<String, Set<MalayalamDictionaryEntry>> glosses;
 	private ReverseTrie trie;
 
-	
+	/**
+	 * Read the dictionary from a file.
+	 * @param read A reader opened on the dictionary file
+	 */
 	public MalayalamDictionary(BufferedReader read) {
 		this.normalizer = new GlossNormalizer();
-		this.origFormat = DICT_FORMAT;
-		this.glossFormat = DICT_FORMAT;
 		this.glosses = new HashMap<>();
 		this.trie = new ReverseTrie();
+		
 		try {
 			for (String line = read.readLine(); line != null; line = read.readLine()) {
 				String[] fields = StringUtils.split(line, '\t');
@@ -58,7 +63,7 @@ public class MalayalamDictionary {
 					String[] prefix = StringUtils.split(fields[2], '/');
 					String[] transl = StringUtils.split(fields[3], '/');
 					String[] suffix = StringUtils.split(fields[4], '/');
-					Gloss gloss = new Gloss(split, prefix, transl, suffix);
+					MalayalamDictionaryEntry gloss = new MalayalamDictionaryEntry(split, prefix, transl, suffix);
 					if (TRIE) {
 						trie.add(surfaceForm, gloss);
 					}
@@ -75,19 +80,27 @@ public class MalayalamDictionary {
 		}
 	}
 	
-	public void setFormats(MalayalamFormat origFormat, MalayalamFormat glossFormat) {
-		this.origFormat = origFormat;
-		this.glossFormat = glossFormat;
-	}
-	
+	/**
+	 * @param word A word in the dictionary script
+	 * @return true if the word is known by dictionary, false if not
+	 */
 	public boolean contains(String word) {
 		return (TRIE) ? trie.contains(word) : glosses.containsKey(word);
 	}
-	
+
+	/**
+	 * @param word A word
+	 * @param transcr A transcriptor whose default input script conforms to the script the word is in
+	 * @return true if the word is known by dictionary, false if not
+	 */
 	public boolean contains(String word, MalayalamTranscriptor transcr) {
 		return this.contains(transcr.convertTo(word, DICT_FORMAT));
 	}
 	
+	/**
+	 * @param word A word in the dictionary script
+	 * @return The start index of the longest known suffix of the word
+	 */
 	public int suffixSearch(String word) {
 		if (TRIE)
 			return trie.suffixSearch(word);
@@ -98,17 +111,39 @@ public class MalayalamDictionary {
 		return -1;
 	}
 	
+	/**
+	 * @param word A word
+	 * @param transcr A transcriptor whose default input script conforms to the script the word is in
+	 * @return The start index of the longest known suffix of the word
+	 */
+	public int suffixSearch(String word, MalayalamTranscriptor transcr) {
+		return suffixSearch(transcr.convertTo(word, DICT_FORMAT));
+	}
+	
+	/**
+	 * @param word A word in the dictionary script
+	 * @param transcr A transcriptor set to the original input script and the desired gloss script
+	 * @return All glosses for the given word
+	 */
 	public GlossedWord lookup(String word, MalayalamTranscriptor transcr) {
-		String orig = (transcr == null) ? word : transcr.convertBetween(word, DICT_FORMAT, origFormat);
+		// Convert word back to its original script
+		String orig = (transcr == null) ? word : transcr.convertBetween(word, DICT_FORMAT, transcr.getDefaultInputFormat());
+		// Get IPA transcription
 		String ipa = (transcr == null) ? word : transcr.transcribe(word, DICT_FORMAT);
+		
+		// If word is a number or a punctuation character, do not gloss it
 		if (PUNCT.matcher(word).matches() || NumberUtils.isNumber(word))
 			return new GlossedWord(orig, orig, new String[]{orig}, new String[][]{new String[]{orig}});
+		
+		// If not known by the dictionary, gloss as <unknown>
 		if (!this.contains(word)) {
 			if (transcr != null)
 				word = transcr.convertFrom(word, DICT_FORMAT);
 			return new GlossedWord(orig, ipa, new String[]{word}, new String[][]{new String[]{"<unknown>"}});
 		}
-		Collection<Gloss> gList = (TRIE) ? trie.get(word) : glosses.get(word);
+		
+		// Else look it up and store the information in a GlossedWord object
+		Collection<MalayalamDictionaryEntry> gList = (TRIE) ? trie.get(word) : glosses.get(word);
 		String[][] gl = gList.stream()
 				.map(gloss -> Arrays.stream(gloss.getTransl())
 						.map(tr -> normalizer.convert(tr))
@@ -117,18 +152,11 @@ public class MalayalamDictionary {
 		String[] spl = gList.stream().map(gloss -> normalizer.convert(transcr.convertFrom(gloss.getSplit(), DICT_FORMAT))).toArray(String[]::new);
 		return new GlossedWord(orig, ipa, spl, gl);
 	}
+
 	
-	private boolean isNumber(String s) {
-		if (s.isEmpty())
-			return false;
-		for (int i = (s.charAt(0) == '-') ? 1 : 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			if (!Character.isDigit(c) || c != ',' || c != '.')
-				return false;
-		}
-		return true;
-	}
-	
+	/**
+	 * Method used to compare hash map and trie performance, as mentioned in paper. Kept for later experiments.
+	 */
 	private void compareMapAndTrie(BufferedReader read) {
 		String test = "avi.teyu.l.lata_ri~n~nu";
 		System.out.println(trie.suffixSearch(test) + " " + test.substring(trie.suffixSearch(test)));
@@ -163,7 +191,7 @@ public class MalayalamDictionary {
 			long reaStart = System.currentTimeMillis();
 			InputStream streamin = new FileInputStream(new File("map.ser"));
 			FSTObjectInput in = conf.getObjectInput(streamin);
-		    glosses = (Map<String, Set<Gloss>>) in.readObject();
+		    glosses = (Map<String, Set<MalayalamDictionaryEntry>>) in.readObject();
 		    in.close();
 			long reaMap = System.currentTimeMillis();
 			streamin = new FileInputStream(new File("trie.ser"));

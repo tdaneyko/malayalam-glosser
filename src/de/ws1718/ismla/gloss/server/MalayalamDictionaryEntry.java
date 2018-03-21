@@ -4,20 +4,21 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class Gloss implements Serializable {
+/**
+ * A morpheme-split entry in the MalayalamDictionary.
+ */
+public class MalayalamDictionaryEntry implements Serializable {
 
+	// The morpheme-split string
 	private String split;
+	// The possible glosses for the entry's prefix(es)
 	private String[] prefixes;
+	// The possible glosses for the entry's suffix(es)
 	private String[] suffixes;
+	// The translations of the stem
 	private String[] transl;
 	
-//	public Gloss(String split, String[] transl) {
-//		this.split = split;
-//		this.transl = transl;
-//		Arrays.sort(this.transl);
-//	}
-	
-	public Gloss(String split, String[] prefixes, String[] transl, String[] suffixes) {
+	public MalayalamDictionaryEntry(String split, String[] prefixes, String[] transl, String[] suffixes) {
 		this.split = split;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
@@ -25,14 +26,13 @@ public class Gloss implements Serializable {
 		Arrays.sort(this.transl);
 	}
 	
-//	public Gloss(String split, Collection<String> transl) {
-//		this(split, transl.toArray(new String[transl.size()]));
-//	}
-	
 	public String getSplit() {
 		return split;
 	}
 
+	/**
+	 * @return All possible combinations of prefix glosses, suffix glosses and stem translations
+	 */
 	public String[] getTransl() {
 		String[] fullTransl = new String[prefixes.length * transl.length];
 		for (int i = 0; i < prefixes.length; i++) {
@@ -45,8 +45,8 @@ public class Gloss implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Gloss) {
-			Gloss other = (Gloss) obj;
+		if (obj instanceof MalayalamDictionaryEntry) {
+			MalayalamDictionaryEntry other = (MalayalamDictionaryEntry) obj;
 			return this.split.equals(other.split) && this.prefixes.equals(other.prefixes)
 					&& this.suffixes.equals(other.suffixes) && this.transl.equals(other.transl);
 		}
