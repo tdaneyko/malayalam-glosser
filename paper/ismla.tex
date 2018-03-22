@@ -49,23 +49,12 @@
 
 \maketitle
 
-\begin{abstract}
-Miau
-\end{abstract}
-
-%1) Provide the context of your software (Which need does it address? Are there any comparable tools for your language(s)? What does your tool do better?)
-%2) A short overview of the challenges you faced on the linguistic side (if you are dealing with a single language, this would e.g. include examples illustrating the relevant features of your language).
-%3) A quick glance at the relevant literature for your project (e.g. if you build a learning tool training a certain aspect of a language, mention any papers you come across dealing with this issue).
-%4) A description of the architecture and the features of your system, motivating the design and engineering decisions. (this is the main part)
-%5) A paragraph stating clearly who contributed which parts to the project.
-%6) References for all the sources you used, much as in a normal term paper.
-
 \begingroup
 \lingset{lingstyle=Malayalam}
 
 \section{Introduction}
 
-Bla bla bla test മലയാളി bla bla.
+Provide the context of your software (Which need does it address? Are there any comparable tools for your language(s)? What does your tool do better?)
 
 \section{Malayalam Language Processing}\label{malnlp}
 
@@ -211,7 +200,9 @@ Transliterator rules from Malayalam script to ISO-15919 Unicode and from ISO-159
 
 \subsection{Morphological generation}
 
-The morphological generator, MorphGen, is a standalone module responsible for generating the fully inflected paradigms of a lemma. It is based on user-provided rule sets and is thus not specialized on Malayalam, but can serve as a morphological generator for any language.
+The morphological generator, MorphGen, is a standalone module responsible for generating the fully inflected paradigms of a lemma. It is based on user-provided rule sets and is thus not specialized on Malayalam, but can serve as a morphological generator for any language. Though its rules look similar to regular expressions and are interpreted by an automaton-like structure, MorphGen is not a finite state transducer. Its ability to store matches in memory and freely reinsert them later allows it to easily model morphological processes that are inherently difficult to express with a finite state machine, such as reduplication and metathesis.
+
+The \typ{MorphGen} rule set for Malayalam currently covers the grammar from lessons 1 to 13 from the \textcite{moag} text book.
 
 \subsubsection{File format}
 
@@ -298,6 +289,8 @@ The two steps are combined in the \typ{getInflections} method, which accepts a w
 
 The fully inflected dictionary provided by \typ{MorphGen} is handled by the \typ{MalayalamDictionary} class. Given a raw word (such as \typ{vii.tuka.lil}), it will return the matching morpheme-split string (\typ{vii.tu|ka.l|il}) and glosses (\typ{house|PL|LOC} and \typ{home|PL|LOC}). It is also able to carry out a suffix search on a string, returning the start index of the longest suffix found in the dictionary. For \typ{aavii.t.til} (\textit{ā} `that' + \textit{vīṭṭil} `house-\afx{loc}'), for example, it will return 2, since the longest known suffix, the inflected word \textit{vīṭṭil}, starts at index 2.
 
+In its current version, the dictionary knows 15,015 inflected forms generated from 279 lemmas obtained from the vocabulary lists from lessons 1 to 11 from the \textcite{moag} text book. Thus, the Glosser's vocabulary is currently still quite small, but it will be extended in the future.
+
 \subsubsection{Efficiency considerations}
 
 Considering that the dictionary may be very large and that the main function of the Glosser is to look words up in this dictionary, being able to load and query it very fast is essential for the performance of the Glosser. Hence, I experimented with a few alternatives for storing the dictionary data and investigated their efficiency. The tests elaborated below are not very exact or well-designed and were only meant to quickly assess the usefulness of the considered methods.
@@ -340,9 +333,33 @@ The identified tokens of each sentence are finally looked up in the dictionary a
 
 \subsection{MorphGen}
 
+\subsubsection{Expressivity of the rule format}
+
+Malayalam served as the first test case for \typ{MorphGen} to see whether the developed rule format would be expressive enough to cover an agglutinative morphology. The results are very satisfying: Only 202 rules were sufficient to cover all of the grammar from the first 13 \textcite{moag} lessons which already introduces the most common Malayalam morphology. Also, 39 of these rules are exceptions (such as the first and second person singular pronouns) and 47 rules belong the number generator spelling out the numerals from one to 900 in Malayalam. Thus, we are left with 116 rules covering the regular grammar including all \textit{internal sandhi} processes.
+
+However, designing the Malayalam rules also revealed a few issues and missing features. First of all, a literal string in a rule also matches all intervening separators (\typ{|}, \typ{\&}, \typ{<>}) to be able to apply a rule such as \typ{[*]xy|FOO \tab [1]xy|abc} to an input such as \typ{xxxx|y|FOO}, where \typ{y} is a suffix generated by a previous rule. However, the exact match of a literal like \typ{xy|FOO} (which would be \typ{x|y|FOO} in this case) is not saved like a variable, because it is not referenced on the other side. Instead, the literal \typ{xy|abc} is attached to the output. Hence, \typ{xxxx|y|FOO} will be converted to \typ{xxxxy|abc}, losing the separator from the previous rule and thus resulting in an incomplete gloss. At MorphGen's current stage, such matches must be kept in mind and accounted for by writing the rules as \typ{[*]x[?|]y|FOO \tab [1]x[2]y|abc}, which is not feasible as the covered grammar grows.
+
+Another problem is that the separators that are randomly placed at whitespaces between feature tags by the paradigm generator (e.g. realizing \typ{puucca PL} as \typ{puucca<>PL}) sometimes lead to the creation of false forms. Even though Malayalam is exclusively suffixing, the paradigm will always create glosses containing infix separators (\typ{<>}). These are supposed to be sorted out because no rules can apply to them. However, the rules sometimes do not explicitly match the appropriate separator (such as \typ{|}), but only the feature tag itself (such as \typ{PL}). In this case, all features will be realized and the incorrect gloss apparently containing an infix will end up in the generated paradigm. A way to explicitly mark these forms as false and remove them from the candidate pool would be very useful. Currently, the only way to achieve this is to write a rule that inserts feature tags into unwanted words that cannot be resolved anymore by the following rules. For example, there is a rule in the Malayalam file below the part covering negation that transforms all infix separators into the \typ{NEG} tag. Since there is no following rule matching this tag anymore, the word will be rejected by the paradigm generator since it looks as if it contains a feature that couldn't be matched. This must of course only be a temporary workaround. Simply being able to place a rule like \typ{<> \tab REMOVE} at the beginning of a file that states `all inputs containing \typ{<>} are illegal' is a necessary addition to the \typ{MorphGen} language.
+
+Finally, a negation group operator that states `match if not followed by any of these characters' could prove useful and would be easy to implement.
+
+\subsubsection{Performance}
+
+The big drawback of \typ{MorphGen} is the sheer size of a completely inflected vocabulary, especially for a morphologically rich language like Malayalam. While a single noun has `only' 21 to 22 forms (depending on whether the phonology of the word allows for an alternative locative form), a verb generates around 195 forms; and these numbers are still going to multiply as the full grammar of Malayalam is implemented.
+
+Single forms and lemmas may be generated quickly, but unfolding a larger vocabulary list takes very long. The original plan for the Malayalam Glosser was to use the complete Olam English-Malayalam dataset \parencite{olam} as the underlying dictionary, which contains over 200,000 English words with Malayalam translations and definitions. After reversing the translation direction from English-Malayalam to Malayalam-English, removing all Malayalam multi-word entries (i.e.\ those containing whitespaces) and transliterating the Malayalam words to ASCII ISO-15919, the list contained 67,461 unique Malayalam words with English translations. However, unfolding this list with \typ{MorphGen} was cancelled after it had run for almost seven hours. At this point, it had only consumed 68 \% of the Malayalam entries but already generated 6 million inflected forms.
+
+After adjusting the output file format to reduce the size of the generated file, I ran \typ{MorphGen} over a subset of 6,329 verbs from the Olam database. These were successfully unfolded into 1,521,859 forms in roughly 4.5 hours. However, loading the resulting dictionary into the Malayalam Glosser took several minutes before the program threw an `Out of memory' error. The fully inflected Olam database is thus far too large to be handled by the Malayalam Glosser.
+
 \subsection{Malayalam Glosser}
 
-\section{Conclusion}
+Evaluating the Malayalam Glosser itself is difficult, because its performance is largely dependent on the size of the vocabulary provided by the \typ{MorphGen} module. Currently, it is only usable for texts from the \textcite{moag} text book, as the dictionary only contains lexical items from the book. However, since even the grammar is geared to the Moag lessons, good performance on the Moag texts is already guaranteed. Hence, the Glosser still needs to be extended both in terms of vocabulary and grammar until it can be properly applied to and evaluated with arbitrary texts.
+
+Its good output for the Moag conversation from lesson 11 can be viewed in the appendix.
+
+\section{Outlook}
+
+
 
 \printbibliography
 \clearpage

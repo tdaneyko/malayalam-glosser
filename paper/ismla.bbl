@@ -434,6 +434,33 @@
       \field{title}{Malayalam: A University Course and Reference Grammar}
       \field{year}{1994}
     \endentry
+    \entry{olam}{online}{}
+      \name{author}{1}{}{%
+        {{hash=641746dd70aff42ffd3d8d269366d055}{%
+           family={Nadh},
+           familyi={N\bibinitperiod},
+           given={Kailash},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{641746dd70aff42ffd3d8d269366d055}
+      \strng{fullhash}{641746dd70aff42ffd3d8d269366d055}
+      \strng{authornamehash}{641746dd70aff42ffd3d8d269366d055}
+      \strng{authorfullhash}{641746dd70aff42ffd3d8d269366d055}
+      \field{sortinit}{N}
+      \field{sortinithash}{1163c28585427c673ad5a010cbf82f52}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Olam English-Malayalam dictionary dataset}
+      \field{urlday}{10}
+      \field{urlmonth}{1}
+      \field{urlyear}{2018}
+      \field{year}{2013}
+      \field{urldateera}{ce}
+      \verb{url}
+      \verb https://olam.in/open/enml/
+      \endverb
+    \endentry
     \entry{nisha2016sandhi}{article}{}
       \name{author}{2}{}{%
         {{hash=4e56d2b667e9e1a6a783fe62185e8610}{%
