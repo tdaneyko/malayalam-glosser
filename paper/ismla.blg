@@ -1,15 +1,15 @@
 [0] Config.pm:354> INFO - This is Biber 2.7
 [0] Config.pm:357> INFO - Logfile is 'ismla.blg'
-[43] biber-MSWIN32:303> INFO - === 
-[76] Biber.pm:359> INFO - Reading 'ismla.bcf'
-[193] Biber.pm:835> INFO - Found 21 citekeys in bib section 0
-[213] Biber.pm:3670> INFO - Processing section 0
-[239] Biber.pm:3840> INFO - Looking for bibtex format file 'ismla.bib' for section 0
-[243] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
-[250] bibtex.pm:1292> INFO - Found BibTeX data source 'ismla.bib'
-[333] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[333] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[41] biber-MSWIN32:303> INFO - === 
+[74] Biber.pm:359> INFO - Reading 'ismla.bcf'
+[189] Biber.pm:835> INFO - Found 23 citekeys in bib section 0
+[209] Biber.pm:3670> INFO - Processing section 0
+[234] Biber.pm:3840> INFO - Looking for bibtex format file 'ismla.bib' for section 0
+[239] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
+[246] bibtex.pm:1292> INFO - Found BibTeX data source 'ismla.bib'
+[332] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[332] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
 [333] Biber.pm:3499> INFO - Sorting list 'nyt/global/' of type 'entry' with scheme 'nyt' and locale 'en-US'
 [333] Biber.pm:3505> INFO - No sort tailoring available for locale 'en-US'
-[359] bbl.pm:608> INFO - Writing 'ismla.bbl' with encoding 'UTF-8'
-[365] bbl.pm:712> INFO - Output to ismla.bbl
+[360] bbl.pm:608> INFO - Writing 'ismla.bbl' with encoding 'UTF-8'
+[366] bbl.pm:712> INFO - Output to ismla.bbl

@@ -247,6 +247,18 @@
       \field{pages}{156\bibrangedash 161}
       \range{pages}{6}
     \endentry
+    \entry{gwtbootstrap}{software}{}
+      \field{sortinit}{G}
+      \field{sortinithash}{618d986594b7198ba52cf8b00d348f3f}
+      \field{labeldatesource}{year}
+      \field{labeltitlesource}{title}
+      \field{title}{GWTBootstrap3}
+      \field{version}{0.9.4}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://github.com/gwtbootstrap3/gwtbootstrap3
+      \endverb
+    \endentry
     \entry{iso-15919}{book}{}
       \name{author}{1}{}{%
         {{hash=5b512ee8a59deb284ad0a6a035ba10b1}{%
@@ -433,6 +445,30 @@
       \field{labeltitlesource}{title}
       \field{title}{Malayalam: A University Course and Reference Grammar}
       \field{year}{1994}
+    \endentry
+    \entry{fastSerialization}{software}{}
+      \name{author}{1}{}{%
+        {{hash=4783adee0f204fdbfbc14cdd2810e851}{%
+           family={Möller},
+           familyi={M\bibinitperiod},
+           given={Rüdiger},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{4783adee0f204fdbfbc14cdd2810e851}
+      \strng{fullhash}{4783adee0f204fdbfbc14cdd2810e851}
+      \strng{authornamehash}{4783adee0f204fdbfbc14cdd2810e851}
+      \strng{authorfullhash}{4783adee0f204fdbfbc14cdd2810e851}
+      \field{sortinit}{M}
+      \field{sortinithash}{c26a05ef03e4429073ed5c825140fac3}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{FST Fast Serialization}
+      \field{version}{2.57}
+      \field{year}{2018}
+      \verb{url}
+      \verb https://github.com/RuedigerMoeller/fast-serialization
+      \endverb
     \endentry
     \entry{olam}{online}{}
       \name{author}{1}{}{%

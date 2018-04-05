@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (MiKTeX 2.9.6210) (preloaded format=xelatex 2017.1.25)  22 MAR 2018 18:41
+This is XeTeX, Version 3.14159265-2.6-0.99996 (MiKTeX 2.9.6210) (preloaded format=xelatex 2017.1.25)  25 MAR 2018 19:45
 entering extended mode
 **./ismla.tex
 (ismla.tex
@@ -1460,30 +1460,30 @@ Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
 (ismla.aux)
 \openout1 = `ismla.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 48.
-LaTeX Font Info:    Try loading font information for T3+cmr on input line 48.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for EU1/lmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 52.
+LaTeX Font Info:    Try loading font information for T3+cmr on input line 52.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tipa\t3cmr.fd"
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
 Package biblatex Info: XeTeX detected.
 (biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Automatic encoding selection.
@@ -1494,8 +1494,8 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'ismla.bbl' found.
 
 (ismla.bbl)
-Package biblatex Info: Reference section=0 on input line 48.
-Package biblatex Info: Reference segment=0 on input line 48.
+Package biblatex Info: Reference section=0 on input line 52.
+Package biblatex Info: Reference segment=0 on input line 52.
 .................................................
 . fontspec info: "setup-math"
 . 
@@ -1503,60 +1503,60 @@ Package biblatex Info: Reference segment=0 on input line 48.
 .................................................
 \symlegacymaths=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 48.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 48.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 48.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 48.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 48.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 48.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 48.
-LaTeX Font Info:    Redeclaring math accent \check on input line 48.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 48.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 48.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \colon on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 48.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 48.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 48.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 52.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 52.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 52.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 52.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 52.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 52.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 52.
+LaTeX Font Info:    Redeclaring math accent \check on input line 52.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 52.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 52.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \colon on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 52.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 52.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 52.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `normal' on input line 48.
+(Font)              `operators' in the math version `normal' on input line 52.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> EU1/lmr/m/n on input line 48.
+(Font)                  OT1/cmr/m/n --> EU1/lmr/m/n on input line 52.
 LaTeX Font Info:    Encoding `OT1' has changed to `EU1' for symbol font
-(Font)              `operators' in the math version `bold' on input line 48.
+(Font)              `operators' in the math version `bold' on input line 52.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> EU1/lmr/m/n on input line 48.
+(Font)                  OT1/cmr/bx/n --> EU1/lmr/m/n on input line 52.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  EU1/lmr/m/n --> EU1/lmr/m/n on input line 48.
+(Font)                  EU1/lmr/m/n --> EU1/lmr/m/n on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> EU1/lmr/m/it on input line 48.
+(Font)                  OT1/cmr/m/it --> EU1/lmr/m/it on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> EU1/lmr/bx/n on input line 48.
+(Font)                  OT1/cmr/bx/n --> EU1/lmr/bx/n on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 48.
+(Font)                  OT1/cmss/m/n --> EU1/lmss/m/n on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> EU1/Consolas(0)/m/n on input line 48.
+(Font)                  OT1/cmtt/m/n --> EU1/Consolas(0)/m/n on input line 52.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  EU1/lmr/m/n --> EU1/lmr/bx/n on input line 48.
+(Font)                  EU1/lmr/m/n --> EU1/lmr/bx/n on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> EU1/lmr/bx/it on input line 48.
+(Font)                  OT1/cmr/bx/it --> EU1/lmr/bx/it on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 48.
+(Font)                  OT1/cmss/bx/n --> EU1/lmss/bx/n on input line 52.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> EU1/Consolas(0)/bx/n on input line 48.
+(Font)                  OT1/cmtt/m/n --> EU1/Consolas(0)/bx/n on input line 52.
 
 \AtBeginShipoutBox=\box110
-Package hyperref Info: Link coloring OFF on input line 48.
+Package hyperref Info: Link coloring OFF on input line 52.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty"
@@ -1564,9 +1564,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count380
 )
-LaTeX Info: Redefining \ref on input line 48.
-LaTeX Info: Redefining \pageref on input line 48.
-LaTeX Info: Redefining \nameref on input line 48.
+LaTeX Info: Redefining \ref on input line 52.
+LaTeX Info: Redefining \pageref on input line 52.
+LaTeX Info: Redefining \nameref on input line 52.
 
 (ismla.out) (ismla.out)
 \@outlinefile=\write7
@@ -1583,12 +1583,12 @@ Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count381
 
 ABD: EveryShipout initializing macros
-LaTeX Font Info:    Try loading font information for U+msa on input line 51.
+LaTeX Font Info:    Try loading font information for U+msa on input line 55.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 51.
+LaTeX Font Info:    Try loading font information for U+msb on input line 55.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1598,13 +1598,22 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 
 )
 LaTeX Font Info:    Font shape `EU1/Rachana(0)/m/n' will be
-(Font)              scaled to size 11.00006pt on input line 69.
-Missing character: There is no ​ in font Rachana/OT:script=mlm2;language=DFLT;!
+(Font)              scaled to size 11.00006pt on input line 66.
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 65--70
+ [][][][] 
+ []
 
 [1
 
 ]
+Missing character: There is no ​ in font Rachana/OT:script=mlm2;language=DFLT;!
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+ [2]
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
@@ -1616,122 +1625,138 @@ Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 79--86
+Overfull \hbox (30.0pt too wide) in paragraph at lines 100--107
  [][][][] 
  []
 
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 89--96
+Overfull \hbox (30.0pt too wide) in paragraph at lines 110--117
  [][][][] 
  []
 
-[2]
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+[3]
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
- [3]
+ [4]
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (16.72202pt too wide) in paragraph at lines 124--124
+Overfull \hbox (16.72202pt too wide) in paragraph at lines 145--145
 []|\EU1/lmr/m/n/10 ‘Lessons must have been being taught.’ ([]Asher and Kumari [
 ]1997[], p. 304) 
  []
 
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 119--125
+Overfull \hbox (30.0pt too wide) in paragraph at lines 140--146
  [][][][] 
  []
 
-[4] [5] [6]
+[5] [6] [7]
 File: systemarchitecture.png Graphic file (type QTm)
- <use  "systemarchitecture.png" > [7]
+ <use  "systemarchitecture.png" > [8]
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 
-Overfull \hbox (1.20837pt too wide) in paragraph at lines 186--190
- \EU1/lmr/bx/n/10 ISO-15919 Unicode: \EU1/lmr/m/n/10 manuṣyarellāvaruṁ tulyāvak
+Overfull \hbox (1.20837pt too wide) in paragraph at lines 211--215
+ \EU1/lmr/bx/n/10 Unicode ISO-15919: \EU1/lmr/m/n/10 manuṣyarellāvaruṁ tulyāvak
 āśaṅṅaḷōṭuṁ antassōṭ-
  []
 
 LaTeX Font Info:    Font shape `EU1/Consolas(0)/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 192.
-[8]
+(Font)              scaled to size 8.99994pt on input line 221.
+[9]
 LaTeX Font Info:    Font shape `EU1/Consolas(0)/m/n' will be
-(Font)              scaled to size 8.09995pt on input line 220.
- [9] [10]
+(Font)              scaled to size 8.09995pt on input line 245.
+ [10]
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
-Overfull \hbox (1.68541pt too wide) in paragraph at lines 247--248
+ [11]
+Overfull \hbox (1.68541pt too wide) in paragraph at lines 277--278
 []\EU1/Consolas(0)/m/n/10 [v] PASS (((PRS || PST) (Nn || Nm || Nf) || PST_STAT)
  (NEG || A) 
  []
 
 
-Overfull \hbox (0.47769pt too wide) in paragraph at lines 273--274
+Overfull \hbox (0.47769pt too wide) in paragraph at lines 303--304
 []\EU1/lmr/m/n/10 To achieve this, \EU1/Consolas(0)/m/n/10 MorphGen \EU1/lmr/m/
 n/10 stores the rules specified in the rule file as a automaton-
  []
 
-[11]
-Overfull \hbox (6.46646pt too wide) in paragraph at lines 285--286
+[12]
+Overfull \hbox (6.46646pt too wide) in paragraph at lines 315--316
 \EU1/Consolas(0)/m/n/10 puucca|PL|GEN puucca|ka.l|u.te\EU1/lmr/m/n/10 , \EU1/Co
 nsolas(0)/m/n/10 puucca|ACC puucca|ye\EU1/lmr/m/n/10 , etc.). Finally, a whole
  []
 
-[12]
-Overfull \hbox (3.14343pt too wide) in paragraph at lines 290--291
+
+Overfull \hbox (3.14343pt too wide) in paragraph at lines 320--321
 \EU1/lmr/m/n/10 the matching morpheme-split string (\EU1/Consolas(0)/m/n/10 vii
 .tu|ka.l|il\EU1/lmr/m/n/10 ) and glosses (\EU1/Consolas(0)/m/n/10 house|PL|LOC
  []
 
-LaTeX Font Info:    Font shape `EU1/Consolas(0)/bx/n' will be
-(Font)              scaled to size 8.99994pt on input line 298.
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 [13]
+LaTeX Font Info:    Font shape `EU1/Consolas(0)/bx/n' will be
+(Font)              scaled to size 8.99994pt on input line 330.
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
- [14] [15] [16]
+ [14]
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+ [15] [16] [17]
 
 LaTeX Font Warning: Font shape `EU1/Rachana(0)/m/it' undefined
-(Font)              using `EU1/Rachana(0)/m/n' instead on input line 364.
+(Font)              using `EU1/Rachana(0)/m/n' instead on input line 402.
 
-
-Overfull \hbox (0.72879pt too wide) in paragraph at lines 365--365
+[18]
+Overfull \hbox (0.72879pt too wide) in paragraph at lines 403--403
 [][]\EU1/lmr/m/n/10 Bindu, M. S. and Sumam Mary Idicula (2011). “High Order Con
 ditional Random
  []
 
-[17] [18]
+
+Package biblatex Warning: No driver for entry type 'software'.
+(biblatex)                Using fallback driver on input line 402.
+
+
+Overfull \hbox (7.59975pt too wide) in paragraph at lines 403--403
+[][]\EU1/lmr/m/it/10 GWTBootstrap3 \EU1/lmr/m/n/10 (2017). Version 0.9.4. \EU1/
+lmr/m/sc/10 url\EU1/lmr/m/n/10 : []$[][][][][] [] [] [] [][][][][][] [] [][][] 
+[] [][][][][][][][][][][][][] []
+ []
+
+
+Package biblatex Warning: No driver for entry type 'software'.
+(biblatex)                Using fallback driver on input line 402.
+
+[19] [20]
 Missing character: There is no ṁ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ḻ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-regular]:mapping=tex-text!
- [19
+ [21
 
 ]
-Overfull \hbox (19.36792pt too wide) in paragraph at lines 459--459
+Overfull \hbox (19.36792pt too wide) in paragraph at lines 497--497
 []\EU1/lmr/bx/n/14.4 Glossed translation of lesson 11 conversation 
  []
 
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (14.42784pt too wide) in paragraph at lines 465--465
+Overfull \hbox (14.42784pt too wide) in paragraph at lines 503--503
 \EU1/lmr/m/it/10 cēcci: aniyan ā muṟiyil āyirunnallō. ippōḷ avane kāṇunnilla. e
 viṭe pōyi?| 
  []
@@ -1739,75 +1764,75 @@ viṭe pōyi?|
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 463--470
- [][][] 
- []
-
-[20]
-Overfull \hbox (30.0pt too wide) in paragraph at lines 472--479
- [][][] 
- []
-
-
-Overfull \hbox (30.0pt too wide) in paragraph at lines 481--488
- [][][] 
- []
-
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
-Overfull \hbox (30.0pt too wide) in paragraph at lines 492--499
- [][][] 
- []
-
-[21]
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-
 Overfull \hbox (30.0pt too wide) in paragraph at lines 501--508
  [][][] 
  []
 
-
+[22]
 Overfull \hbox (30.0pt too wide) in paragraph at lines 510--517
  [][][] 
  []
 
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
 Overfull \hbox (30.0pt too wide) in paragraph at lines 519--526
  [][][] 
  []
 
-Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
-Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 528--535
+Overfull \hbox (30.0pt too wide) in paragraph at lines 530--537
  [][][] 
  []
 
-[22]
-Overfull \hbox (30.0pt too wide) in paragraph at lines 537--544
+[23]
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 539--546
  [][][] 
  []
 
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 546--553
+Overfull \hbox (30.0pt too wide) in paragraph at lines 548--555
+ [][][] 
+ []
+
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 557--564
+ [][][] 
+ []
+
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
+Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 566--573
+ [][][] 
+ []
+
+[24]
+Overfull \hbox (30.0pt too wide) in paragraph at lines 575--582
+ [][][] 
+ []
+
+
+Overfull \hbox (30.0pt too wide) in paragraph at lines 584--591
  [][][] 
  []
 
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (12.18117pt too wide) in paragraph at lines 557--557
+Overfull \hbox (12.18117pt too wide) in paragraph at lines 595--595
 \EU1/lmr/m/it/10 cēcci: ayyō! atŭ vaḷare kūṭutalāṇallō. atrayuṁ rūpa veṟute kaḷ
 aññallō.| 
  []
@@ -1817,7 +1842,7 @@ Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 555--562
+Overfull \hbox (30.0pt too wide) in paragraph at lines 593--600
  [][][] 
  []
 
@@ -1834,11 +1859,11 @@ Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 564--571
+Overfull \hbox (30.0pt too wide) in paragraph at lines 602--609
  [][][] 
  []
 
-[23]
+[25]
 Missing character: There is no ḻ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ḻ in font [lmroman10-italic]:mapping=tex-text!
@@ -1846,7 +1871,7 @@ Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ḻ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 573--580
+Overfull \hbox (30.0pt too wide) in paragraph at lines 611--618
  [][][] 
  []
 
@@ -1856,16 +1881,16 @@ Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṟ in font [lmroman10-italic]:mapping=tex-text!
 Missing character: There is no ṁ in font [lmroman10-italic]:mapping=tex-text!
 
-Overfull \hbox (30.0pt too wide) in paragraph at lines 582--589
+Overfull \hbox (30.0pt too wide) in paragraph at lines 620--627
  [][][] 
  []
 
-[24] [25]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 591.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 591.
+[26] [27]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 629.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 629.
  (ismla.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 591.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 591.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 629.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 629.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1876,15 +1901,15 @@ Package logreq Info: Writing requests to 'ismla.run.xml'.
  )
 (\end occurred inside a group at level 1)
 
-### semi simple group (level 1) entered at line 52 (\begingroup)
+### semi simple group (level 1) entered at line 58 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 44458 strings out of 428441
- 846329 string characters out of 3160047
- 1300770 words of memory out of 3000000
- 47318 multiletter control sequences out of 15000+200000
- 10600 words of font info for 73 fonts, out of 3000000 for 9000
+ 44484 strings out of 428441
+ 846732 string characters out of 3160047
+ 1301090 words of memory out of 3000000
+ 47340 multiletter control sequences out of 15000+200000
+ 12145 words of font info for 79 fonts, out of 3000000 for 9000
  1314 hyphenation exceptions out of 8191
- 64i,11n,92p,10389b,4868s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 64i,11n,92p,10389b,4865s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on ismla.pdf (25 pages).
+Output written on ismla.pdf (27 pages).
