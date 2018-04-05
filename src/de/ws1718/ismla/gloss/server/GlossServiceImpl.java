@@ -25,7 +25,7 @@ public class GlossServiceImpl extends RemoteServiceServlet implements GlossServi
 	private static final String dictPath = "/mal-dict-all.tsv";
 	
 	// The glosser/tokenizer
-	MalayalamGlosser glosser;
+	LanguageGlosser glosser;
 	
 	@Override
 	public void init() throws ServletException {

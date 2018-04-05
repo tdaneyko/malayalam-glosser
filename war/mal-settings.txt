@@ -1,0 +1,24 @@
+#lang	Malayalam
+
+#helppage	mal-help.txt
+#aboutpage	mal-about.txt
+
+#glossclass	MalayalamGlosser
+
+#dict	mal-dict-all.tsv
+
+#script	MALAYALAM	Malayalam script
+#script	ISO_UNI	ISO-15919 (Unicode)
+#script	ISO_ASCII	ISO-15919 (ASCII)
+#script	MOZHI	Mozhi romanization
+
+#informats	MALAYALAM,ISO_UNI,ISO_ASCII,MOZHI
+#outformats	ISO_UNI,ISO_ASCII,MOZHI
+
+#dictscript	ISO_ASCII
+#translitscript	ISO_UNI
+
+#transl	MALAYALAM	script2uni.csc	uni2script.csc
+#transl	ISO_ASCII	ascii2uni.csc	uni2ascii.csc
+#transl	MOZHI	mozhi2uni.csc	uni2mozhi.csc
+#transcr	uni2ipa.csc

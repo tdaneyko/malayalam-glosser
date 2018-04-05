@@ -8,7 +8,7 @@ import de.ws1718.ismla.gloss.client.GlossedSentence;
 import de.ws1718.ismla.gloss.client.GlossedWord;
 import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
-public class MalayalamGlosser {
+public class MalayalamGlosser implements LanguageGlosser {
 
 	private MalayalamDictionary dict;
 	private MalayalamTranscriptor transcr;

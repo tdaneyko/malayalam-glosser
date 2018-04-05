@@ -55,6 +55,13 @@ import de.ws1718.ismla.gloss.shared.MalayalamFormat;
  * The user interface of the Malayalam Glosser.
  */
 public class ISMLAGlosser implements EntryPoint {
+	private String langName = "Malayalam";
+	private String glossClass = "MalayalamGlosser";
+	private String[] inScripts = new String[]{"Malayalam script","ISO-15919 (Unicode)",
+			"ISO-15919 (ASCII)","Mozhi romanization"};
+	private String[] outScripts = new String[]{"ISO-15919 (Unicode)","ISO-15919 (ASCII)",
+			"Mozhi romanization"};
+	
 	// The names of the supported scripts
 	private static final String MALAYALAM_SCRIPT = "Malayalam script";
 	private static final String ISO15919_UNICODE = "ISO-15919 (Unicode)";
@@ -114,7 +121,7 @@ public class ISMLAGlosser implements EntryPoint {
 		
 		NavbarHeader navHeader = new NavbarHeader();
 		NavbarBrand navTitle = new NavbarBrand();
-		navTitle.setText("Malayalam Glosser");
+		navTitle.setText(langName + " Glosser");
 		NavbarCollapseButton collapseButton = new NavbarCollapseButton();
 		navHeader.add(navTitle);
 		navHeader.add(collapseButton);
@@ -192,7 +199,7 @@ public class ISMLAGlosser implements EntryPoint {
 		// Create text area for user to type input in
 		final TextArea inputText = new TextArea();
 		inputText.setVisibleLines(14);
-		inputText.setPlaceholder("Enter your Malayalam text here");
+		inputText.setPlaceholder("Enter your " + langName + " text here");
 		inputText.addStyleName("space-below-sm");
 		FlowPanel textPanel = new FlowPanel();
 		textPanel.addStyleName(LG_OFFSET);
@@ -200,8 +207,15 @@ public class ISMLAGlosser implements EntryPoint {
 		textPanel.addStyleName(SM_WIDTH);
 		textPanel.addStyleName("space-below-lg");
 		textPanel.add(inputText);
+
+		// Build input and gloss format selection panel
+		FlowPanel inOutFormatPanel = new FlowPanel();
+		inOutFormatPanel.addStyleName("col-lg-2");
 		
 		// Create input format selection buttons
+		FormLabel labelIn = new FormLabel();
+		labelIn.setFor("inFormat");
+		labelIn.setText("Input script:");
 		ClickHandler inFormatHandler = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -209,24 +223,13 @@ public class ISMLAGlosser implements EntryPoint {
 				currentInFormat = getFormat(button.getText());
 			}
 		};
-		RadioButton biScript = new RadioButton("inFormat");
-		biScript.setText(MALAYALAM_SCRIPT);
-		biScript.setValue(true);
-		biScript.addClickHandler(inFormatHandler);
-		RadioButton biMozhi = new RadioButton("inFormat");
-		biMozhi.setText(MOZHI);
-		biMozhi.addClickHandler(inFormatHandler);
-		RadioButton biUni = new RadioButton("inFormat");
-		biUni.setText(ISO15919_UNICODE);
-		biUni.addClickHandler(inFormatHandler);
-		RadioButton biAscii = new RadioButton("inFormat");
-		biAscii.setText(ISO15919_ASCII);
-		biAscii.addClickHandler(inFormatHandler);
-		FormLabel labelIn = new FormLabel();
-		labelIn.setFor("inFormat");
-		labelIn.setText("Input script:");
+		addRadioButtons("inFormat", labelIn, inScripts, inFormatHandler, inOutFormatPanel);
 		
 		// Create gloss format selection buttons
+		FormLabel labelOut = new FormLabel();
+		labelOut.setFor("outFormat");
+		labelOut.setText("Gloss script:");
+		labelOut.addStyleName("space-above-sm");
 		ClickHandler outFormatHandler = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -234,33 +237,7 @@ public class ISMLAGlosser implements EntryPoint {
 				currentOutFormat = getFormat(button.getText());
 			}
 		};
-		RadioButton boUni = new RadioButton("outFormat");
-		boUni.setText(ISO15919_UNICODE);
-		boUni.setValue(true);
-		boUni.addClickHandler(outFormatHandler);
-		RadioButton boAscii = new RadioButton("outFormat");
-		boAscii.setText(ISO15919_ASCII);
-		boAscii.addClickHandler(outFormatHandler);
-		RadioButton boMozhi = new RadioButton("outFormat");
-		boMozhi.setText(MOZHI);
-		boMozhi.addClickHandler(outFormatHandler);
-		FormLabel labelOut = new FormLabel();
-		labelOut.setFor("outFormat");
-		labelOut.setText("Gloss script:");
-		labelOut.addStyleName("space-above-sm");
-		
-		// Build input and gloss format selection panel
-		FlowPanel inOutFormatPanel = new FlowPanel();
-		inOutFormatPanel.addStyleName("col-lg-2");
-		inOutFormatPanel.add(labelIn);
-		inOutFormatPanel.add(biScript);
-		inOutFormatPanel.add(biUni);
-		inOutFormatPanel.add(biAscii);
-		inOutFormatPanel.add(biMozhi);
-		inOutFormatPanel.add(labelOut);
-		inOutFormatPanel.add(boUni);
-		inOutFormatPanel.add(boAscii);
-		inOutFormatPanel.add(boMozhi);
+		addRadioButtons("outFormat", labelOut, outScripts, outFormatHandler, inOutFormatPanel);
 		
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
@@ -298,6 +275,18 @@ public class ISMLAGlosser implements EntryPoint {
 		mainPanel.add(form);
 		
 		return mainPanel;
+	}
+	
+	private void addRadioButtons(String groupName, FormLabel label, String[] values, ClickHandler handler, FlowPanel panel) {
+		panel.add(label);
+		for (int i = 0; i < values.length; i++) {
+			RadioButton b = new RadioButton(groupName);
+			b.setText(values[i]);
+			if (i == 0)
+				b.setValue(true);
+			b.addClickHandler(handler);
+			panel.add(b);
+		}
 	}
 	
 	/**
