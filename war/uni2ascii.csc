@@ -1,0 +1,2 @@
+lowercase	greedy
+mal-unicodeISO2asciiISO	greedy

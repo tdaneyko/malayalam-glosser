@@ -1,5 +1,6 @@
 package de.ws1718.ismla.gloss.server;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -12,7 +13,8 @@ import de.ws1718.ismla.gloss.server.translit.Transliterator;
 
 public class GlossTransliterator {
 
-	public final String dictScript;
+	// The intermediate transliterator script
+	public final String translScript;
 	// The default input script
 	private String defFrom;
 	// The default output script
@@ -21,16 +23,19 @@ public class GlossTransliterator {
 	private Map<String, Pair<Transliterator, Transliterator>> translits;
 	private Transliterator transcr;
 	
-	public GlossTransliterator(Map<String, Pair<String, String>> cascades, String transcrCsc, String dictScript, ServletContext servletContext) {
-		this.dictScript = dictScript;
-		defFrom = dictScript;
-		defTo = dictScript;
+	public GlossTransliterator(Map<String, Pair<String, String>> cascades, String transcrCsc, String translScript, ServletContext servletContext) {
+		this.translScript = translScript;
+		this.defFrom = translScript;
+		this.defTo = translScript;
+		this.translits = new HashMap<>();
 		for (String script : cascades.keySet()) {
 			Pair<String, String> csc = cascades.get(script);
-			translits.put(script, Pair.of(new CascadeTransliterator(csc.getLeft(), false, servletContext),
-					new CascadeTransliterator(csc.getRight(), false, servletContext)));
+			System.err.println(csc.getLeft() + " " + csc.getRight());
+			CascadeTransliterator lt = new CascadeTransliterator(csc.getLeft(), false, servletContext);
+			CascadeTransliterator rt = new CascadeTransliterator(csc.getRight(), false, servletContext);
+			translits.put(script, Pair.of(lt, rt));
 		}
-		transcr = (transcrCsc.isEmpty()) ? new NotATransliterator() : new CascadeTransliterator(transcrCsc, false, servletContext);
+		this.transcr = (transcrCsc.isEmpty()) ? new NotATransliterator() : new CascadeTransliterator(transcrCsc, false, servletContext);
 	}
 	
 	/**
@@ -94,12 +99,12 @@ public class GlossTransliterator {
 	 * @return The string in the specified output script
 	 */
 	public String convertBetween(String s, String from, String to) {
-		if (!from.equals(dictScript))
+		if (!from.equals(translScript))
 			s = translits.get(from).getLeft().convert(s);
 
-		if (!to.equals(dictScript))
+		if (!to.equals(translScript))
 			s = translits.get(to).getRight().convert(s);
-		
+
 		return s;
 	}
 	
@@ -119,6 +124,6 @@ public class GlossTransliterator {
 	 * @return The IPA transcription of s
 	 */
 	public String transcribe(String s, String from) {
-		return transcr.convert(convertBetween(s, from, dictScript));
+		return transcr.convert(convertBetween(s, from, translScript));
 	}
 }

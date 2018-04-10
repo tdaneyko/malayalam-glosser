@@ -1,4 +1,4 @@
-package de.ws1718.ismla.gloss.shared;
+package de.ws1718.ismla.gloss.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +14,10 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import de.ws1718.ismla.gloss.server.LanguageGlosser;
-import de.ws1718.ismla.gloss.server.MalayalamDictionary;
-import de.ws1718.ismla.gloss.server.MalayalamTranscriptor;
+import com.sun.org.apache.bcel.internal.generic.RET;
+
+import de.ws1718.ismla.gloss.shared.PageSettings;
+import de.ws1718.ismla.gloss.shared.StringUtils;
 
 public class GlosserSettings {
 	
@@ -31,6 +33,8 @@ public class GlosserSettings {
 	private String translScript;
 	private Map<String, Pair<String, String>> translits;
 	private String transcr;
+	
+	private PageSettings pageSettings;
 	
 	public GlosserSettings(String filepath, ServletContext servletContext) throws GlosserSettingsException {
 		try (BufferedReader read = new BufferedReader(new InputStreamReader(
@@ -50,16 +54,16 @@ public class GlosserSettings {
 							langName = fields[1];
 							break;
 						case "#helppage":
-							helpPath = fields[1];
+							helpPath = (fields[1].charAt(0) == '/') ? fields[1] : '/' + fields[1];
 							break;
 						case "#aboutpage":
-							aboutPath = fields[1];
+							aboutPath = (fields[1].charAt(0) == '/') ? fields[1] : '/' + fields[1];
 							break;
 						case "#glossclass":
 							glosser = fields[1];
 							break;
 						case "#dict":
-							dictPath = fields[1];
+							dictPath = (fields[1].charAt(0) == '/') ? fields[1] : '/' + fields[1];
 							break;
 						case "#informats":
 							inScripts = StringUtils.split(fields[1], ',');
@@ -89,6 +93,7 @@ public class GlosserSettings {
 					if (fields.length == 4 && fields[0].equals("#transl")) {
 						translits.put(fields[1], Pair.of(fields[2], fields[3]));
 					}
+					pageSettings = new PageSettings(langName, scripts, inScripts, outScripts);
 				}
 			}
 		} catch (IOException e) {
@@ -113,23 +118,51 @@ public class GlosserSettings {
 				throw new GlosserSettingsException("No transliterators (#transl) for script " + script);
 	}
 	
+	public PageSettings getPageSettings() {
+		return pageSettings;
+	}
+	
 	public String getLanguage() {
 		return langName;
+	}
+	
+	public String[] getInputScripts() {
+		return Arrays.copyOf(inScripts, inScripts.length);
+	}
+	
+	public String[] getOutputScripts() {
+		return Arrays.copyOf(outScripts, outScripts.length);
+	}
+	
+	public String getDictScript() {
+		return dictScript;
+	}
+	
+	public String getTranslScript() {
+		return translScript;
+	}
+	
+	public String getScriptName(String script) {
+		return scripts.get(script);
 	}
 
 	public LanguageGlosser getGlosser(ServletContext servletContext) {
 		try {
 			Class<?> glossClass = Class.forName(glosser);
-			if (glossClass.isInstance(LanguageGlosser.class)) {
-				Constructor<?> constructor = glossClass.getConstructor(MalayalamDictionary.class, MalayalamTranscriptor.class);
-				MalayalamDictionary dict = new MalayalamDictionary(new BufferedReader(new InputStreamReader(
-						servletContext.getResourceAsStream(dictPath), "UTF-8")));
-				return (LanguageGlosser) constructor.newInstance(dict, new MalayalamTranscriptor(servletContext));
+			if (LanguageGlosser.class.isAssignableFrom(glossClass)) {
+				Constructor<?> constructor = glossClass.getConstructor(UnfoldedDictionary.class, GlossTransliterator.class);
+				UnfoldedDictionary dict = new UnfoldedDictionary(new BufferedReader(new InputStreamReader(
+						servletContext.getResourceAsStream(dictPath), "UTF-8")), dictScript);
+				return (LanguageGlosser) constructor.newInstance(dict, getTransliterator(servletContext));
 			}
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public GlossTransliterator getTransliterator(ServletContext servletContext) {
+		return new GlossTransliterator(translits, transcr, translScript, servletContext);
 	}
 }

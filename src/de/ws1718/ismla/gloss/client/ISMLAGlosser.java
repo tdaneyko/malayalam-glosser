@@ -1,7 +1,6 @@
 package de.ws1718.ismla.gloss.client;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.gwtbootstrap3.client.ui.AnchorListItem;
@@ -24,7 +23,6 @@ import org.gwtbootstrap3.client.ui.PanelBody;
 import org.gwtbootstrap3.client.ui.PanelHeader;
 import org.gwtbootstrap3.client.ui.Pre;
 import org.gwtbootstrap3.client.ui.RadioButton;
-import org.gwtbootstrap3.client.ui.StringRadioGroup;
 import org.gwtbootstrap3.client.ui.TextArea;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
@@ -32,7 +30,6 @@ import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 import org.gwtbootstrap3.client.ui.gwt.HTMLPanel;
 import org.gwtbootstrap3.client.ui.html.Text;
 
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -43,24 +40,16 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.ws1718.ismla.gloss.server.TableProviderServiceImpl;
-import de.ws1718.ismla.gloss.shared.MalayalamFormat;
+import de.ws1718.ismla.gloss.shared.PageSettings;
 
 /**
  * The user interface of the Malayalam Glosser.
  */
 public class ISMLAGlosser implements EntryPoint {
-	private String langName = "Malayalam";
-	private String glossClass = "MalayalamGlosser";
-	private String[] inScripts = new String[]{"Malayalam script","ISO-15919 (Unicode)",
-			"ISO-15919 (ASCII)","Mozhi romanization"};
-	private String[] outScripts = new String[]{"ISO-15919 (Unicode)","ISO-15919 (ASCII)",
-			"Mozhi romanization"};
 	
 	// The names of the supported scripts
 	private static final String MALAYALAM_SCRIPT = "Malayalam script";
@@ -84,6 +73,9 @@ public class ISMLAGlosser implements EntryPoint {
 	// The service providing the table contents for the help page
 	private TableProviderServiceAsync readService = GWT.create(TableProviderService.class);
 	
+	// The settings of the glosser
+	private PageSettings settings;
+	
 	// The page currently opened by the user
 	private FlowPanel currentPage;
 	// The static help page
@@ -92,9 +84,9 @@ public class ISMLAGlosser implements EntryPoint {
 	private FlowPanel sourcePage = loadSourcesPage();
 	
 	// The input script currently selected by the user
-	private MalayalamFormat currentInFormat = MalayalamFormat.MALAYALAM_SCRIPT;
+	private String currentInFormat;
 	// The gloss script currently selected by the user
-	private MalayalamFormat currentOutFormat = MalayalamFormat.ISO15919_UNICODE;
+	private String currentOutFormat;
 
 	// The submit button
 	private Button submit = new Button("Gloss");
@@ -116,12 +108,26 @@ public class ISMLAGlosser implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		// LOAD SETTINGS
+		glossService.getSettings(new AsyncCallback<PageSettings>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Unable to obtain server response: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(PageSettings result) {
+				settings = result;
+			}
+		});
+		Window.alert("Lufi!");
+		
 		// CREATE THE NAVBAR
 		Navbar navbar = new Navbar();
 		
 		NavbarHeader navHeader = new NavbarHeader();
 		NavbarBrand navTitle = new NavbarBrand();
-		navTitle.setText(langName + " Glosser");
+		navTitle.setText(settings.getLanguage() + " Glosser");
 		NavbarCollapseButton collapseButton = new NavbarCollapseButton();
 		navHeader.add(navTitle);
 		navHeader.add(collapseButton);
@@ -199,7 +205,7 @@ public class ISMLAGlosser implements EntryPoint {
 		// Create text area for user to type input in
 		final TextArea inputText = new TextArea();
 		inputText.setVisibleLines(14);
-		inputText.setPlaceholder("Enter your " + langName + " text here");
+		inputText.setPlaceholder("Enter your " + settings.getLanguage() + " text here");
 		inputText.addStyleName("space-below-sm");
 		FlowPanel textPanel = new FlowPanel();
 		textPanel.addStyleName(LG_OFFSET);
@@ -220,10 +226,12 @@ public class ISMLAGlosser implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				RadioButton button = (RadioButton) event.getSource();
-				currentInFormat = getFormat(button.getText());
+				currentInFormat = button.getName();
 			}
 		};
+		String[] inScripts = settings.getInputScripts();
 		addRadioButtons("inFormat", labelIn, inScripts, inFormatHandler, inOutFormatPanel);
+		currentInFormat = inScripts[0];
 		
 		// Create gloss format selection buttons
 		FormLabel labelOut = new FormLabel();
@@ -234,10 +242,12 @@ public class ISMLAGlosser implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				RadioButton button = (RadioButton) event.getSource();
-				currentOutFormat = getFormat(button.getText());
+				currentOutFormat = button.getName();
 			}
 		};
+		String[] outScripts = settings.getOutputScripts();
 		addRadioButtons("outFormat", labelOut, outScripts, outFormatHandler, inOutFormatPanel);
+		currentOutFormat = outScripts[0];
 		
 		textGroup.add(textPanel);
 		textGroup.add(inOutFormatPanel);
@@ -281,28 +291,13 @@ public class ISMLAGlosser implements EntryPoint {
 		panel.add(label);
 		for (int i = 0; i < values.length; i++) {
 			RadioButton b = new RadioButton(groupName);
-			b.setText(values[i]);
+			b.setName(values[i]);
+			b.setText(settings.getScriptName(values[i]));
 			if (i == 0)
 				b.setValue(true);
 			b.addClickHandler(handler);
 			panel.add(b);
 		}
-	}
-	
-	/**
-	 * @param text The name of a Malayalam script
-	 * @return The corresponding MalayalamFormat object
-	 */
-	private MalayalamFormat getFormat(String text) {
-		if (text.equals(MALAYALAM_SCRIPT))
-			return MalayalamFormat.MALAYALAM_SCRIPT;
-		else if (text.equals(ISO15919_UNICODE))
-			return MalayalamFormat.ISO15919_UNICODE;
-		else if (text.equals(ISO15919_ASCII))
-			return MalayalamFormat.ISO15919_ASCII;
-		else if (text.equals(MOZHI))
-			return MalayalamFormat.MOZHI;
-		return MalayalamFormat.UNKNOWN;
 	}
 	
 	/**

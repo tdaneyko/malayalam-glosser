@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * A morpheme-split entry in the MalayalamDictionary.
  */
-public class MalayalamDictionaryEntry implements Serializable {
+public class UnfoldedDictionaryEntry implements Serializable {
 
 	// The morpheme-split string
 	private String split;
@@ -18,7 +18,7 @@ public class MalayalamDictionaryEntry implements Serializable {
 	// The translations of the stem
 	private String[] transl;
 	
-	public MalayalamDictionaryEntry(String split, String[] prefixes, String[] transl, String[] suffixes) {
+	public UnfoldedDictionaryEntry(String split, String[] prefixes, String[] transl, String[] suffixes) {
 		this.split = split;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
@@ -45,8 +45,8 @@ public class MalayalamDictionaryEntry implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof MalayalamDictionaryEntry) {
-			MalayalamDictionaryEntry other = (MalayalamDictionaryEntry) obj;
+		if (obj instanceof UnfoldedDictionaryEntry) {
+			UnfoldedDictionaryEntry other = (UnfoldedDictionaryEntry) obj;
 			return this.split.equals(other.split) && this.prefixes.equals(other.prefixes)
 					&& this.suffixes.equals(other.suffixes) && this.transl.equals(other.transl);
 		}

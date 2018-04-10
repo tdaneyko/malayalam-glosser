@@ -32,7 +32,7 @@ public class ReverseTrie implements Serializable {
 	 * Create a trie corresponding to a hash map dictionary
 	 * @param glosses The dictionary data
 	 */
-	public ReverseTrie(Map<String, Set<MalayalamDictionaryEntry>> glosses) {
+	public ReverseTrie(Map<String, Set<UnfoldedDictionaryEntry>> glosses) {
 		this();
 		addAll(glosses);
 	}
@@ -42,7 +42,7 @@ public class ReverseTrie implements Serializable {
 	 * @param word A word
 	 * @param gloss A gloss of the word
 	 */
-	public void add(String word, MalayalamDictionaryEntry gloss) {
+	public void add(String word, UnfoldedDictionaryEntry gloss) {
 		start.add(word, word.length()-1, gloss);
 	}
 	
@@ -50,9 +50,9 @@ public class ReverseTrie implements Serializable {
 	 * Add all entries of a hash map ictionary to the trie.
 	 * @param glosses The dictionary data
 	 */
-	public void addAll(Map<String, Set<MalayalamDictionaryEntry>> glosses) {
+	public void addAll(Map<String, Set<UnfoldedDictionaryEntry>> glosses) {
 		for (String form : glosses.keySet()) {
-			for (MalayalamDictionaryEntry gloss : glosses.get(form)) {
+			for (UnfoldedDictionaryEntry gloss : glosses.get(form)) {
 				start.add(form, form.length()-1, gloss);
 			}
 		}
@@ -70,7 +70,7 @@ public class ReverseTrie implements Serializable {
 	 * @param s A word
 	 * @return Its glosses
 	 */
-	public List<MalayalamDictionaryEntry> get(String s) {
+	public List<UnfoldedDictionaryEntry> get(String s) {
 		return start.get(s, s.length()-1);
 	}
 	
@@ -91,7 +91,7 @@ public class ReverseTrie implements Serializable {
 		// The next nodes that can be reached from this node
 		private List<TrieNode> nextNodes;
 		// The glosses for the string ending at this node
-		private List<MalayalamDictionaryEntry> splits;
+		private List<UnfoldedDictionaryEntry> splits;
 		
 		public TrieNode() {
 			this.chars = new TCharArrayList();
@@ -99,7 +99,7 @@ public class ReverseTrie implements Serializable {
 			this.splits = null;
 		}
 		
-		public TrieNode(String s, int i, MalayalamDictionaryEntry g) {
+		public TrieNode(String s, int i, UnfoldedDictionaryEntry g) {
 			this();
 			add(s, i, g);
 		}
@@ -110,7 +110,7 @@ public class ReverseTrie implements Serializable {
 		 * @param i The current index in the string
 		 * @param g A gloss for the string
 		 */
-		public void add(String s, int i, MalayalamDictionaryEntry g) {
+		public void add(String s, int i, UnfoldedDictionaryEntry g) {
 			// If the string ends here, add gloss to list of glosses
 			if (i < 0) {
 				if (splits == null)
@@ -152,7 +152,7 @@ public class ReverseTrie implements Serializable {
 		 * @param i The current index in that string
 		 * @return The glosses for that string
 		 */
-		public List<MalayalamDictionaryEntry> get(String s, int i) {
+		public List<UnfoldedDictionaryEntry> get(String s, int i) {
 			// If the string ends here, return glosses saved in this node
 			if (i < 0)
 				return (splits == null) ? null : new ArrayList<>(splits);

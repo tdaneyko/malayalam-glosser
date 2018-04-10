@@ -6,26 +6,21 @@ import java.util.regex.Pattern;
 
 import de.ws1718.ismla.gloss.client.GlossedSentence;
 import de.ws1718.ismla.gloss.client.GlossedWord;
-import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 
-public class MalayalamGlosser implements LanguageGlosser {
-
-	private MalayalamDictionary dict;
-	private MalayalamTranscriptor transcr;
+public class MalayalamGlosser extends LanguageGlosser {
 
 	// A regex matching sentence boundaries
 	private static final Pattern SENT_SPLITTER = Pattern.compile("(?<=[\\.:;!?]) |\\n+");
 	// A simple whitespace tokenizer regex
 	private static final Pattern TOKENIZER = Pattern.compile(" |(?=[\\.,:;!?](\\z|\\n| ))");
-
+	
 	/**
 	 * Create a Malayalam Glosser with a dictionary and a transliterator.
 	 * @param dict The dictionary
 	 * @param transcr The transliterator
 	 */
-	public MalayalamGlosser(MalayalamDictionary dict, MalayalamTranscriptor transcr) {
-		this.dict = dict;
-		this.transcr = transcr;
+	public MalayalamGlosser(UnfoldedDictionary dict, GlossTransliterator transcr) {
+		super(dict, transcr);
 	}
 
 	/**
@@ -35,7 +30,7 @@ public class MalayalamGlosser implements LanguageGlosser {
 	 * @param outFormat The script in which to display the glosses
 	 * @return A list of glossed sentences
 	 */
-	public List<GlossedSentence> gloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat) {
+	public List<GlossedSentence> gloss(String text, String inFormat, String outFormat) {
 		// Pass input and output scripts to transliterator
 		transcr.setFormats(inFormat, outFormat);
 
@@ -50,7 +45,7 @@ public class MalayalamGlosser implements LanguageGlosser {
 
 			// Properly tokenize individual words and convert them to dictionary transliteration
 			for (String word : words) {
-				String lookupWord = transcr.convertTo(word, MalayalamDictionary.DICT_FORMAT);
+				String lookupWord = transcr.convertTo(word, dict.dictFormat);
 				List<String> tokenizedWord = sandhiSplit(lookupWord);
 				if (tokenizedWord == null)
 					tok.add(lookupWord);

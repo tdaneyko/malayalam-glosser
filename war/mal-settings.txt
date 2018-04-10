@@ -3,7 +3,7 @@
 #helppage	mal-help.txt
 #aboutpage	mal-about.txt
 
-#glossclass	MalayalamGlosser
+#glossclass	de.ws1718.ismla.gloss.server.MalayalamGlosser
 
 #dict	mal-dict-all.tsv
 

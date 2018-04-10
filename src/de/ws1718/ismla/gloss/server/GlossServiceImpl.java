@@ -3,7 +3,8 @@ package de.ws1718.ismla.gloss.server;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -13,17 +14,15 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.ws1718.ismla.gloss.client.GlossService;
 import de.ws1718.ismla.gloss.client.GlossedSentence;
-import de.ws1718.ismla.gloss.client.GlossedWord;
-import de.ws1718.ismla.gloss.shared.MalayalamFormat;
+import de.ws1718.ismla.gloss.shared.PageSettings;
 
 /**
  * This class receives the user input and hands it to the actual glosser.
  */
 public class GlossServiceImpl extends RemoteServiceServlet implements GlossService {
 	
-	// The path to the fully inflected dictionary file
-	private static final String dictPath = "/mal-dict-all.tsv";
-	
+	// The glosser settings
+	GlosserSettings settings;
 	// The glosser/tokenizer
 	LanguageGlosser glosser;
 	
@@ -31,11 +30,10 @@ public class GlossServiceImpl extends RemoteServiceServlet implements GlossServi
 	public void init() throws ServletException {
 		try {
 			ServletContext servletContext = getServletContext();
-			MalayalamDictionary dict = new MalayalamDictionary(new BufferedReader(new InputStreamReader(
-					servletContext.getResourceAsStream(dictPath), "UTF-8")));
-			glosser = new MalayalamGlosser(dict, new MalayalamTranscriptor(servletContext));
+			settings = new GlosserSettings(Config.DEFAULT_LANG, servletContext);
+			glosser = settings.getGlosser(servletContext);
 		}
-		catch (UnsupportedEncodingException e) {
+		catch (GlosserSettingsException e) {
 			e.printStackTrace();
 		}
 	}
@@ -47,8 +45,13 @@ public class GlossServiceImpl extends RemoteServiceServlet implements GlossServi
 	 * @return The glossed text
 	 */
 	@Override
-	public List<GlossedSentence> getGloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat) {
+	public List<GlossedSentence> getGloss(String text, String inFormat, String outFormat) {
 		return glosser.gloss(text, inFormat, outFormat);
+	}
+
+	@Override
+	public PageSettings getSettings() {
+		return settings.getPageSettings();
 	}
 	
 }

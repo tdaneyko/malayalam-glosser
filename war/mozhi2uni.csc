@@ -1,0 +1,2 @@
+mal-mozhi2unicodeISO-preprocessing	inorder
+mal-mozhi2unicodeISO	greedy

@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import de.ws1718.ismla.gloss.shared.MalayalamFormat;
+import de.ws1718.ismla.gloss.shared.PageSettings;
 
 /**
  * This class receives the user input and hands it to the actual glosser.
@@ -13,6 +13,8 @@ import de.ws1718.ismla.gloss.shared.MalayalamFormat;
 @RemoteServiceRelativePath("gloss")
 public interface GlossService extends RemoteService {
 
-	List<GlossedSentence> getGloss(String text, MalayalamFormat inFormat, MalayalamFormat outFormat);
+	List<GlossedSentence> getGloss(String text, String inFormat, String outFormat);
+	
+	PageSettings getSettings();
 
 }

@@ -1,4 +1,4 @@
-package de.ws1718.ismla.gloss.shared;
+package de.ws1718.ismla.gloss.server;
 
 public class GlosserSettingsException extends Exception {
 

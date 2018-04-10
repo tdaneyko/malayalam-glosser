@@ -18,15 +18,15 @@ public class CascadeTransliterator extends Transliterator {
 		this.verbose = verbose;
 		translits = new ArrayList<Transliterator>();
 		translits.add(new TerminalSymbolsAdder());
-		try (BufferedReader read = new BufferedReader(new InputStreamReader(servletContext.getResourceAsStream("/"+cascadePath), "UTF-8"))) {
+		try (BufferedReader read = new BufferedReader(new InputStreamReader(servletContext.getResourceAsStream('/'+cascadePath), "UTF-8"))) {
 			for (String line = read.readLine(); line != null; line = read.readLine()) {
 				if (!line.isEmpty()) {
 					String[] fields = StringUtils.split(line, '\t');
 					if (fields.length == 2) {
 						if (fields[1].equals("greedy"))
-							translits.add(new SimpleTransliterator(servletContext.getResourceAsStream(fields[0]), false));
+							translits.add(new SimpleTransliterator(servletContext.getResourceAsStream('/'+fields[0]), false));
 						else
-							translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream(fields[0]), false));
+							translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream('/'+fields[0]), false));
 					}
 				}
 			}
