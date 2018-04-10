@@ -93,7 +93,8 @@ public class GlosserSettings {
 					if (fields.length == 4 && fields[0].equals("#transl")) {
 						translits.put(fields[1], Pair.of(fields[2], fields[3]));
 					}
-					pageSettings = new PageSettings(langName, scripts, inScripts, outScripts);
+					pageSettings = new PageSettings(langName, scripts, inScripts, outScripts,
+							PageSettings.parseTextPage(helpPath, servletContext), PageSettings.parseTextPage(aboutPath, servletContext));
 				}
 			}
 		} catch (IOException e) {

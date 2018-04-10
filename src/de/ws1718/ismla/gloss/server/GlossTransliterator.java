@@ -30,7 +30,6 @@ public class GlossTransliterator {
 		this.translits = new HashMap<>();
 		for (String script : cascades.keySet()) {
 			Pair<String, String> csc = cascades.get(script);
-			System.err.println(csc.getLeft() + " " + csc.getRight());
 			CascadeTransliterator lt = new CascadeTransliterator(csc.getLeft(), false, servletContext);
 			CascadeTransliterator rt = new CascadeTransliterator(csc.getRight(), false, servletContext);
 			translits.put(script, Pair.of(lt, rt));

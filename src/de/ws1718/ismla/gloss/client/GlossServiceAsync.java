@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.ws1718.ismla.gloss.shared.GlossedSentence;
 import de.ws1718.ismla.gloss.shared.PageSettings;
 
 public interface GlossServiceAsync {

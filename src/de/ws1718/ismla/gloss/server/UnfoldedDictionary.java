@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import de.ws1718.ismla.gloss.client.GlossedWord;
 import de.ws1718.ismla.gloss.server.translit.GlossNormalizer;
+import de.ws1718.ismla.gloss.shared.GlossedWord;
 import de.ws1718.ismla.gloss.shared.StringUtils;
 
 /**

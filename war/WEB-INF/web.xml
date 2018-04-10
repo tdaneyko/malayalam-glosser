@@ -17,17 +17,6 @@
     <url-pattern>/ismlaglosser/gloss</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>tableServlet</servlet-name>
-    <servlet-class>de.ws1718.ismla.gloss.server.TableProviderServiceImpl</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>tableServlet</servlet-name>
-    <url-pattern>/ismlaglosser/table</url-pattern>
-  </servlet-mapping>
-  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>ISMLAGlosser.html</welcome-file>

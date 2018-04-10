@@ -1,0 +1,17 @@
+## How to use the Glosser
+
+The Malayalam Glosser is a tool to break any Malayalam text apart into its individual morphemes. It is a tokenizer in the sense that it will split contracted expressions such as വീട്ടിലാണ് into their individual tokens (വീട്ടിൽ and ആണ്), but first and foremost it is a morphology analyzer which can split inflected words such as വീട്ടിൽ into their individual morphemes (വീട് and the locative ending -ഇൽ) and annotate them accordingly. The finished glosses are also converted to LaTeX code (using the #url#gb4e#https://ctan.org/pkg/gb4e# or #url#expex#https://ctan.org/pkg/expex# package) so that you can easily insert them into you LaTeX document.
+
+To use the Glosser, simply enter your Malayalam text in one of the four supported input scripts (see below). Make sure to select the input script that you used, and choose a script to display the morpheme-split Malayalam words in. The Glosser will create a gloss for each sentence, displaying information in four rows: The indidvidual tokens (e.g. വീട്ടിൽ) in the input script, their phonetic transcription (e.g. ʋiːʈːil), their gloss in the selected gloss script (e.g. vīṭṭ-il) and the annotation of that gloss (e.g. house-LOC). In the case that there are multiple possible glosses or multiple possible annotations of a gloss, you will be able to select your preferred one via a dropdown list. When you are done editing your gloss, click "Finish" to get you final glosses and gb4e codes.
+
+## Supported scripts
+
+The Malayalam Glosser supports four ways to write Malayalam: Malayalam script, the ISO-15919 (National Library at Kolkata) romanization both with Unicode and ASCII characters (following #url#this#https://en.wikipedia.org/w/index.php?title=ISO_15919&oldid=825271114# page), and the popular Mozhi romanization (following #url#this#https://sites.google.com/site/cibu/mozhi/mozhi2# page). The chart below shows which Malayalam character maps to which Latin character in the different scripts. When typing your text into the Glosser in one of the romanizations, please make sure to always explicitly write out a word-final candrakkala, otherwise the words may not be found in the underlying dictionary.
+
+#table#true#transcription-schemes.tsv#
+
+## Glossing abbreviations
+
+The following is a list of all the abbreviations used in the generated glosses and the names of the grammatical phenomena they refer to.
+
+#table#false#gloss-abbreviations.tsv#

@@ -1,2 +1,0 @@
-serviceClass: de.ws1718.ismla.gloss.client.TableProviderService
-path: CDDA6A67AFFF2645A898793BCD406E4A.gwt.rpc

@@ -1,0 +1,9 @@
+## About
+
+The Malayalam Glosser was created by Thora Daneyko for the course "Industrial-Strength Multilingual Language Analysis" taught by Johannes Dellert and Björn Rudzewitz at the University of Tübingen in the Winter Semester 2017/18.
+
+This page was coded in Java using the #url#GWT-Bootstrap library#https://github.com/gwtbootstrap3/gwtbootstrap3#. For the phonetic transcription and transliteration between the different scripts, I used the transliterator system that was designed for the #url#NorthEuraLex#http://northeuralex.org/# database.
+
+The Malayalam morphology analysis is mainly based on Rodney F. Moag's "Malayalam: A University Course and Reference Grammar" (1994), covering chapters 1 to 13 so far. Further information about Malayalam grammar was drawn from Ronald E. Asher and T. C. Kumari's "Malayalam" (1997) grammar.
+
+The underlying dictionary data is based on lessons 1 to 11 of the Moag textbook.

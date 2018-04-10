@@ -13,7 +13,7 @@ import javax.servlet.ServletException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.ws1718.ismla.gloss.client.GlossService;
-import de.ws1718.ismla.gloss.client.GlossedSentence;
+import de.ws1718.ismla.gloss.shared.GlossedSentence;
 import de.ws1718.ismla.gloss.shared.PageSettings;
 
 /**

@@ -2,7 +2,7 @@ package de.ws1718.ismla.gloss.server;
 
 import java.util.List;
 
-import de.ws1718.ismla.gloss.client.GlossedSentence;
+import de.ws1718.ismla.gloss.shared.GlossedSentence;
 
 public abstract class LanguageGlosser {
 	

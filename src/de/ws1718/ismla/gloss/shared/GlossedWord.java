@@ -1,4 +1,4 @@
-package de.ws1718.ismla.gloss.client;
+package de.ws1718.ismla.gloss.shared;
 
 import java.io.Serializable;
 import java.util.Arrays;

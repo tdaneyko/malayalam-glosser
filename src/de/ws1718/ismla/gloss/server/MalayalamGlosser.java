@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import de.ws1718.ismla.gloss.client.GlossedSentence;
-import de.ws1718.ismla.gloss.client.GlossedWord;
+import de.ws1718.ismla.gloss.shared.GlossedSentence;
+import de.ws1718.ismla.gloss.shared.GlossedWord;
 
 public class MalayalamGlosser extends LanguageGlosser {
 
