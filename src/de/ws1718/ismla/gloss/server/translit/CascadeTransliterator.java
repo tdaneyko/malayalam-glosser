@@ -9,6 +9,11 @@ import javax.servlet.ServletContext;
 
 import de.ws1718.ismla.gloss.shared.StringUtils;
 
+/**
+ * A transliterator based on the rule files specified in a cascade file.
+ * 
+ * Based on the language-specific transliterators written by Johannes Dellert.
+ */
 public class CascadeTransliterator extends Transliterator {
 
 	ArrayList<Transliterator> translits;
@@ -18,15 +23,17 @@ public class CascadeTransliterator extends Transliterator {
 		this.verbose = verbose;
 		translits = new ArrayList<Transliterator>();
 		translits.add(new TerminalSymbolsAdder());
-		try (BufferedReader read = new BufferedReader(new InputStreamReader(servletContext.getResourceAsStream('/'+cascadePath), "UTF-8"))) {
+		if (cascadePath.charAt(0) != '/') cascadePath = '/' + cascadePath;
+		try (BufferedReader read = new BufferedReader(new InputStreamReader(servletContext.getResourceAsStream(cascadePath), "UTF-8"))) {
+			String folderpath = cascadePath.substring(0, cascadePath.lastIndexOf('/')+1);
 			for (String line = read.readLine(); line != null; line = read.readLine()) {
 				if (!line.isEmpty()) {
 					String[] fields = StringUtils.split(line, '\t');
 					if (fields.length == 2) {
 						if (fields[1].equals("greedy"))
-							translits.add(new SimpleTransliterator(servletContext.getResourceAsStream('/'+fields[0]), false));
+							translits.add(new SimpleTransliterator(servletContext.getResourceAsStream(folderpath+fields[0]), false));
 						else
-							translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream('/'+fields[0]), false));
+							translits.add(new ClassContextTransliterator(servletContext.getResourceAsStream(folderpath+fields[0]), false));
 					}
 				}
 			}

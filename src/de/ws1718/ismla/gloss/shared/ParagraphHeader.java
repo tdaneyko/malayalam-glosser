@@ -6,6 +6,9 @@ import org.gwtbootstrap3.client.ui.Legend;
 
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * A header on a Help or About page.
+ */
 public class ParagraphHeader implements Serializable, TextPageContents {
 	
 	private String header;

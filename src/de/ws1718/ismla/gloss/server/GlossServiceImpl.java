@@ -1,10 +1,5 @@
 package de.ws1718.ismla.gloss.server;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -49,6 +44,9 @@ public class GlossServiceImpl extends RemoteServiceServlet implements GlossServi
 		return glosser.gloss(text, inFormat, outFormat);
 	}
 
+	/**
+	 * @return The settings for the web interface
+	 */
 	@Override
 	public PageSettings getSettings() {
 		return settings.getPageSettings();

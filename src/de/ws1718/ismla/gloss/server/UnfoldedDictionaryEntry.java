@@ -2,7 +2,6 @@ package de.ws1718.ismla.gloss.server;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * A morpheme-split entry in the MalayalamDictionary.

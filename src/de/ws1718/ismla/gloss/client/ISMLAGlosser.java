@@ -46,7 +46,7 @@ import de.ws1718.ismla.gloss.shared.PageSettings;
 import de.ws1718.ismla.gloss.shared.TextPageContents;
 
 /**
- * The user interface of the Malayalam Glosser.
+ * The user interface of the Glosser.
  */
 public class ISMLAGlosser implements EntryPoint {
 	

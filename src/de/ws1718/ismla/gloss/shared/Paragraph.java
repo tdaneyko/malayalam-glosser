@@ -6,6 +6,9 @@ import org.gwtbootstrap3.client.ui.gwt.HTMLPanel;
 
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * A simple text paragraph on a Help or About page.
+ */
 public class Paragraph implements Serializable, TextPageContents {
 	
 	private String text;

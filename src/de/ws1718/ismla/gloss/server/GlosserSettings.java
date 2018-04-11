@@ -14,31 +14,45 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.sun.org.apache.bcel.internal.generic.RET;
-
 import de.ws1718.ismla.gloss.shared.PageSettings;
 import de.ws1718.ismla.gloss.shared.StringUtils;
 
+/**
+ * This class stores language-specific settings for the glosser.
+ */
 public class GlosserSettings {
 	
+	// Name of the language
 	private String langName;
+	// Path to the Help page definition
 	private String helpPath;
+	// Path to the About page definition
 	private String aboutPath;
+	// Class name of the glosser
 	private String glosser;
+	// Path to the dictionary
 	private String dictPath;
+	// Identifiers and names of the supported scripts
 	private Map<String, String> scripts;
+	// Identifiers of the supported input scripts
 	private String[] inScripts;
+	// Identifiers of the supported gloss scripts
 	private String[] outScripts;
+	// Identifier of the script the dictionary entries are in
 	private String dictScript;
+	// Identifier of the intermediate transliterator script
 	private String translScript;
+	// The cascade files of the transliterators for each script that is not translScript
 	private Map<String, Pair<String, String>> translits;
+	// The cascade file for the phonetic transliterator
 	private String transcr;
-	
+	// The settings for the web interface
 	private PageSettings pageSettings;
 	
 	public GlosserSettings(String filepath, ServletContext servletContext) throws GlosserSettingsException {
 		try (BufferedReader read = new BufferedReader(new InputStreamReader(
 				servletContext.getResourceAsStream(filepath), "UTF-8"))) {
+			String folderpath = filepath.substring(0, filepath.lastIndexOf('/')+1);
 			langName = "Language";
 			helpPath = Config.DEFAULT_HELP;
 			aboutPath = Config.DEFAULT_ABOUT;
@@ -54,16 +68,16 @@ public class GlosserSettings {
 							langName = fields[1];
 							break;
 						case "#helppage":
-							helpPath = (fields[1].charAt(0) == '/') ? fields[1] : '/' + fields[1];
+							helpPath = folderpath + fields[1];
 							break;
 						case "#aboutpage":
-							aboutPath = (fields[1].charAt(0) == '/') ? fields[1] : '/' + fields[1];
+							aboutPath = folderpath + fields[1];
 							break;
 						case "#glossclass":
 							glosser = fields[1];
 							break;
 						case "#dict":
-							dictPath = (fields[1].charAt(0) == '/') ? fields[1] : '/' + fields[1];
+							dictPath = folderpath + fields[1];
 							break;
 						case "#informats":
 							inScripts = StringUtils.split(fields[1], ',');
@@ -78,7 +92,7 @@ public class GlosserSettings {
 							translScript = fields[1];
 							break;
 						case "#transcr":
-							transcr = fields[1];
+							transcr = folderpath + fields[1];
 							break;
 						default: System.err.println("Unknown tag " + fields[0]);
 						}
@@ -91,7 +105,7 @@ public class GlosserSettings {
 							translScript = fields[1];
 					}
 					if (fields.length == 4 && fields[0].equals("#transl")) {
-						translits.put(fields[1], Pair.of(fields[2], fields[3]));
+						translits.put(fields[1], Pair.of(folderpath + fields[2], folderpath + fields[3]));
 					}
 					pageSettings = new PageSettings(langName, scripts, inScripts, outScripts,
 							PageSettings.parseTextPage(helpPath, servletContext), PageSettings.parseTextPage(aboutPath, servletContext));
@@ -147,6 +161,10 @@ public class GlosserSettings {
 		return scripts.get(script);
 	}
 
+	/**
+	 * @param servletContext Servlet Context
+	 * @return A glosser of the specified class
+	 */
 	public LanguageGlosser getGlosser(ServletContext servletContext) {
 		try {
 			Class<?> glossClass = Class.forName(glosser);
@@ -163,6 +181,10 @@ public class GlosserSettings {
 		return null;
 	}
 	
+	/**
+	 * @param servletContext Servlet Context
+	 * @return A transliterator for the specified scripts
+	 */
 	public GlossTransliterator getTransliterator(ServletContext servletContext) {
 		return new GlossTransliterator(translits, transcr, translScript, servletContext);
 	}

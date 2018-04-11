@@ -2,13 +2,9 @@ package de.ws1718.ismla.gloss.server;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.tools.ant.taskdefs.FixCRLF.AddAsisRemove;
 
 import gnu.trove.list.TCharList;
 import gnu.trove.list.array.TCharArrayList;

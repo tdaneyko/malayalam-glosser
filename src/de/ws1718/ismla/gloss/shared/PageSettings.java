@@ -14,13 +14,22 @@ import javax.servlet.ServletContext;
 
 import com.google.gwt.core.shared.GwtIncompatible;
 
+/**
+ * This class stores language-specific settings for the web interface.
+ */
 public class PageSettings implements Serializable {
 
+	// Name of the language
 	private String langName;
+	// Identifiers and names of the supported scripts
 	private Map<String, String> scripts;
+	// Identifiers of the supported input scripts
 	private String[] inScripts;
+	// Identifiers of the supported gloss scripts
 	private String[] outScripts;
+	// Contents of the Help page
 	private List<TextPageContents> helpPage;
+	// Contents of the About page
 	private List<TextPageContents> aboutPage;
 	
 	public PageSettings() {
@@ -66,10 +75,17 @@ public class PageSettings implements Serializable {
 		return new ArrayList<>(aboutPage);
 	}
 	
+	/**
+	 * Parse a Help or About page definition.
+	 * @param filepath Path to the page file
+	 * @param servletContext Servlet Context
+	 * @return The contents of the page
+	 */
 	@GwtIncompatible
 	public static List<TextPageContents> parseTextPage(String filepath, ServletContext servletContext) {
 		List<TextPageContents> page = new ArrayList<>();
 		if (filepath.charAt(0) != '/') filepath = '/' + filepath;
+		String folderpath = filepath.substring(0, filepath.lastIndexOf('/')+1);
 		try (BufferedReader read = new BufferedReader(new InputStreamReader(servletContext.getResourceAsStream(filepath), "UTF-8"))) {
 			for (String line = read.readLine(); line != null; line = read.readLine()) {
 				if (!line.isEmpty()) {
@@ -80,7 +96,7 @@ public class PageSettings implements Serializable {
 						int i = line.indexOf('#', 7);
 						int j = line.indexOf('#', i+1);
 						if (i >= 0 && j >= 0) {
-							String tablepath = line.substring(i+1, j);
+							String tablepath = folderpath + line.substring(i+1, j);
 							page.add(TableContents.readTable(tablepath, equalWidth, servletContext));
 						}
 						else

@@ -11,6 +11,10 @@ import de.ws1718.ismla.gloss.server.translit.CascadeTransliterator;
 import de.ws1718.ismla.gloss.server.translit.NotATransliterator;
 import de.ws1718.ismla.gloss.server.translit.Transliterator;
 
+/**
+* A transliterator for a language that can convert between different scripts
+* and provide IPA transcription for that language.
+*/
 public class GlossTransliterator {
 
 	// The intermediate transliterator script
@@ -19,8 +23,9 @@ public class GlossTransliterator {
 	private String defFrom;
 	// The default output script
 	private String defTo;
-	
+	// The transliterators for each script, to and from translScript
 	private Map<String, Pair<Transliterator, Transliterator>> translits;
+	// The phonetic transcriptor
 	private Transliterator transcr;
 	
 	public GlossTransliterator(Map<String, Pair<String, String>> cascades, String transcrCsc, String translScript, ServletContext servletContext) {

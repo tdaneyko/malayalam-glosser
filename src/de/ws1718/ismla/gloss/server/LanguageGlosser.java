@@ -4,6 +4,10 @@ import java.util.List;
 
 import de.ws1718.ismla.gloss.shared.GlossedSentence;
 
+/**
+ * A glosser using a dictionary and a transliterator. All language-specific glossers must
+ * extend this class.
+ */
 public abstract class LanguageGlosser {
 	
 	protected final UnfoldedDictionary dict;

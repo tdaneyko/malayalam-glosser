@@ -1,11 +1,11 @@
 #lang	Malayalam
 
-#helppage	mal-help.txt
-#aboutpage	mal-about.txt
+#helppage	pagetext/mal-help.txt
+#aboutpage	pagetext/mal-about.txt
 
 #glossclass	de.ws1718.ismla.gloss.server.MalayalamGlosser
 
-#dict	mal-dict-all.tsv
+#dict	dict/mal-dict-all.tsv
 
 #script	MALAYALAM	Malayalam script
 #script	ISO_UNI	ISO-15919 (Unicode)
@@ -18,7 +18,7 @@
 #dictscript	ISO_ASCII
 #translitscript	ISO_UNI
 
-#transl	MALAYALAM	script2uni.csc	uni2script.csc
-#transl	ISO_ASCII	ascii2uni.csc	uni2ascii.csc
-#transl	MOZHI	mozhi2uni.csc	uni2mozhi.csc
-#transcr	uni2ipa.csc
+#transl	MALAYALAM	translit/script2uni.csc	translit/uni2script.csc
+#transl	ISO_ASCII	translit/ascii2uni.csc	translit/uni2ascii.csc
+#transl	MOZHI	translit/mozhi2uni.csc	translit/uni2mozhi.csc
+#transcr	translit/uni2ipa.csc
