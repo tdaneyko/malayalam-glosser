@@ -1,0 +1,9 @@
+#def	cons	[k t r p q]
+
+[cons]	+[.]
+[cons]	°[.]
+[cons]	~[.]
+
+	°°
+	~~
+	N

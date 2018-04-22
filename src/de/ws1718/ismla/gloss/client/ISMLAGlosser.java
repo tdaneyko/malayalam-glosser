@@ -30,6 +30,7 @@ import org.gwtbootstrap3.client.ui.html.Text;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -214,7 +215,7 @@ public class ISMLAGlosser implements EntryPoint {
 		textPanel.add(inputText);
 
 		// Build input and gloss format selection panel
-		FlowPanel inOutFormatPanel = new FlowPanel();
+		VerticalPanel inOutFormatPanel = new VerticalPanel();
 		inOutFormatPanel.addStyleName("col-lg-2");
 		
 		// Create input format selection buttons
@@ -294,7 +295,7 @@ public class ISMLAGlosser implements EntryPoint {
 	 * @param handler The click handler for all of the buttons
 	 * @param panel The panel to displaythe buttons in
 	 */
-	private void addRadioButtons(String groupName, FormLabel label, String[] values, ClickHandler handler, FlowPanel panel) {
+	private void addRadioButtons(String groupName, FormLabel label, String[] values, ClickHandler handler, VerticalPanel panel) {
 		panel.add(label);
 		for (int i = 0; i < values.length; i++) {
 			RadioButton b = new RadioButton(groupName);

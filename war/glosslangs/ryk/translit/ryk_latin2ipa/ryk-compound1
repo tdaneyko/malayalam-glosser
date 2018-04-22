@@ -1,0 +1,15 @@
+#def	earth	[k t r p q]
+#def	water	[g d l b]
+#def	wind	[kh th sh ph h]
+
+[wind]-[wind]	[.][.]
+[water]-[wind]	[.]![.]
+[earth]-[wind]	[.]![.]
+[wind]-[water]	[.]![.]
+[earth]-[water]	[.]![.]
+[wind]-[earth]	[.]![.]
+[water]-[earth]	[.]![.]
+
+-	
+
+_	# #

@@ -1,0 +1,17 @@
+#lang	Ryka
+
+#glossclass	de.ws1718.ismla.gloss.server.RykaGlosser
+
+#dict	dict/ryk-words-all.tsv
+
+#script	RYKA	Ryka script
+#script	ROMAN	Romanization
+
+#informats	RYKA,ROMAN
+#outformats	ROMAN
+
+#dictscript	ROMAN
+#translitscript	ROMAN
+
+#transl	RYKA	translit/ryk_script2latin/ryk-script2latin.csc	translit/ryk_latin2script/ryk-latin2script.csc
+#transcr	translit/ryk_latin2ipa/ryk-latin2ipa.csc

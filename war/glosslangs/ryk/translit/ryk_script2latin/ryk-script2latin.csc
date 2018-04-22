@@ -1,0 +1,7 @@
+rykscript_cons	inorder
+rykscript_vow	inorder
+rykscript_diph1	inorder
+rykscript_diph2	inorder
+rykscript_mode1	inorder
+rykscript_mode2	inorder
+rykscript_windglottal_nr	inorder

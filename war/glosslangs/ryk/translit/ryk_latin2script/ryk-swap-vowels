@@ -1,0 +1,11 @@
+#def	vowel	[a e o u y n]
+
+[vowel][vowel]k	k[.][.]
+[vowel][vowel]t	t[.][.]
+[vowel][vowel]r	r[.][.]
+[vowel][vowel]p	p[.][.]
+
+[vowel]k	k[.]
+[vowel]t	t[.]
+[vowel]r	r[.]
+[vowel]p	p[.]

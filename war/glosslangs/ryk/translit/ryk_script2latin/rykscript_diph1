@@ -1,0 +1,15 @@
+#def	cons	[k t r p q]
+#def	vow	[a e o u y]
+
+[cons]A	a[.]
+[cons]E	e[.]
+[cons]O	o[.]
+[cons]U	u[.]
+[cons]Y	y[.]
+[cons]n	n[.]
+
+[vow]A	[.]a
+[vow]E	[.]e
+[vow]O	[.]o
+[vow]U	[.]u
+[vow]Y	[.]y

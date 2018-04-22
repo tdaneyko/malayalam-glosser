@@ -5,7 +5,7 @@
 
 #glossclass	de.ws1718.ismla.gloss.server.MalayalamGlosser
 
-#dict	dict/mal-dict-all.tsv
+#dict	dict/mal-words-all.tsv
 
 #script	MALAYALAM	Malayalam script
 #script	ISO_UNI	ISO-15919 (Unicode)

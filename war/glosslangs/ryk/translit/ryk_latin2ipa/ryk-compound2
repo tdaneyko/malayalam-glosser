@@ -1,0 +1,14 @@
+#def	cons	[k t r p q g d l b kh th sh ph h]
+#def	glide	[j w n]
+
+a[cons]!	a[.]a
+e[cons]!	e[.]e
+o[cons]!	o[.]o
+u[cons]!	u[.]u
+y[cons]!	y[.]y
+
+a[glide][cons]!	a[.][.]a
+e[glide][cons]!	e[.][.]e
+o[glide][cons]!	o[.][.]o
+u[glide][cons]!	u[.][.]u
+y[glide][cons]!	y[.][.]y

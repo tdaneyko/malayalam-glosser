@@ -1,0 +1,23 @@
+#def	labial	[p b B p\]
+#def	dental	[t_d d_d D T]
+#def	velar	[k g G x]
+#def	alveolar	[r l]
+#def	palatal	[s\ t)s\]
+
+mD#	n_d#
+mG#	N#
+mB#	m#
+
+m[labial]:	m:[.]
+m[dental]:	n_d:[.]
+m[velar]:	N:[.]
+mr:	n:dr
+ml:	n:l
+
+m[dental]	n_d[.]
+m[palatal]	J[.]
+m[velar]	N[.]
+mr	ndr
+[alveolar]m	[.]n
+
+Y	i_O

@@ -1,0 +1,12 @@
+lowercase	greedy
+ryk-compound1	inorder
+ryk-compound2	inorder
+ryk2xsampa	inorder
+ryk-glotgem	inorder
+ryk-wind	inorder
+ryk-i	inorder
+ryk-i	inorder
+ryk-i	inorder
+ryk-i	inorder
+ryk-nasal	inorder
+xsampa2ipa	greedy

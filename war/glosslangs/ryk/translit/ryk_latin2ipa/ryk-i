@@ -1,0 +1,17 @@
+#def	straight	[k g G x t_d d_d D T s\]
+#def	bent	[r l p b B p\ ? h]
+#def	cons	[k g G x t_d d_d D T s\ r l p b B p\ ? h n]
+#def	rounded	[O 9 u u_^ y y_^]
+
+[straight]Y	[.]i
+[rounded]Y	[.]y
+[rounded][bent]Y	[.][.]y
+[rounded][bent]:Y	[.][.]:y
+[rounded][cons][bent]Y	[.][.][.]y
+
+[rounded]E	[.]9
+[rounded][bent]E	[.][.]9
+[rounded][bent]:E	[.][.]:9
+[rounded][cons][bent]E	[.][.][.]9
+
+[rounded]i_^	[.]y_^

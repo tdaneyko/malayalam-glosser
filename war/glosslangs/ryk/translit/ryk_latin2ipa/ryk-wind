@@ -1,0 +1,19 @@
+#def	wind	[x T s\ p\]
+#def	vowel	[a E 9 i O u Y y _^ m]
+
+k[wind]	x[.]
+t_d[wind]	T[.]
+s[wind]	s\[.]
+p[wind]	p\[.]
+
+[vowel]b[vowel]	[.]B[.]
+[vowel]d_d[vowel]	[.]D[.]
+[vowel]g[vowel]	[.]G[.]
+
+b#	B#
+d_d#	D#
+g#	G#
+
+b:	b
+d_d:	d_d
+g:	g

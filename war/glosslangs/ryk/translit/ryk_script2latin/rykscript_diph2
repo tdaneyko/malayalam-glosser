@@ -1,0 +1,16 @@
+#def	aeou	[a e o u]
+#def	aeo	[a e o]
+#def	ae	[a e]
+#def	ao	[a o]
+
+y[aeou]	j[.]
+[aeou]y	[.]j
+
+u[aeo]	w[.]
+[aeo]u	[.]w
+
+oa	wa
+[ae]o	[.]w
+
+ea	ja
+[ao]e	[.]j

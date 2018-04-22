@@ -3,6 +3,7 @@ package de.ws1718.ismla.gloss.server;
 public class Config {
 	
 	public static final String MAL_SETTINGS = "/glosslangs/mal/mal-settings.txt";
+	public static final String RYK_SETTINGS = "/glosslangs/ryk/ryk-settings.txt";
 
 	public static final String DEFAULT_LANG = MAL_SETTINGS;
 	

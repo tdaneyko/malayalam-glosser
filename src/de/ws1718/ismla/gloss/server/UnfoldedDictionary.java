@@ -15,6 +15,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import de.ws1718.ismla.gloss.server.translit.GlossNormalizer;
 import de.ws1718.ismla.gloss.shared.GlossedWord;
 import de.ws1718.ismla.gloss.shared.StringUtils;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
 
 /**
  * A fully inflected dictionary.
@@ -32,7 +34,7 @@ public class UnfoldedDictionary {
 	private GlossNormalizer normalizer;
 	
 	// The actual dictionary as a map or trie
-	private Map<String, Set<UnfoldedDictionaryEntry>> glosses;
+	private TMap<String, Set<UnfoldedDictionaryEntry>> glosses;
 	private ReverseTrie trie;
 
 	/**
@@ -42,7 +44,7 @@ public class UnfoldedDictionary {
 	public UnfoldedDictionary(BufferedReader read, String dictFormat) {
 		this.dictFormat = dictFormat;
 		this.normalizer = new GlossNormalizer();
-		this.glosses = new HashMap<>();
+		this.glosses = new THashMap<>();
 		this.trie = new ReverseTrie();
 		
 		try {

@@ -1,0 +1,23 @@
+#def	earth	[k t r p q]
+#def	wind	[kh th sh ph h]
+#def	water	[g d l b]
+#def	vowel	[a e o u y]
+#def	diph	[an en on un yn aj ej oj uj aw ew ow ja je jo ju wa we wo]
+
+[wind]#	[.]~#
+[water]#	[.]°#
+[earth]#	[.]+#
+
+[k t s p][kh th sh ph]	[.]~[.]
+[wind]	~[.]
+[water][water]	[.]°[.]
+[water]	°[.]
+
+#[a e o u y j w]	#°q[.]
+[vowel][vowel]	[.]°q[.]
+[vowel][diph]	[.]°q[.]
+[diph][vowel]	[.]°q[.]
+[diph][diph]	[.]°q[.]
+
+[earth][earth]	[.]+[.]
+[earth]	+[.]
