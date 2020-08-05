@@ -1,1 +1,15 @@
-/test-classes/
+.idea
+.settings
+.classpath
+.project
+*.iml
+
+gwt-unitCache
+out
+references
+test-classes
+
+paper
+!paper/ismla.pdf
+
+war/glosslangs/mal/dict/mal-words-all.tsv
