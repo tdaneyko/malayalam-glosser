@@ -9,7 +9,8 @@ out
 references
 test-classes
 
-paper
+paper/*
 !paper/ismla.pdf
+!paper/mal-glosser-*.png
 
 war/glosslangs/mal/dict/mal-words-all.tsv
