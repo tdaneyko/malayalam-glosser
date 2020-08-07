@@ -9,7 +9,8 @@ This is the semester project I did for the course "Industrial-Strength Multiling
 Interlinear glosses are word-to-word or morpheme-to-morpheme translations of a foreign language text that frequently accompany the free translations of examples in linguistic descriptions. The third line in (1) shows such an interlinear gloss for a Malayalam sentence.
 
 ```
-(1)   sāṟa    kūṭṭukāri-kkŭ   kaṭaṁ   koṭut-tu
+(1)   സാറ കൂട്ടുകാരിക്ക് കടം കൊടുത്തു.
+      sāṟa    kūṭṭukāri-kkŭ   kaṭaṁ   koṭut-tu
       Sarah   friend   -DAT   loan    give -PST
       "Sarah gave her friend a loan." (Asher and Kumari 1997, p. 62)
 ```
